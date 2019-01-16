@@ -1,34 +1,70 @@
 ﻿
-# RTP Payload Format For AV1 (v0.1.5)
+RTP Payload Format For AV1 (v0.1.5)
+===================================
 
 status: AV1 RTC SG Working Draft (WD)
 
+
 ## Abstract
 
-This memo describes an RTP payload format for the AV1 video codec. The payload format has wide applicability, from low bit-rate peer-to-peer usage, to high bit-rate multi-party video conferences. It includes provisions for temporal and spatial scalability.
+This memo describes an RTP payload format for the AV1 video codec. The payload
+format has wide applicability, from low bit-rate peer-to-peer usage, to high
+bit-rate multi-party video conferences. It includes provisions for temporal and
+spatial scalability.
+
 
 ## Status of This Memo
 
 This document is a working draft of the Real-Time Communications Subgroup.
 
+
 ## 1. Introduction
 
-This memo describes an RTP payload specification applicable to the transmission of video streams encoded using the AV1 video codec [AV1].
+This memo describes an RTP payload specification applicable to the transmission
+of video streams encoded using the AV1 video codec [AV1].
 
-In AV1 the smallest individual encoder entity presented for transport is the Open Bitstream Unit (OBU). This specification allows both for fragmentation and aggregation of OBUs in the same RTP packet, but explicitly disallows doing so across frame boundaries.
+In AV1 the smallest individual encoder entity presented for transport is the
+Open Bitstream Unit (OBU). This specification allows both for fragmentation and
+aggregation of OBUs in the same RTP packet, but explicitly disallows doing so
+across frame boundaries.
 
-This specification also provides several mechanisms through which scalability structures are described. AV1 uses the concept of predefined scalability structures. These are a set of commonly used picture prediction structures that can be referenced simply via an indicator value (scalability_mode_idc, residing in the sequence header). For cases that do not fall in any of the predefined cases, there is a mechanism for describing the scalability structure. These bitstream parameters greatly simplify the organization of the corresponding data at the RTP payload format level.
+This specification also provides several mechanisms through which scalability
+structures are described. AV1 uses the concept of predefined scalability
+structures. These are a set of commonly used picture prediction structures that
+can be referenced simply via an indicator value (scalability_mode_idc, residing
+in the sequence header). For cases that do not fall in any of the predefined
+cases, there is a mechanism for describing the scalability structure. These
+bitstream parameters greatly simplify the organization of the corresponding data
+at the RTP payload format level.
 
 
-To facilitate the work of selectively forwarding portions of a scalable video bitstream to each endpoint in a video conference, as is done by a Selective Forwarding Unit (SFU), for each packet, several pieces of information are required (e.g., spatial and temporal layer identification). To reduce overhead, highly redundant information can be predefined and sent once. Subsequent packets may index to a template containing predefined information. In particular, when an encoder uses an unchanging (static) prediction structure to encode a scalable bitstream, parameter values used to describe the bitstream repeat in a predictable way. The techniques described in this document provide means to send repeating information as predefined templates that can be referenced at future points of the bitstream. Since a reference index to a template requires fewer bits to convey than the associated structures themselves, header overhead can be substantially reduced.
+To facilitate the work of selectively forwarding portions of a scalable video
+bitstream to each endpoint in a video conference, as is done by a Selective
+Forwarding Unit (SFU), for each packet, several pieces of information are
+required (e.g., spatial and temporal layer identification). To reduce overhead,
+highly redundant information can be predefined and sent once. Subsequent packets
+may index to a template containing predefined information. In particular, when
+an encoder uses an unchanging (static) prediction structure to encode a scalable
+bitstream, parameter values used to describe the bitstream repeat in a
+predictable way. The techniques described in this document provide means to send
+repeating information as predefined templates that can be referenced at future
+points of the bitstream. Since a reference index to a template requires fewer
+bits to convey than the associated structures themselves, header overhead can be
+substantially reduced.
 
 
-The techniques also provide ways to describe changing (dynamic) prediction structures. In cases where custom dependency information is required, parameter values are explicitly defined rather than referenced in a predefined template. Typically, even in dynamic structures the majority of frames still follow one of the predefined templates.
+The techniques also provide ways to describe changing (dynamic) prediction
+structures. In cases where custom dependency information is required, parameter
+values are explicitly defined rather than referenced in a predefined template.
+Typically, even in dynamic structures the majority of frames still follow one of
+the predefined templates.
 
 
 ## 2. Conventions, Definitions and Acronyms
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119].
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in [RFC2119].
 
 
   * **Chain** - a sequence of frames for which it can be determined instantly if
@@ -213,7 +249,7 @@ present in every packet).
   * Frame numbers of last frame in each Chain
 
 
-Syntax
+#### Syntax
 
 The syntax for the AV1 descriptor is described in pseudo-code form in this
 section.
@@ -465,7 +501,7 @@ populate_frame_layer() {
 
 
 
-Semantics
+#### Semantics
 
 The semantics pertaining to the AV1 descriptor syntax section above is described in this section.
 
@@ -499,7 +535,7 @@ Base header
     Otherwise, template_dependency_structure MUST NOT be present.
 
 
-Template dependency structure
+#### Template dependency structure
 
   * **self_defined_id**: indicates the value that frame_dependency_template_id
     MUST take when the Frame is self-defined. The value of self_defined_id
@@ -575,7 +611,7 @@ DTI
 	Table 2. DTI values.
 
 
-Self-defined frame
+#### Self-defined frame
 
   * **next_fdiff_size**: indicates the size of following fdiff_minus_one syntax
     elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST
@@ -611,7 +647,7 @@ next_layer_idc
 
 **TODO:** Add process descriptions and examples.
 
-Implementing IDD with Chains[b]
+#### Implementing IDD with Chains[b]
 
 The frame dependency structure includes a mapping between Decode targets and
 chains. The mapping gives an SFU the ability to know the set of chains it needs
@@ -623,7 +659,6 @@ Due to the fact that chain information for all chains is present in all packets,
 an SFU can detect a broken chain regardless of whether the first packet received
 after a loss is part of that chain.
 
-
 In order to start/restart chains, a packet may reference its own Frame number as
 an indication that no previous frames are needed for the chain. Key frames are
 common cases for such '(re)start of chain' indications.
@@ -631,7 +666,7 @@ common cases for such '(re)start of chain' indications.
 
 Note: chains may be used for more than just realizing the IDD property.
 
-Switching
+####Switching
 
 An SFU may begin forwarding packets belonging to a new decode target beginning
 with a decodable frame containing a switch indication to that decode target. An
@@ -1649,7 +1684,7 @@ equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames
 with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
 
-##6. References
+## 6. References
 
 
 ### 6.1 Normative References
@@ -1666,3 +1701,10 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 **TODO:** list informative references.
 
 
+[AV1]: https://aomedia.org/av1-bitstream-and-decoding-process-specification/
+[RFC2119]: https://tools.ietf.org/html/rfc2119
+[RFC3550]: https://tools.ietf.org/html/rfc3550
+[RFC4585]: https://tools.ietf.org/html/rfc4585
+[RFC7667]: https://tools.ietf.org/html/rfc7667
+[RFC8285]: https://tools.ietf.org/html/rfc8285
+[Selective Forwarding Unit]: https://webrtcglossary.com/sfu/
