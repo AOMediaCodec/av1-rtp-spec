@@ -43,8 +43,8 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
   * **Referred frame** - a Frame on which the current frame depends.
 
   * **Decode Target Information (DTI)** - describes the relationship of a frame
-    to a Decode target. The DTI indicates four distinct relationships: ‘not
-    present, ‘discardable’, ‘switch indication’, and ‘required’.
+    to a Decode target. The DTI indicates four distinct relationships: 'not
+    present, 'discardable', 'switch indication', and 'required'.
 
   * **Discardable** - is an indication for a frame, associated with a given
     Decode target, that it will not be a Referred frame for any frame belonging
@@ -136,8 +136,8 @@ IDs. The lowest layer of either type has an ID of 0.
 
 Note: Layer dependencies are constrained by the AV1 specification such that a
 temporal layer with temporal_id T and spatial layer with spatial_id S are only
-allowed to reference previously coded video data of temporal_id T’ and
-spatial_id S’, where T’ <= T and S’ <= S.
+allowed to reference previously coded video data of temporal_id T' and
+spatial_id S', where T' <= T and S' <= S.
 
 
 ## 4. Payload Format
@@ -626,7 +626,7 @@ after a loss is part of that chain.
 
 In order to start/restart chains, a packet may reference its own Frame number as
 an indication that no previous frames are needed for the chain. Key frames are
-common cases for such ‘(re)start of chain’ indications.
+common cases for such '(re)start of chain' indications.
 
 
 Note: chains may be used for more than just realizing the IDD property.
@@ -732,7 +732,7 @@ packets, with fragmentation as needed.
 
 A packet must not include OBUs across a TD
 All OBUs in a packet must have the same temporal_id and spatial_id
-OBUs with layering information must not be aggregated with OBUs that don’t have layering information (layering information=extension header).
+OBUs with layering information must not be aggregated with OBUs that don't have layering information (layering information=extension header).
 If sequence header is present, it should (not must) be the first OBU in a packet.
 Q: May not be needed.
 A packet cannot include OBUs from different frames.
