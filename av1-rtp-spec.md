@@ -302,12 +302,12 @@ Table 1. Syntax constants
 {: .caption }
 
 
-~~~~~
+<pre><code>
 av1_desriptor() {
   base_header()
   if (frame_dependency_template_id_or_structure_indicator ==
-TD_STRUCTURE_INDICATOR) {
-    frame_dependency_template_id = f(6)
+      TD_STRUCTURE_INDICATOR) {
+    <b>frame_dependency_template_id</b> = f(6)
     template_dependency_structure()
   } else {
     frame_dependency_template_id =
@@ -323,50 +323,50 @@ TD_STRUCTURE_INDICATOR) {
     FrameMaxHeight = max_render_height_minus_one[FrameSpatialId] + 1
   }
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 base_header() {
-  start_of_frame = f(1)
-  end_of_frame = f(1)
-  frame_dependency_template_id_or_structure_indicator = f(6)
-  frame_number = f(16)
+  <b>start_of_frame</b> = f(1)
+  <b>end_of_frame</b> = f(1)
+  <b>frame_dependency_template_id_or_structure_indicator</b> = f(6)
+  <b>frame_number</b> = f(16)
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 template_dependency_structure() {
-  self_defined_id = f(6)
+  <b>self_defined_id</b> = f(6)
   PreDefinedOffset = (self_defined_id + 1) % (MAX_TEMPLATE_ID + 1)
-  dtis_cnt_minus_one = f(5)
+  <b>dtis_cnt_minus_one</b> = f(5)
   DtisCnt = dtis_cnt_minus_one + 1
   template_layers()
   template_rbits()
   template_dtis()
   template_fdiffs()
   template_chains()
-  resolutions_present_flag = f(1)
+  <b>resolutions_present_flag</b> = f(1)
   if (resolutions_present_flag) {
     render_resolutions()
   }
   populate_decode_target_layer()
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 self_defintion() {
   frame_dtis()
   frame_fdiffs()
   frame_chains()
   populate_frame_layer()
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 template_layers() {
   temporalId = 0
   spatialId = 0
@@ -376,7 +376,7 @@ template_layers() {
     TemplateSpatialId[TemplatesCnt] = spatialId
     TemplateTemporalId[TemplatesCnt] = temporalId
     TemplatesCnt++
-    next_layer_idc = f(2)
+    <b>next_layer_idc</b> = f(2)
     // next_layer_idc == 0 - same sid and tid
     if (next_layer_idc == 1) {
       temporalId++
@@ -389,112 +389,112 @@ template_layers() {
   } while (next_layer_idc != 3)
   MaxSpatialId = spatialId[c]
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 render_resolutions() {
   for (spatial_id = 0; spatial_id <= MaxSpatialId; spatial_id++) {
-    max_render_width_minus_1[spatial_id] = f(16)
-    max_render_height_minus_1[spatial_id] = f(16)
+    <b>max_render_width_minus_1[spatial_id]</b> = f(16)
+    <b>max_render_height_minus_1[spatial_id]</b> = f(16)
   }
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 template_rbits() {
   for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
-    template_repeatable[templateIndex] = f(1)
+    <b>template_repeatable[templateIndex]</b> = f(1)
   }
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 template_dtis() {
   for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
     for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
       // See table 2 below for meaning of DTI values.
-      template_dti[templateIndex][dtiIndex] = f(2)
+      <b>template_dti[templateIndex][dtiIndex]</b> = f(2)
     }
   }
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 frame_dtis() {
   for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
     // See table 2 below for meaning of DTI values.
-    frame_dti[dtiIndex] = f(2)
+    <b>frame_dti[dtiIndex]</b> = f(2)
   }
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 template_fdiffs() {
   templateIndex = 0
   while (templateIndex < TemplatesCnt) {
     fdiffsCnt = 0
-    fdiff_follows_flag = f(1)
+    <b>fdiff_follows_flag</b> = f(1)
     while (fdiff_follows_flag) {
-      fdiff_minus_one = f(4)
+      <b>fdiff_minus_one</b> = f(4)
       TemplateFdiff[templateIndex][fdiffsCnt] = fdiff_minus_one + 1
       fdiffsCnt++
-      fdiff_follows_flag = f(1)
+      <b>fdiff_follows_flag</b> = f(1)
     }
     TemplateFdiffsCnt[templateIndex] = fdiffsCnt
   }
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 frame_fdiffs() {
   FrameFdiffsCnt = 0
-  next_fdiff_size = f(2)
+  <b>next_fdiff_size</b> = f(2)
   while (next_fdiff_size) {
-    fdiff_minus_one = f(4 * next_fdiff_size)
+    <b>fdiff_minus_one</b> = f(4 * next_fdiff_size)
     FrameFdiff[FrameFdiffsCnt] = fdiff_minus_one + 1
     FrameFdiffsCnt++
-    next_fdiff_size = f(2)
+    <b>next_fdiff_size</b> = f(2)
   }
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 template_chains() {
-  chains_cnt = ns(DtisCnt + 1)
+  <b>chains_cnt</b> = ns(DtisCnt + 1)
   if (chains_cnt == 0) {
     return
   }
   for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
     // If a decode target is not tracked by a chain, it will have
     // chain id equal to chains_cnt.
-    decode_target_protected_by[dtiIndex] = ns(chains_cnt + 1)
+    <b>decode_target_protected_by[dtiIndex]</b> = ns(chains_cnt + 1)
   }
   for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
     for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
-      template_chain_fdiff[templateIndex][chainIndex] = f(4)
+      <b>template_chain_fdiff[templateIndex][chainIndex]</b> = f(4)
     }
   }
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 frame_chains() {
   for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
-    frame_chain_fdiff[chainIndex] = f(8)
+    <b>frame_chain_fdiff[chainIndex]</b> = f(8)
   }
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 pre_definition() {
   templateIndex = (frame_dependency_template_id + MAX_TEMPLATE_ID + 1 - PreDefinedOffset) % (MAX_TEMPLATE_ID + 1)
   If (templateIndex >= TemplatesCnt) {
@@ -507,10 +507,10 @@ pre_definition() {
   frame_dti = template_dti[templateIndex]
   frame_chain_fdiff = template_chain_fdiff[templateIndex]
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 populate_decode_target_layer() {
   for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
     spatialId = 0
@@ -525,10 +525,10 @@ populate_decode_target_layer() {
     DecodeTargetTemporalId[dtiIndex] = temporalId
   }
 }
-~~~~~
+</code></pre>
 
 
-~~~~~
+<pre><code>
 populate_frame_layer() {
   FrameSpatialId = MaxSpatialId + 1
   FrameTemporalId = MaxTemporalId + 1
@@ -539,7 +539,7 @@ populate_frame_layer() {
     }
   }
 }
-~~~~~
+</code></pre>
 
 
 

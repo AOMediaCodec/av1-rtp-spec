@@ -8,27 +8,6 @@ $monofont: 'Inconsolata', monospace
 $gridcolor: #ddd
 $gridweight: 2px
 
-pre.syntax
-  background-color: #fff
-  background-image: linear-gradient(90deg, transparent 40em, #abced4 40em, #abced4 40.1em, transparent 40.1em), linear-gradient($gridcolor .1em, transparent .1em)
-  background-size: 100% 1.3em
-  border-left: $gridweight solid $gridcolor
-  border-right: $gridweight solid $gridcolor
-  border-bottom: $gridweight solid $gridcolor
-  white-space: pre
-  font-family: $monofont
-  font-size: 1em
-  padding: 0 1em
-  line-height: 1.3
-  width: 50em
-  // Generate a "Type" heading above 2nd column.
-  &:before
-    content: "Type\A"
-    font-weight: bold
-    padding-left: 39.5em
-  code
-    font-family: $monofont
-
 table
   .table-conventions
     th
@@ -44,9 +23,6 @@ table
   th
     background-color: #d6d8d9
     text-align: center
-
-b.syntax-element // Temporary: adjust syntax element columnar spacing
-  padding-right: 1em
 
 figure
   margin: 1em auto
