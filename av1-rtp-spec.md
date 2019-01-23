@@ -77,90 +77,99 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 interpreted as described in [RFC2119].
 
 
-  * **Chain** - a sequence of frames for which it can be determined instantly if
-    a frame from that sequence has been lost.
+Chain
+: A sequence of frames for which it can be determined instantly if a frame from
+  that sequence has been lost.
 
-  * **Coded frame** - the representation of one frame before the decoding
-     process.
+Coded frame
+: The representation of one frame before the decoding process.
 
-  * **Decode target** - the set of frames needed to decode a coded video
-    sequence at a given spatial and temporal fidelity.
+Decode target
+: The set of frames needed to decode a coded video sequence at a given spatial
+  and temporal fidelity.
 
-  * **Decode Target Information (DTI)** - describes the relationship of a frame
-    to a Decode target. The DTI indicates four distinct relationships: 'not
-    present, 'discardable', 'switch indication', and 'required'.
+Decode Target Information (DTI)
+: Describes the relationship of a frame to a Decode target. The DTI indicates
+  four distinct relationships: 'not present, 'discardable', 'switch indication',
+  and 'required'.
 
-  * **Discardable** - is an indication for a frame, associated with a given
-    Decode target, that it will not be a Referred frame for any frame belonging
-    to that Decode target.
+Discardable
+: An indication for a frame, associated with a given Decode target, that it will
+  not be a Referred frame for any frame belonging to that Decode target.
 
-    **Note:** A Frame belonging to more than one Decode target may be
-    Discardable for one Decode target and not for another.
-    {:.alert .alert-info }
+**Note:** A Frame belonging to more than one Decode target may be Discardable
+for one Decode target and not for another.
+{:.alert .alert-info }
 
-  * **Frame** - a frame in this document is synonymous to a Coded frame.
+Frame
+: A frame in this document is synonymous to a Coded frame.
 
-    **Note:** In contrast, in [AV1], Frame is defined as the representation of
-    video signals in the spatial domain.
-    {:.alert .alert-info }
+**Note:** In contrast, in [AV1], Frame is defined as the representation of
+video signals in the spatial domain.
+{:.alert .alert-info }
 
-    **Note:** Multiple frames may be present at the same instant in time.
-    {:.alert .alert-info }
+**Note:** Multiple frames may be present at the same instant in time.
+{:.alert .alert-info }
 
-  * **Frame dependency structure** - describes frame dependency information for
-    the coded video sequence. The structure includes the number of DTIs, an
-    ordered list of Frame dependency templates, and a mapping between Chains and
-    Decode targets.
+Frame dependency structure
+: Describes frame dependency information for the coded video sequence. The
+  structure includes the number of DTIs, an ordered list of Frame dependency
+  templates, and a mapping between Chains and Decode targets.
 
-  * **Frame dependency template** - contains frame description information that
-    many frames have in common. Includes values for spatial ID, temporal ID,
-    DTIs, frame dependencies, and Chain information.
+Frame dependency template
+: Contains frame description information that many frames have in common.
+  Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and
+  Chain information.
 
-  * **Frame number** - Frame number increases strictly monotonically in decode
-    order.
+Frame number
+: Frame number increases strictly monotonically in decode order.
 
-    **Note:** Frame number is not the same as Frame ID in [AV1 specification].
-    {:.alert .alert-info }
+**Note:** Frame number is not the same as Frame ID in [AV1 specification].
+{:.alert .alert-info }
 
-  * **Instantaneous Decidability of Decodability (IDD)** - the ability to
-    decide, immediately upon receiving the very first packet after packet loss,
-    if the lost packet(s) contained a packet that is needed to decode the
-    information present in that first and following packets.
+Instantaneous Decidability of Decodability (IDD)
+: The ability to decide, immediately upon receiving the very first packet after
+  packet loss, if the lost packet(s) contained a packet that is needed to decode
+  the information present in that first and following packets.
 
-  * **Open Bitstream Unit (OBU)** - the smallest bitstream data framing unit in
-    AV1. All AV1 bitstream structures are packetized in OBUs.
+Open Bitstream Unit (OBU)
+: The smallest bitstream data framing unit in AV1. All AV1 bitstream structures
+  are packetized in OBUs.
 
-  * **Predefined frame** - a Frame for which the spatial ID, temporal ID, DTIs,
-    Referred frames, and Chain information is contained in the
-    template_dependency_structure and referenced using
-    frame_dependency_template_id.
+Predefined frame
+: A Frame for which the spatial ID, temporal ID, DTIs, Referred frames, and
+  Chain information is contained in the template_dependency_structure and
+  referenced using frame_dependency_template_id.
 
-  * **Referred frame** - a Frame on which the current frame depends.
+Referred frame
+: A Frame on which the current frame depends.
 
-  * **Required** - an indication for a frame, associated with a given Decode
-    target, that it belongs to the Decode target and has neither a Discardable
-    nor a Switch indication.
+Required
+: An indication for a frame, associated with a given Decode target, that it
+  belongs to the Decode target and has neither a Discardable nor a Switch
+  indication.
 
-    **Note:** A Frame belonging to more than one Decode target may be Required
-    for one Decode target and not Required (i.e, either Discardable or Switch)
-    for another.
-    {:.alert .alert-info }
+**Note:** A Frame belonging to more than one Decode target may be Required
+for one Decode target and not Required (i.e, either Discardable or Switch)
+for another.
+{:.alert .alert-info }
 
-  * **[Selective Forwarding Unit] (SFU)** - a middlebox that relays streams among
-    transmitting and receiving clients by selectively forwarding packets
-    [RFC 7667].
+[Selective Forwarding Unit] (SFU)
+: A middlebox that relays streams among transmitting and receiving clients by
+  selectively forwarding packets [RFC 7667].
 
-  * **Switch indication** - an indication associated with a specific Decode
-    target that all subsequent frames for that Decode target will be decodable
-    if the frame containing the indication is decodable.
+Switch indication
+: An indication associated with a specific Decode target that all subsequent
+  frames for that Decode target will be decodable if the frame containing the
+  indication is decodable.
 
-  * **Self-defined frame** - a Frame for which the spatial ID, temporal ID,
-    DTIs, Referred frames, and Chain information is present in the packet(s)
-    containing the Frame.
+Self-defined frame
+: A Frame for which the spatial ID, temporal ID, DTIs, Referred frames, and
+  Chain information is present in the packet(s) containing the Frame.
 
-  * **Switch request** - a request for the encoder to produce a frame with
-    Switch indication that would allow the endpoint to decode a specified Decode
-    target.
+Switch request
+: A request for the encoder to produce a frame with Switch indication that would
+  allow the endpoint to decode a specified Decode target.
 
 
 ## 3. Media Format Description
@@ -197,6 +206,7 @@ a temporal layer with temporal_id T and spatial layer with spatial_id S are only
 allowed to reference previously coded video data of temporal_id T' and
 spatial_id S', where T' <= T and S' <= S.
 {:.alert .alert-info }
+
 
 ## 4. Payload Format
 
@@ -272,10 +282,9 @@ present in every packet).
 The syntax for the AV1 descriptor is described in pseudo-code form in this
 section.
 
-f(n) - unsigned n-bit number appearing directly in the bitstream.
-
-ns(n) - unsigned encoded integer with maximum number of values n (i.e. output in
-range 0..n-1).
+  * **f(n)** - unsigned n-bit number appearing directly in the bitstream.
+  * **ns(n)** - unsigned encoded integer with maximum number of values n (i.e.
+    output in range 0..n-1).
 
 (See AV1 specification Section 4 for syntax details including the two functions
 above)
