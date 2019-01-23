@@ -882,10 +882,10 @@ Table 4. DTI values
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
-<td colspan='1' rowspan='2' >Idx</td><td colspan='1' rowspan='2' >S</td><td colspan='1' rowspan='2' >T</td><td colspan='1' rowspan='2' >Fdiffs</td><td colspan='1' rowspan='2' >Chain</td><td colspan='3' rowspan='1' >DTI</td><td colspan='1' rowspan='2' >R</td>
+<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='1' rowspan='2' >Chain</th><th colspan='3' rowspan='1' >DTI</th><th colspan='1' rowspan='2' >R</th>
 </tr>
 <tr>
-<td colspan='1' rowspan='1' >30 fps</td><td colspan='1' rowspan='1' >15 fps</td><td colspan='1' rowspan='1' >7.5 fps</td>
+<th colspan='1' rowspan='1' >30 fps</th><th colspan='1' rowspan='1' >15 fps</th><th colspan='1' rowspan='1' >7.5 fps</th>
 </tr>
 <tr>
 <td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >0</td>
