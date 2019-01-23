@@ -1,8 +1,8 @@
 ﻿
-RTP Payload Format For AV1 (v0.1.5)
+RTP Payload Format For AV1 (v0.1.6)
 ===================================
 
-status: AV1 RTC SG Working Draft (WD)
+**Status:** AV1 RTC SG Working Draft (WD)
 
 
 ## Abstract
@@ -85,8 +85,6 @@ interpreted as described in [RFC2119].
   * **Decode target** - the set of frames needed to decode a coded video
     sequence at a given spatial and temporal fidelity.
 
-  * **Referred frame** - a Frame on which the current frame depends.
-
   * **Decode Target Information (DTI)** - describes the relationship of a frame
     to a Decode target. The DTI indicates four distinct relationships: 'not
     present, 'discardable', 'switch indication', and 'required'.
@@ -109,7 +107,7 @@ interpreted as described in [RFC2119].
     {:.alert .alert-info }
 
   * **Frame dependency structure** - describes frame dependency information for
-    the coded video sequence[a]. The structure includes the number of DTIs, an
+    the coded video sequence. The structure includes the number of DTIs, an
     ordered list of Frame dependency templates, and a mapping between Chains and
     Decode targets.
 
@@ -136,6 +134,8 @@ interpreted as described in [RFC2119].
     template_dependency_structure and referenced using
     frame_dependency_template_id.
 
+  * **Referred frame** - a Frame on which the current frame depends.
+
   * **Required** - an indication for a frame, associated with a given Decode
     target, that it belongs to the Decode target and has neither a Discardable
     nor a Switch indication.
@@ -145,17 +145,17 @@ interpreted as described in [RFC2119].
     for another.
     {:.alert .alert-info }
 
-  * **Self-defined frame** - a Frame for which the spatial ID, temporal ID,
-    DTIs, Referred frames, and Chain information is present in the packet(s)
-    containing the Frame.
-
-  * **Selective Forwarding Unit (SFU)** - a middlebox that relays streams among
+  * **[Selective Forwarding Unit] (SFU)** - a middlebox that relays streams among
     transmitting and receiving clients by selectively forwarding packets
     [RFC 7667].
 
   * **Switch indication** - an indication associated with a specific Decode
     target that all subsequent frames for that Decode target will be decodable
     if the frame containing the indication is decodable.
+
+  * **Self-defined frame** - a Frame for which the spatial ID, temporal ID,
+    DTIs, Referred frames, and Chain information is present in the packet(s)
+    containing the Frame.
 
   * **Switch request** - a request for the encoder to produce a frame with
     Switch indication that would allow the endpoint to decode a specified Decode
@@ -259,15 +259,10 @@ following information is made available (even though not all elements are
 present in every packet).
 
   * spatial ID
-
   * temporal ID
-
   * DTIs
-
   * Frame number of the current frame
-
   * Frame numbers of the Referred frames
-
   * Frame numbers of last frame in each Chain
 
 
@@ -276,15 +271,13 @@ present in every packet).
 The syntax for the AV1 descriptor is described in pseudo-code form in this
 section.
 
-
 f(n) - unsigned n-bit number appearing directly in the bitstream.
 
 ns(n) - unsigned encoded integer with maximum number of values n (i.e. output in
 range 0..n-1).
 
-
 (See AV1 specification Section 4 for syntax details including the two functions
-(above)
+above)
 
 
 | Symbol name            | Value | Description                                         |
@@ -315,6 +308,10 @@ TD_STRUCTURE_INDICATOR) {
   } else {
     pre_definition()
   }
+  if (resolutions_present_flag) {
+    FrameMaxWidth = max_render_width_minus_one[FrameSpatialId] + 1
+    FrameMaxHeight = max_render_height_minus_one[FrameSpatialId] + 1
+  }
 }
 ~~~~~
 
@@ -326,8 +323,10 @@ base_header() {
   frame_dependency_template_id_or_structure_indicator = f(6)
   frame_number = f(16)
 }
+~~~~~
 
 
+~~~~~
 template_dependency_structure() {
   self_defined_id = f(6)
   PreDefinedOffset = (self_defined_id + 1) % (MAX_TEMPLATE_ID + 1)
@@ -338,6 +337,10 @@ template_dependency_structure() {
   template_dtis()
   template_fdiffs()
   template_chains()
+  resolutions_present_flag = f(1)
+  if (resolutions_present_flag) {
+    render_resolutions()
+  }
   populate_decode_target_layer()
 }
 ~~~~~
@@ -358,6 +361,7 @@ template_layers() {
   temporalId = 0
   spatialId = 0
   TemplatesCnt = 0;
+  MaxTemporalId = 0
   do {
     TemplateSpatialId[TemplatesCnt] = spatialId
     TemplateTemporalId[TemplatesCnt] = temporalId
@@ -366,11 +370,24 @@ template_layers() {
     // next_layer_idc == 0 - same sid and tid
     if (next_layer_idc == 1) {
       temporalId++
+        if (temporalId > MaxTemporalId)
+        MaxTemporalId = temporalId
     } else if (next_layer_idc == 2) {
       temporalId = 0
       spatialId++
     }
   } while (next_layer_idc != 3)
+  MaxSpatialId = spatialId[c]
+}
+~~~~~
+
+
+~~~~~
+render_resolutions() {
+  for (spatial_id = 0; spatial_id <= MaxSpatialId; spatial_id++) {
+    max_render_width_minus_1[spatial_id] = f(16)
+    max_render_height_minus_1[spatial_id] = f(16)
+  }
 }
 ~~~~~
 
@@ -503,8 +520,8 @@ populate_decode_target_layer() {
 
 ~~~~~
 populate_frame_layer() {
-  FrameSpatialId = MAX_SPATIAL_ID + 1
-  FrameTemporalId = MAX_TEMPORAL_ID + 1
+  FrameSpatialId = MaxSpatialId + 1
+  FrameTemporalId = MaxTemporalId + 1
   for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
     if (frame_dti[dtiIndex]) {
       FrameSpatialId = Min(FrameSpatialId, DecodeTargetSpatialId[dtiIndex])
@@ -569,11 +586,21 @@ Base header
   * **dtis_cnt_minus_one**: dtis_cnt_minus_one + 1 indicates the number of
     Decode targets present in the coded video sequence.
 
+  * **resolutions_present_flag**: indicates the presence of render_resolutions.
+    When the resolutions_present_flag is set to 1, render_resolutions MUST be
+    present; otherwise render_resolutions MUST NOT be present.
+
   * **next_layer_idc**: used to determine spatial ID and temporal ID for the
     next Frame dependency template. Table 3 describes how the spatial ID and
     temporal ID values are determined. A next_layer_idc equal to 3 indicates
     that no more Frame dependency templates are present in the Frame dependency
     structure.
+
+  * **max_render_width_minus_1[spatial_id]**: indicates the maximum render width
+    minus 1 for frames with spatial ID equal to spatial_id.
+
+  * **max_render_height_minus_1[spatial_id]**: indicates the maximum render
+    height minus 1 for frames with spatial ID equal to spatial_id.
 
   * **template_repeatable[templateIndex]** equal to 1 indicates that a frame
     using the Frame dependency template with index equal to templateIndex will
@@ -661,7 +688,7 @@ Table 3. Derivation Of Next Spatial ID And Temporal ID Values.
 {:.alert .alert-danger }
 
 
-#### Implementing IDD with Chains[b]
+#### Implementing IDD with Chains
 
 The frame dependency structure includes a mapping between Decode targets and
 chains. The mapping gives an SFU the ability to know the set of chains it needs
@@ -722,9 +749,7 @@ identifying information for the contained data (payload).
 This specification allows to packetize:
 
   * a single OBU;
-
   * an OBU fragment (initial, middle, or trailing part); or
-
   * a set of OBUs.
 
 The design allows combination of aggregation and fragmentation, i.e., allow for
@@ -819,17 +844,11 @@ structure table column headings have the meanings listed below. For the DTI-
 related columns, Table 2.1 shows the symbol used to represent each DTI value.
 
   * Idx - template index
-
   * S - spatial ID
-
   * T - temporal ID
-
   * Fdiffs - comma delimited list of TemplateFdiff[Idx] values
-
   * Chain(s) - **template_chain_fdiff[Idx]** values for each Chain
-
   * DTI - **template_dti[Idx]**
-
   * R - **template_repeatable[Idx]**
 
 
