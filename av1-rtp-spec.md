@@ -296,6 +296,7 @@ range 0..n-1).
 {:.table .table-sm .table-bordered }
 
 Table 1. Syntax constants
+{: .caption }
 
 
 ~~~~~
@@ -620,6 +621,7 @@ Base header
 {:.table .table-sm .table-bordered }
 
 Table 2. DTI values.
+{: .caption }
 
 
 #### Self-defined frame
@@ -652,6 +654,7 @@ Table 2. DTI values.
 {:.table .table-sm .table-bordered }
 
 Table 3. Derivation Of Next Spatial ID And Temporal ID Values.
+{: .caption }
 
 
 **TODO:** Add process descriptions and examples.
@@ -839,71 +842,41 @@ related columns, Table 2.1 shows the symbol used to represent each DTI value.
 {:.table .table-sm .table-bordered }
 
 Table 2.1. DTI values.
+{: .caption }
+
+<figure class="figure center-block">
+  <img alt="" src="assets/images/image4.png" class="figure-img img-fluid">
+  <figcaption class="figure-caption">L1T3 Single spatial layer with 3 temporal layers</figcaption>
+</figure>
 
 
-L1T3 Single spatial layer with 3 temporal layers
+<table class="table-sm table-bordered">
+<tbody><tr>
+<td colspan='1' rowspan='2' >Idx</td><td colspan='1' rowspan='2' >S</td><td colspan='1' rowspan='2' >T</td><td colspan='1' rowspan='2' >Fdiffs</td><td colspan='1' rowspan='2' >Chain</td><td colspan='3' rowspan='1' >DTI</td><td colspan='1' rowspan='2' >R</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >30 fps</td><td colspan='1' rowspan='1' >15 fps</td><td colspan='1' rowspan='1' >7.5 fps</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='5' rowspan='1' >decode_target_protected_by</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
+</tr>
+</tbody></table>
 
-
-Idx
-S
-T
-Fdiffs
-Chain
-DTI
-R
-30 fps
-15 fps
-7.5 fps
-1
-0
-0
-
-
-0
-S
-S
-S
-0
-2
-0
-0
-4
-4
-S
-S
-S
-1
-3
-0
-1
-2
-2
-S
-D
--
-1
-4
-0
-2
-1
-1
-D
--
--
-1
-5
-0
-2
-1
-3
-D
--
--
-1
-decode_target_protected_by
-0
-0
-0
 
 
 **Note:** This example uses one Chain, which includes Frames with temporal ID
@@ -911,372 +884,108 @@ equal to 0.
 {:.alert .alert-info }
 
 
-L2T1 Full SVC with occasional switch
+<figure class="figure center-block">
+  <img alt="" src="assets/images/image3.png" class="figure-img img-fluid">
+  <figcaption class="figure-caption">L2T1 Full SVC with occasional switch</figcaption>
+</figure>
 
 
-Idx
-S
-T
-Fdiffs
-Chains
-DTI
-R
-0
-1
-HD
-VGA
-1
-0
-0
+<table class="table-sm table-bordered">
+<tbody><tr>
+<td colspan='1' rowspan='2' >Idx</td><td colspan='1' rowspan='2' >S</td><td colspan='1' rowspan='2' >T</td><td colspan='1' rowspan='2' >Fdiffs</td><td colspan='2' rowspan='1' >Chains</td><td colspan='2' rowspan='1' >DTI</td><td colspan='1' rowspan='2' >R</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >HD</td><td colspan='1' rowspan='1' >VGA</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2,1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='6' rowspan='1' >decode_target_protected_by</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
+</tr>
+</tbody></table>
 
-
-0
-0
-S
-S
-0
-2
-0
-0
-2
-2
-1
-Q
-S
-1
-3
-0
-0
-2
-2
-1
-S
-S
-0
-4
-1
-0
-1
-1
-1
-S
--
-0
-5
-1
-0
-2,1
-1
-1
-Q
--
-1
-decode_target_protected_by
-1
-0
 
 **Note:** this example uses two Chains. Chain 0 includes Frames with spatial ID
 equal to 0. Chain 1 includes all Frames.
 {:.alert .alert-info }
 
 
-L3T3 Full SVC
+<figure class="figure center-block">
+  <img alt="" src="assets/images/image1.png" class="figure-img img-fluid">
+  <figcaption class="figure-caption">L3T3 Full SVC</figcaption>
+</figure>
 
 
-Idx
-S
-T
-Fdiffs
-Chains
-DTI
-R
-0
-1
-2
-HD
-30 fps
-HD
-15 fps
-HD
-7.5 fps
-VGA
-30 fps
-VGA
-15 fps
-VGA
-7.5fps
-QVGA
-30 fps
-QVGA
-15 fps
-QVGA
-7.5 fps
-1
-0
-0
+<table class="table-sm table-bordered">
+<tbody><tr>
+<td colspan='1' rowspan='2' >Idx</td><td colspan='1' rowspan='2' >S</td><td colspan='1' rowspan='2' >T</td><td colspan='1' rowspan='2' >Fdiffs</td><td colspan='3' rowspan='1' >Chains</td><td colspan='9' rowspan='1' >DTI</td><td colspan='1' rowspan='1' >R</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >HD30 fps</td><td colspan='1' rowspan='1' >HD15 fps</td><td colspan='1' rowspan='1' >HD7.5 fps</td><td colspan='1' rowspan='1' >VGA30 fps</td><td colspan='1' rowspan='1' >VGA15 fps</td><td colspan='1' rowspan='1' >VGA7.5fps</td><td colspan='1' rowspan='1' >QVGA30 fps</td><td colspan='1' rowspan='1' >QVGA15 fps</td><td colspan='1' rowspan='1' >QVGA7.5 fps</td><td colspan='1' rowspan='1' ></td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >12</td><td colspan='1' rowspan='1' >12</td><td colspan='1' rowspan='1' >11</td><td colspan='1' rowspan='1' >10</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >9</td><td colspan='1' rowspan='1' >8</td><td colspan='1' rowspan='1' >7</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >7</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >12,1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >8</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >6,1</td><td colspan='1' rowspan='1' >7</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >9</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3,1</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >10</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3,1</td><td colspan='1' rowspan='1' >10</td><td colspan='1' rowspan='1' >9</td><td colspan='1' rowspan='1' >8</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >11</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >12</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >12,1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >13</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >6,1</td><td colspan='1' rowspan='1' >8</td><td colspan='1' rowspan='1' >7</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >14</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3,1</td><td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >15</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3,1</td><td colspan='1' rowspan='1' >11</td><td colspan='1' rowspan='1' >10</td><td colspan='1' rowspan='1' >9</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='7' rowspan='1' >decode_target_protected_by</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
+</tr>
+</tbody></table>
 
-
-0
-0
-0
-S
-S
-S
-S
-S
-S
-S
-S
-S
-0
-2
-0
-0
-12
-12
-11
-10
-Q
-Q
-Q
-Q
-Q
-Q
-S
-S
-S
-1
-3
-0
-1
-6
-6
-5
-4
-Q
-Q
--
-Q
-Q
--
-S
-D
--
-1
-4
-0
-2
-3
-3
-2
-1
-Q
--
--
-Q
--
--
-D
--
--
-1
-5
-0
-2
-3
-9
-8
-7
-Q
--
--
-Q
--
--
-D
--
--
-1
-6
-1
-0
-1
-1
-1
-1
-S
-S
-S
-S
-S
-S
--
--
--
-0
-7
-1
-0
-12,1
-1
-1
-1
-Q
-Q
-Q
-S
-S
-S
--
--
--
-1
-8
-1
-1
-6,1
-7
-6
-5
-Q
-Q
--
-S
-D
--
--
--
--
-1
-9
-1
-2
-3,1
-4
-3
-2
-Q
--
--
-D
--
--
--
--
--
-1
-10
-1
-2
-3,1
-10
-9
-8
-Q
--
--
-D
--
--
--
--
--
-1
-11
-2
-0
-1
-2
-1
-1
-S
-S
-S
--
--
--
--
--
--
-0
-12
-2
-0
-12,1
-2
-1
-1
-S
-S
-S
--
--
--
--
--
--
-1
-13
-2
-1
-6,1
-8
-7
-6
-S
-D
--
--
--
--
--
--
--
-1
-14
-2
-2
-3,1
-5
-4
-3
-D
--
--
--
--
--
--
--
--
-1
-15
-2
-2
-3,1
-11
-10
-9
-D
--
--
--
--
--
--
--
--
-1
-decode_target_protected_by
-2
-2
-2
-1
-1
-1
-0
-0
-0
 
 **Note:** this example uses three Chains. Chain 0 includes Frames with spatial
 ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial
@@ -1285,410 +994,88 @@ temporal ID equal to 0.
 {:.alert .alert-info }
 
 
-S3T3 K-SVC with temporal shift
+<figure class="figure center-block">
+  <img alt="" src="assets/images/image2.png" class="figure-img img-fluid">
+  <figcaption class="figure-caption">S3T3 K-SVC with temporal shift</figcaption>
+</figure>
 
 
-Idx
-S
-T
-Fdiffs
-Chains
-DTI
-R
-0
-1
-2
-HD
-30 fps
-HD
-15 fps
-HD
-7.5 fps
-VGA
-30 fps
-VGA
-15 fps
-VGA
-7.5 fps
-QVGA
-30 fps
-QVGA
-15 fps
-QVGA
-7.5 fps
-1
-0
-0
 
+<table class="table-sm table-bordered">
+<tbody><tr>
+<td colspan='1' rowspan='2' >Idx</td><td colspan='1' rowspan='2' >S</td><td colspan='1' rowspan='2' >T</td><td colspan='1' rowspan='2' >Fdiffs</td><td colspan='3' rowspan='1' >Chains</td><td colspan='9' rowspan='1' >DTI</td><td colspan='1' rowspan='1' >R</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >HD 30 fps</td><td colspan='1' rowspan='1' >HD 15 fps</td><td colspan='1' rowspan='1' >HD 7.5 fps</td><td colspan='1' rowspan='1' >VGA 30 fps</td><td colspan='1' rowspan='1' >VGA 15 fps</td><td colspan='1' rowspan='1' >VGA 7.5 fps</td><td colspan='1' rowspan='1' >QVGA 30 fps</td><td colspan='1' rowspan='1' >QVGA 15 fps</td><td colspan='1' rowspan='1' >QVGA 7.5 fps</td><td colspan='1' rowspan='1' ></td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >12</td><td colspan='1' rowspan='1' >12</td><td colspan='1' rowspan='1' >8</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >7</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >9</td><td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >10</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >7</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >11</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >8</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >9</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >10</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >12</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >12</td><td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >11</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >10</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >11</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >12</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >13</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >7</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >8</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >14</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >9</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >15</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >16</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >12</td><td colspan='1' rowspan='1' >11</td><td colspan='1' rowspan='1' >7</td><td colspan='1' rowspan='1' >12</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >17</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >6</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >18</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >0</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >19</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >8</td><td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >9</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='1' rowspan='1' >20</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >10</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
+</tr>
+<tr>
+<td colspan='7' rowspan='1' ></td><td colspan='1' rowspan='1' >HD 30 fps</td><td colspan='1' rowspan='1' >HD 15 fps</td><td colspan='1' rowspan='1' >HD 7.5 fps</td><td colspan='1' rowspan='1' >VGA 30 fps</td><td colspan='1' rowspan='1' >VGA 15 fps</td><td colspan='1' rowspan='1' >VGA 7.5 fps</td><td colspan='1' rowspan='1' >QVGA 30 fps</td><td colspan='1' rowspan='1' >QVGA 15 fps</td><td colspan='1' rowspan='1' >QVGA 7.5 fps</td><td colspan='1' rowspan='1' ></td>
+</tr>
+<tr>
+<td colspan='7' rowspan='1' >decode_target_protected_by</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
+</tr>
+</tbody></table>
 
-0
-0
-0
-S
-S
-S
-S
-S
-S
-S
-S
-S
-0
-2
-0
-0
-3
-3
-2
-1
--
--
--
--
--
--
-S
-S
-S
-0
-3
-0
-0
-12
-12
-8
-1
--
--
--
--
--
--
-S
-S
-S
-1
-4
-0
-1
-6
-6
-2
-7
--
--
--
--
--
--
-S
-D
--
-1
-5
-0
-2
-3
-3
-5
-4
--
--
--
--
--
--
-D
--
--
-0
-6
-0
-2
-3
-9
-5
-10
--
--
--
--
--
--
-D
--
--
-1
-7
-0
-2
-3
-3
-11
-4
--
--
--
--
--
--
-D
--
--
-1
-8
-1
-0
-1
-1
-1
-1
-S
-S
-S
-S
-S
-S
--
--
--
-0
-9
-1
-0
-6
-4
-6
-5
--
--
--
-S
-S
-S
--
--
--
-0
-10
-1
-0
-12
-4
-12
-5
--
--
--
-S
-S
-S
--
--
--
-1
-11
-1
-1
-6
-10
-6
-11
--
--
--
-S
-D
--
--
--
--
-1
-12
-1
-2
-3
-1
-3
-2
--
--
--
-D
--
--
--
--
--
-0
-13
-1
-2
-3
-7
-3
-8
--
--
--
-D
--
--
--
--
--
-1
-14
-1
-2
-3
-1
-9
-2
--
--
--
-D
--
--
--
--
--
-1
-15
-2
-0
-1
-2
-1
-1
-S
-S
-S
--
--
--
--
--
--
-0
-16
-2
-0
-12
-11
-7
-12
-S
-S
-S
--
--
--
--
--
--
-1
-17
-2
-1
-6
-5
-1
-6
-S
-D
--
--
--
--
--
--
--
-1
-18
-2
-2
-3
-2
-4
-3
-D
--
--
--
--
--
--
--
--
-0
-19
-2
-2
-3
-8
-4
-9
-D
--
--
--
--
--
--
--
--
-1
-20
-2
-2
-3
-2
-10
-3
-D
--
--
--
--
--
--
--
--
-1
-
-
-HD
-30 fps
-HD
-15 fps
-HD
-7.5 fps
-VGA
-30 fps
-VGA
-15 fps
-VGA
-7.5 fps
-QVGA
-30 fps
-QVGA
-15 fps
-QVGA
-7.5 fps
-
-
-decode_target_protected_by
-2
-2
-2
-1
-1
-1
-0
-0
-0
 
 **Note:** this example uses three Chains. Chain 0 includes Frames with spatial
 ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames
@@ -1712,7 +1099,7 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 {:.alert .alert-danger }
 
 
-6.2 Informative References
+### 6.2 Informative References
 
 **TODO:** list informative references.
 {:.alert .alert-danger }
