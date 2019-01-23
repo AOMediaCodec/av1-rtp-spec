@@ -224,7 +224,7 @@ The AV1 descriptor and AV1 aggregation header are described in this document.
 The payload itself is a series of OBUs, each preceded by length information as
 detailed later in this document.
 
-~~~~~
+<pre><code>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -255,7 +255,7 @@ detailed later in this document.
 |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                               :    OPTIONAL RTP padding       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-~~~~~
+</code></pre>
 
 
 **TODO:** Decide whether to keep the ascii art in this document.
@@ -542,7 +542,6 @@ populate_frame_layer() {
 </code></pre>
 
 
-
 #### 4.2.2 Semantics
 
 The semantics pertaining to the AV1 descriptor syntax section above is
@@ -739,10 +738,12 @@ payload is fragmented.
 
 The structure is as follows.
 
-     0 1 2 3 4 5 6 7
-    +-+-+-+-+-+-+-+-+
-    |Z|Y|-|-|-|-|-|-|
-    +-+-+-+-+-+-+-+-+
+<pre><code>
+ 0 1 2 3 4 5 6 7
++-+-+-+-+-+-+-+-+
+|Z|Y|-|-|-|-|-|-|
++-+-+-+-+-+-+-+-+
+</code></pre>
 
 Z: set to 1 if the first OBU contained in the packet is a continuation of a
 previous OBU, 0 otherwise
@@ -781,28 +782,28 @@ additional bytes are used in the representation (AV1, Section 4.10.5).
 The following figure shows an example payload where the length field is shown as
 taking two bytes for the first and second OBU and one byte for the last (N) OBU.
 
-
-      0                   1                   2                   3
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |      OBU 1 size (leb128)      |                               |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
-     |                                                               |
-     |                  OBU 1 data                                   |
-     |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |                               |      OBU 2 size (leb128)      |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |                                                               |
-     |                                                               |
-     :                        OBU 2 data                             :
-     :                                                               :
-     |                                                               |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |   OBU N size  |                                               |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+  OBU N data  +-+-+-+-+-+-+-+-+
-     |                                               |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
+<pre><code>
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      OBU 1 size (leb128)      |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+|                                                               |
+|                  OBU 1 data                                   |
+|                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |      OBU 2 size (leb128)      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
+|                                                               |
+:                        OBU 2 data                             :
+:                                                               :
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   OBU N size  |                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+  OBU N data  +-+-+-+-+-+-+-+-+
+|                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre>
 
 Whether or not the first and/or last OBU is fragmented is signaled in the
 aggregation header.
