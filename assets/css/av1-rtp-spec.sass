@@ -41,11 +41,14 @@ table
     th
       color: #000
       font-weight: normal
+  th
+    background-color: #d6d8d9
 
 b.syntax-element // Temporary: adjust syntax element columnar spacing
   padding-right: 1em
 
 figure
+  margin: 1em auto
   figcaption
     text-align: center
     font-style: italic
@@ -99,13 +102,9 @@ table.syntax
 
 // Medium Devices, Desktops
 @media only screen and (min-width : 992px)
-  figure
-    max-width: 80%
 
 // Large Devices, Wide Screens
 @media only screen and (min-width : 1200px)
-  figure
-    max-width: 60%
 
 
 // Bootstrap-style documentation callouts
@@ -158,20 +157,8 @@ table.syntax
 
 #markdown-toc
   list-style: none
-  counter-reset: toc-item-main
   ul
     list-style: none
-    counter-reset: toc-item-main toc-item-annex
-    li.annex:before
-      content: attr(data-annexid) "." counters(toc-item-annex, ".") ". "
-      counter-increment: toc-item-annex
-  li:before
-    content: counters(toc-item-main, ".") ". "
-    counter-increment: toc-item-main
-  li.annex:before
-    content: attr(data-annexid) ". "
-  li.bibliography:before
-    content: none
 
 // Bootstrap overrides
 
@@ -183,3 +170,8 @@ code, kbd, pre, samp
 div.highlighter-rouge
   pre.highlight // Very specific selector
     padding: 1rem
+
+// Headings vertical whitespace
+
+h2,h3, h4
+  margin-top: 1.5em

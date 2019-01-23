@@ -1,6 +1,7 @@
 ﻿
 RTP Payload Format For AV1 (v0.1.6)
 ===================================
+{:.no_toc .no_count}
 
 **Status:** AV1 RTC SG Working Draft (WD)
 
@@ -266,7 +267,7 @@ present in every packet).
   * Frame numbers of last frame in each Chain
 
 
-#### Syntax
+#### 4.2.1 Syntax
 
 The syntax for the AV1 descriptor is described in pseudo-code form in this
 section.
@@ -533,11 +534,12 @@ populate_frame_layer() {
 
 
 
-#### Semantics
+#### 4.2.2 Semantics
 
-The semantics pertaining to the AV1 descriptor syntax section above is described in this section.
+The semantics pertaining to the AV1 descriptor syntax section above is
+described in this section.
 
-Base header
+**Base header**
 
   * **start_of_frame**: MUST be set to 1 if the first payload octet of the RTP
     packet is the beginning of a new Frame, and MUST be set to 0 otherwise. Note
@@ -570,7 +572,7 @@ Base header
     Otherwise, template_dependency_structure MUST NOT be present.
 
 
-#### Template dependency structure
+#### 4.2.3 Template dependency structure
 
   * **self_defined_id**: indicates the value that frame_dependency_template_id
     MUST take when the Frame is self-defined. The value of self_defined_id
@@ -651,7 +653,7 @@ Table 2. DTI values.
 {: .caption }
 
 
-#### Self-defined frame
+#### 4.2.4 Self-defined frame
 
   * **next_fdiff_size**: indicates the size of following fdiff_minus_one syntax
     elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST
@@ -688,7 +690,7 @@ Table 3. Derivation Of Next Spatial ID And Temporal ID Values.
 {:.alert .alert-danger }
 
 
-#### Implementing IDD with Chains
+#### 4.2.5 Implementing IDD with Chains
 
 The frame dependency structure includes a mapping between Decode targets and
 chains. The mapping gives an SFU the ability to know the set of chains it needs
@@ -708,7 +710,7 @@ common cases for such '(re)start of chain' indications.
 {:.alert .alert-info }
 
 
-#### Switching
+#### 4.2.6 Switching
 
 An SFU may begin forwarding packets belonging to a new decode target beginning
 with a decodable frame containing a switch indication to that decode target. An
@@ -841,7 +843,7 @@ FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
 Each example in this section contains a prediction structure figure and a table
 describing the associated Frame dependency structure. The Frame dependency
 structure table column headings have the meanings listed below. For the DTI-
-related columns, Table 2.1 shows the symbol used to represent each DTI value.
+related columns, Table 4 shows the symbol used to represent each DTI value.
 
   * Idx - template index
   * S - spatial ID
@@ -860,16 +862,16 @@ related columns, Table 2.1 shows the symbol used to represent each DTI value.
 | Required          | 3     | Q        |
 {:.table .table-sm .table-bordered }
 
-Table 2.1. DTI values.
+Table 4. DTI values
 {: .caption }
 
-<figure class="figure center-block">
+<figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/image4.png" class="figure-img img-fluid">
-  <figcaption class="figure-caption">L1T3 Single spatial layer with 3 temporal layers</figcaption>
+  <figcaption>L1T3 Single spatial layer with 3 temporal layers</figcaption>
 </figure>
 
 
-<table class="table-sm table-bordered">
+<table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
 <td colspan='1' rowspan='2' >Idx</td><td colspan='1' rowspan='2' >S</td><td colspan='1' rowspan='2' >T</td><td colspan='1' rowspan='2' >Fdiffs</td><td colspan='1' rowspan='2' >Chain</td><td colspan='3' rowspan='1' >DTI</td><td colspan='1' rowspan='2' >R</td>
 </tr>
@@ -903,18 +905,18 @@ equal to 0.
 {:.alert .alert-info }
 
 
-<figure class="figure center-block">
+<figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/image3.png" class="figure-img img-fluid">
-  <figcaption class="figure-caption">L2T1 Full SVC with occasional switch</figcaption>
+  <figcaption>L2T1 Full SVC with occasional switch</figcaption>
 </figure>
 
 
-<table class="table-sm table-bordered">
+<table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
-<td colspan='1' rowspan='2' >Idx</td><td colspan='1' rowspan='2' >S</td><td colspan='1' rowspan='2' >T</td><td colspan='1' rowspan='2' >Fdiffs</td><td colspan='2' rowspan='1' >Chains</td><td colspan='2' rowspan='1' >DTI</td><td colspan='1' rowspan='2' >R</td>
+<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='2' rowspan='1' >Chains</th><th colspan='2' rowspan='1' >DTI</th><th colspan='1' rowspan='2' >R</th>
 </tr>
 <tr>
-<td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >HD</td><td colspan='1' rowspan='1' >VGA</td>
+<th colspan='1' rowspan='1' >0</th><th colspan='1' rowspan='1' >1</th><th colspan='1' rowspan='1' >HD</th><th colspan='1' rowspan='1' >VGA</th>
 </tr>
 <tr>
 <td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >0</td>
@@ -937,23 +939,23 @@ equal to 0.
 </tbody></table>
 
 
-**Note:** this example uses two Chains. Chain 0 includes Frames with spatial ID
+**Note:** This example uses two Chains. Chain 0 includes Frames with spatial ID
 equal to 0. Chain 1 includes all Frames.
 {:.alert .alert-info }
 
 
-<figure class="figure center-block">
+<figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/image1.png" class="figure-img img-fluid">
-  <figcaption class="figure-caption">L3T3 Full SVC</figcaption>
+  <figcaption>L3T3 Full SVC</figcaption>
 </figure>
 
 
-<table class="table-sm table-bordered">
+<table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
-<td colspan='1' rowspan='2' >Idx</td><td colspan='1' rowspan='2' >S</td><td colspan='1' rowspan='2' >T</td><td colspan='1' rowspan='2' >Fdiffs</td><td colspan='3' rowspan='1' >Chains</td><td colspan='9' rowspan='1' >DTI</td><td colspan='1' rowspan='1' >R</td>
+<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='3' rowspan='1' >Chains</th><th colspan='9' rowspan='1' >DTI</th><th colspan='1' rowspan='1' >R</th>
 </tr>
 <tr>
-<td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >HD30 fps</td><td colspan='1' rowspan='1' >HD15 fps</td><td colspan='1' rowspan='1' >HD7.5 fps</td><td colspan='1' rowspan='1' >VGA30 fps</td><td colspan='1' rowspan='1' >VGA15 fps</td><td colspan='1' rowspan='1' >VGA7.5fps</td><td colspan='1' rowspan='1' >QVGA30 fps</td><td colspan='1' rowspan='1' >QVGA15 fps</td><td colspan='1' rowspan='1' >QVGA7.5 fps</td><td colspan='1' rowspan='1' ></td>
+<th colspan='1' rowspan='1' >0</th><th colspan='1' rowspan='1' >1</th><th colspan='1' rowspan='1' >2</th><th colspan='1' rowspan='1' >HD30 fps</th><th colspan='1' rowspan='1' >HD15 fps</th><th colspan='1' rowspan='1' >HD7.5 fps</th><th colspan='1' rowspan='1' >VGA30 fps</th><th colspan='1' rowspan='1' >VGA15 fps</th><th colspan='1' rowspan='1' >VGA7.5fps</th><th colspan='1' rowspan='1' >QVGA30 fps</th><th colspan='1' rowspan='1' >QVGA15 fps</th><th colspan='1' rowspan='1' >QVGA7.5 fps</th><th colspan='1' rowspan='1' ></th>
 </tr>
 <tr>
 <td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >0</td>
@@ -1006,26 +1008,26 @@ equal to 0. Chain 1 includes all Frames.
 </tbody></table>
 
 
-**Note:** this example uses three Chains. Chain 0 includes Frames with spatial
+**Note:** This example uses three Chains. Chain 0 includes Frames with spatial
 ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial
 ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all Frames with
 temporal ID equal to 0.
 {:.alert .alert-info }
 
 
-<figure class="figure center-block">
+<figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/image2.png" class="figure-img img-fluid">
-  <figcaption class="figure-caption">S3T3 K-SVC with temporal shift</figcaption>
+  <figcaption>S3T3 K-SVC with temporal shift</figcaption>
 </figure>
 
 
 
-<table class="table-sm table-bordered">
+<table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
-<td colspan='1' rowspan='2' >Idx</td><td colspan='1' rowspan='2' >S</td><td colspan='1' rowspan='2' >T</td><td colspan='1' rowspan='2' >Fdiffs</td><td colspan='3' rowspan='1' >Chains</td><td colspan='9' rowspan='1' >DTI</td><td colspan='1' rowspan='1' >R</td>
+<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='3' rowspan='1' >Chains</th><th colspan='9' rowspan='1' >DTI</th><th colspan='1' rowspan='1' >R</th>
 </tr>
 <tr>
-<td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >HD 30 fps</td><td colspan='1' rowspan='1' >HD 15 fps</td><td colspan='1' rowspan='1' >HD 7.5 fps</td><td colspan='1' rowspan='1' >VGA 30 fps</td><td colspan='1' rowspan='1' >VGA 15 fps</td><td colspan='1' rowspan='1' >VGA 7.5 fps</td><td colspan='1' rowspan='1' >QVGA 30 fps</td><td colspan='1' rowspan='1' >QVGA 15 fps</td><td colspan='1' rowspan='1' >QVGA 7.5 fps</td><td colspan='1' rowspan='1' ></td>
+<th colspan='1' rowspan='1' >0</th><th colspan='1' rowspan='1' >1</th><th colspan='1' rowspan='1' >2</th><th colspan='1' rowspan='1' >HD 30 fps</th><th colspan='1' rowspan='1' >HD 15 fps</th><th colspan='1' rowspan='1' >HD 7.5 fps</th><th colspan='1' rowspan='1' >VGA 30 fps</th><th colspan='1' rowspan='1' >VGA 15 fps</th><th colspan='1' rowspan='1' >VGA 7.5 fps</th><th colspan='1' rowspan='1' >QVGA 30 fps</th><th colspan='1' rowspan='1' >QVGA 15 fps</th><th colspan='1' rowspan='1' >QVGA 7.5 fps</th><th colspan='1' rowspan='1' ></th>
 </tr>
 <tr>
 <td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >0</td>
@@ -1096,7 +1098,7 @@ temporal ID equal to 0.
 </tbody></table>
 
 
-**Note:** this example uses three Chains. Chain 0 includes Frames with spatial
+**Note:** This example uses three Chains. Chain 0 includes Frames with spatial
 ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames
 with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
@@ -1108,10 +1110,10 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 
 ### 6.1 Normative References
 
-  * RFC3550 for rtp header format
-  * RFC8285 for generic rtp header extensions
-  * RFC 7667 RTP Topologies
-  * AV1 Bitstream & Decoding Process Specification
+  * [RFC3550] for RTP header format
+  * [RFC8285] for generic RTP header extensions
+  * [RFC7667] RTP Topologies
+  * [AV1 Bitstream & Decoding Process Specification][AV1]
 
 
 **TODO:** flesh out list of normative references.
