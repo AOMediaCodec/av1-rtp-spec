@@ -156,7 +156,7 @@ for another.
 
 [Selective Forwarding Unit] (SFU)
 : A middlebox that relays streams among transmitting and receiving clients by
-  selectively forwarding packets [RFC 7667].
+  selectively forwarding packets ([RFC7667]).
 
 Switch indication
 : An indication associated with a specific Decode target that all subsequent
