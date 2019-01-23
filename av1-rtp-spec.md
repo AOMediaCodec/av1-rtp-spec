@@ -15,7 +15,7 @@ high bit-rate multi-party video conferences. It includes provisions for temporal
 and spatial scalability.
 
 
-## Status of This Memo
+## Status of this memo
 {:.no_toc }
 
 This document is a working draft of the Real-Time Communications Subgroup.
@@ -70,7 +70,7 @@ Typically, even in dynamic structures the majority of frames still follow one of
 the predefined templates.
 
 
-## 2. Conventions, Definitions and Acronyms
+## 2. Conventions, definitions and acronyms
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
@@ -172,7 +172,7 @@ Switch request
   allow the endpoint to decode a specified Decode target.
 
 
-## 3. Media Format Description
+## 3. Media format description
 
 AV1 has similarities to other video codecs, but introduces a number of key
 design changes as well. The AV1 codec can maintain up to eight reference frames,
@@ -208,14 +208,14 @@ spatial_id S', where T' <= T and S' <= S.
 {:.alert .alert-info }
 
 
-## 4. Payload Format
+## 4. Payload format
 
 This section describes how the encoded AV1 bitstream is encapsulated in RTP. All
 integer fields in the specifications are encoded as unsigned integers in network
 octet order.
 
 
-### 4.1 RTP Header Usage
+### 4.1 RTP header usage
 
 The general RTP payload format follows the RTP header format [RFC3550] and
 generic RTP header extensions [RFC8285], and is shown below.
@@ -751,7 +751,7 @@ Y: set to 1 if the last OBU contained in the packet will continue in another
 packet, 0 otherwise
 
 
-### 4.4 Payload Structure
+### 4.4 Payload structure
 
 The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream
 structures are packetized in OBUs. Each OBU has a header, which provides
@@ -1117,7 +1117,7 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 ## 6. References
 
 
-### 6.1 Normative References
+### 6.1 Normative references
 
   * [RFC3550] for RTP header format
   * [RFC8285] for generic RTP header extensions
@@ -1129,7 +1129,7 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 {:.alert .alert-danger }
 
 
-### 6.2 Informative References
+### 6.2 Informative references
 
 **TODO:** list informative references.
 {:.alert .alert-danger }
