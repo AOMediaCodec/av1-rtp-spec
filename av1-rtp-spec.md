@@ -879,7 +879,7 @@ Table 4. DTI values
 ### 5.1 L1T3 Single spatial layer with 3 temporal layers
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
-  <img alt="" src="assets/images/image4.png" class="figure-img img-fluid">
+  <img alt="" src="assets/images/L1T3.png" class="figure-img img-fluid">
 </figure>
 
 
@@ -919,7 +919,7 @@ equal to 0.
 ### 5.2 L2T1 Full SVC with occasional switch
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
-  <img alt="" src="assets/images/image3.png" class="figure-img img-fluid">
+  <img alt="" src="assets/images/L2T1.png" class="figure-img img-fluid">
 </figure>
 
 
@@ -959,7 +959,7 @@ equal to 0. Chain 1 includes all Frames.
 ### 5.3 L3T3 Full SVC
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
-  <img alt="" src="assets/images/image1.png" class="figure-img img-fluid">
+  <img alt="" src="assets/images/L3T3.png" class="figure-img img-fluid">
 </figure>
 
 
@@ -1031,7 +1031,7 @@ temporal ID equal to 0.
 ### 5.4 S3T3 K-SVC with temporal shift
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
-  <img alt="" src="assets/images/image2.png" class="figure-img img-fluid">
+  <img alt="" src="assets/images/S3T3.png" class="figure-img img-fluid">
 </figure>
 
 
