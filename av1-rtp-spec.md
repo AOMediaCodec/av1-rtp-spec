@@ -1,13 +1,13 @@
 ﻿
 RTP Payload Format For AV1 (v0.1.6)
 ===================================
-{:.no_toc .no_count}
+{:.no_toc }
 
 **Status:** AV1 RTC SG Working Draft (WD)
 
 
 ## Abstract
-{:.no_toc .no_count}
+{:.no_toc }
 
 This memo describes an RTP payload format for the [AV1 video codec][AV1]. The
 payload format has wide applicability, from low bit-rate peer-to-peer usage, to
@@ -16,13 +16,13 @@ and spatial scalability.
 
 
 ## Status of This Memo
-{:.no_toc .no_count}
+{:.no_toc }
 
 This document is a working draft of the Real-Time Communications Subgroup.
 
 
 ## Contents
-{:.no_toc .no_count}
+{:.no_toc }
 
 * TOC
 {:toc}
