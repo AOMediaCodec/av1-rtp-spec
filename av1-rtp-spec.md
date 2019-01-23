@@ -875,9 +875,11 @@ related columns, Table 4 shows the symbol used to represent each DTI value.
 Table 4. DTI values
 {: .caption }
 
+
+### 5.1 L1T3 Single spatial layer with 3 temporal layers
+
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/image4.png" class="figure-img img-fluid">
-  <figcaption>L1T3 Single spatial layer with 3 temporal layers</figcaption>
 </figure>
 
 
@@ -904,10 +906,9 @@ Table 4. DTI values
 <td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
 </tr>
 <tr>
-<td colspan='5' rowspan='1' >decode_target_protected_by</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
+<td colspan='5' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
 </tr>
 </tbody></table>
-
 
 
 **Note:** This example uses one Chain, which includes Frames with temporal ID
@@ -915,9 +916,10 @@ equal to 0.
 {:.alert .alert-info }
 
 
+### 5.2 L2T1 Full SVC with occasional switch
+
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/image3.png" class="figure-img img-fluid">
-  <figcaption>L2T1 Full SVC with occasional switch</figcaption>
 </figure>
 
 
@@ -944,7 +946,7 @@ equal to 0.
 <td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2,1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >Q</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
 </tr>
 <tr>
-<td colspan='6' rowspan='1' >decode_target_protected_by</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
+<td colspan='6' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
 </tr>
 </tbody></table>
 
@@ -954,9 +956,10 @@ equal to 0. Chain 1 includes all Frames.
 {:.alert .alert-info }
 
 
+### 5.3 L3T3 Full SVC
+
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/image1.png" class="figure-img img-fluid">
-  <figcaption>L3T3 Full SVC</figcaption>
 </figure>
 
 
@@ -1013,7 +1016,7 @@ equal to 0. Chain 1 includes all Frames.
 <td colspan='1' rowspan='1' >15</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3,1</td><td colspan='1' rowspan='1' >11</td><td colspan='1' rowspan='1' >10</td><td colspan='1' rowspan='1' >9</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >1</td>
 </tr>
 <tr>
-<td colspan='7' rowspan='1' >decode_target_protected_by</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
+<td colspan='7' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
 </tr>
 </tbody></table>
 
@@ -1025,11 +1028,11 @@ temporal ID equal to 0.
 {:.alert .alert-info }
 
 
+### 5.4 S3T3 K-SVC with temporal shift
+
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/image2.png" class="figure-img img-fluid">
-  <figcaption>S3T3 K-SVC with temporal shift</figcaption>
 </figure>
-
 
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
@@ -1103,7 +1106,7 @@ temporal ID equal to 0.
 <td colspan='7' rowspan='1' ></td><td colspan='1' rowspan='1' >HD 30 fps</td><td colspan='1' rowspan='1' >HD 15 fps</td><td colspan='1' rowspan='1' >HD 7.5 fps</td><td colspan='1' rowspan='1' >VGA 30 fps</td><td colspan='1' rowspan='1' >VGA 15 fps</td><td colspan='1' rowspan='1' >VGA 7.5 fps</td><td colspan='1' rowspan='1' >QVGA 30 fps</td><td colspan='1' rowspan='1' >QVGA 15 fps</td><td colspan='1' rowspan='1' >QVGA 7.5 fps</td><td colspan='1' rowspan='1' ></td>
 </tr>
 <tr>
-<td colspan='7' rowspan='1' >decode_target_protected_by</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
+<td colspan='7' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td>
 </tr>
 </tbody></table>
 
