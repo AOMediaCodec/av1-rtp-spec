@@ -1,8 +1,4 @@
-﻿---
-layout: web
-title:
----
-
+﻿
 RTP Payload Format For AV1 (v0.1.5)
 ===================================
 
@@ -10,6 +6,7 @@ status: AV1 RTC SG Working Draft (WD)
 
 
 ## Abstract
+{:.no_toc .no_count}
 
 This memo describes an RTP payload format for the AV1 video codec. The payload
 format has wide applicability, from low bit-rate peer-to-peer usage, to high
@@ -18,8 +15,16 @@ spatial scalability.
 
 
 ## Status of This Memo
+{:.no_toc .no_count}
 
 This document is a working draft of the Real-Time Communications Subgroup.
+
+
+## Contents
+{:.no_toc .no_count}
+
+* TOC
+{:toc}
 
 
 ## 1. Introduction
@@ -88,13 +93,20 @@ interpreted as described in [RFC2119].
 
   * **Discardable** - is an indication for a frame, associated with a given
     Decode target, that it will not be a Referred frame for any frame belonging
-    to that Decode target. Note: a Frame belonging to more than one Decode
-    target may be Discardable for one Decode target and not for another.
+    to that Decode target.
 
-  * **Frame** - a frame in this document is synonymous to a Coded frame. Note:
-    in contrast, in [AV1], Frame is defined as the representation of video
-    signals in the spatial domain. Note: Multiple frames may be present at the
-    same instant in time.
+    **Note:** A Frame belonging to more than one Decode target may be
+    Discardable for one Decode target and not for another.
+    {:.alert .alert-info }
+
+  * **Frame** - a frame in this document is synonymous to a Coded frame.
+
+    **Note:** In contrast, in [AV1], Frame is defined as the representation of
+    video signals in the spatial domain.
+    {:.alert .alert-info }
+
+    **Note:** Multiple frames may be present at the same instant in time.
+    {:.alert .alert-info }
 
   * **Frame dependency structure** - describes frame dependency information for
     the coded video sequence[a]. The structure includes the number of DTIs, an
@@ -106,8 +118,10 @@ interpreted as described in [RFC2119].
     DTIs, frame dependencies, and Chain information.
 
   * **Frame number** - Frame number increases strictly monotonically in decode
-    order. Note: Frame number is not the same as Frame ID in
-    [AV1 specification].
+    order.
+
+    **Note:** Frame number is not the same as Frame ID in [AV1 specification].
+    {:.alert .alert-info }
 
   * **Instantaneous Decidability of Decodability (IDD)** - the ability to
     decide, immediately upon receiving the very first packet after packet loss,
@@ -124,9 +138,12 @@ interpreted as described in [RFC2119].
 
   * **Required** - an indication for a frame, associated with a given Decode
     target, that it belongs to the Decode target and has neither a Discardable
-    nor a Switch indication. Note: a Frame belonging to more than one Decode
-    target may be Required for one Decode target and not Required (i.e, either
-    Discardable or Switch) for another.
+    nor a Switch indication.
+
+    **Note:** A Frame belonging to more than one Decode target may be Required
+    for one Decode target and not Required (i.e, either Discardable or Switch)
+    for another.
+    {:.alert .alert-info }
 
   * **Self-defined frame** - a Frame for which the spatial ID, temporal ID,
     DTIs, Referred frames, and Chain information is present in the packet(s)
@@ -174,11 +191,11 @@ such temporal and spatial scalability layers can be described and communicated.
 Temporal and spatial scalability layers are associated with non-negative integer
 IDs. The lowest layer of either type has an ID of 0.
 
-Note: Layer dependencies are constrained by the AV1 specification such that a
-temporal layer with temporal_id T and spatial layer with spatial_id S are only
+**Note:** Layer dependencies are constrained by the AV1 specification such that
+a temporal layer with temporal_id T and spatial layer with spatial_id S are only
 allowed to reference previously coded video data of temporal_id T' and
 spatial_id S', where T' <= T and S' <= S.
-
+{:.alert .alert-info }
 
 ## 4. Payload Format
 
@@ -231,6 +248,7 @@ detailed later in this document.
 
 
 **TODO:** Decide whether to keep the ascii art in this document.
+{:.alert .alert-danger }
 
 
 ### 4.2  AV1 descriptor
@@ -269,23 +287,15 @@ range 0..n-1).
 (above)
 
 
-Symbol name
-	Value
-	Description
-	TD_STRUCTURE_INDICATOR
-	63
-	Value indicating presence of template dependency structure
-	MAX_TEMPLATE_ID
-	62
-	Maximum value for a frame_dependency_template_id to identify a template
-	MAX_SPATIAL_ID
-	3
-	Maximum value for a FrameSpatialId
-	MAX_TEMPORAL_ID
-	7
-	Maximum value for a FrameTemporalId
-	Table 1. Syntax constants.
+| Symbol name            | Value | Description                                         |
+| ---------------------- | ----- | --------------------------------------------------- |
+| TD_STRUCTURE_INDICATOR | 63    | Value indicating presence of template dependency structure
+| MAX_TEMPLATE_ID        | 62    | Maximum value for a frame_dependency_template_id to identify a template
+| MAX_SPATIAL_ID         | 3     | Maximum value for a FrameSpatialId
+| MAX_TEMPORAL_ID        | 7     | Maximum value for a FrameTemporalId
+{:.table .table-sm .table-bordered }
 
+Table 1. Syntax constants
 
 
 ~~~~~
@@ -531,8 +541,11 @@ Base header
     MUST be present. Otherwise, self_defintion MUST NOT be present.
 
     frame_dependency_template_id MUST be the same for all packets of the same
-    Frame. Note: values out of the valid range indicate a change of the Frame
+    Frame.
+
+    **Note:** values out of the valid range indicate a change of the Frame
     dependency structure.
+    {:.alert .alert-info }
 
   * **frame_dependency_template_id_or_structure_indicator**: when equal to
     TD_STRUCTURE_INDICATOR, the template_dependency_structure MUST be present.
@@ -564,9 +577,11 @@ Base header
   * **template_repeatable[templateIndex]** equal to 1 indicates that a frame
     using the Frame dependency template with index equal to templateIndex will
     be used with sufficient application-dependent regularity to allow the
-    endpoint to avoid sending a Switch request. Note: when the regularity of a
-    template is unknown the template_repeatable[templateIndex] bit can safely be
-    set to 0.
+    endpoint to avoid sending a Switch request.
+
+    **Note:** When the regularity of a template is unknown the
+    template_repeatable[templateIndex] bit can safely be set to 0.
+    {:.alert .alert-info }
 
   * **chains_cnt**: indicates the number of Chains. When set to zero, the Frame
     dependency structure does not utilize protection with Chains.
@@ -596,23 +611,15 @@ Base header
     number of the Referred frame minus one.
 
 
-DTI
-	Value
+| DTI               | Value |                                                        |
+| ----------------- | ----- | ------------------------------------------------------ |
+| Not present       | 0     | No payload for this Decode target is present.
+| Discardable       | 1     | Payload for this Decode target is present and discardable.
+| Switch indication | 2   | Payload for this Decode target is present and switch is possible (Switch indication).
+| Required          | 3   | Payload for this Decode target is present but it is neither discardable nor is it a Switch indication.
+{:.table .table-sm .table-bordered }
 
-
-	Not present
-	0
-	No payload for this Decode target is present.
-	Discardable
-	1
-	Payload for this Decode target is present and discardable.
-	Switch indication
-	2
-	Payload for this Decode target is present and switch is possible (Switch indication).
-	Required
-	3
-	Payload for this Decode target is present but it is neither discardable nor is it a Switch indication.
-	Table 2. DTI values.
+Table 2. DTI values.
 
 
 #### Self-defined frame
@@ -636,20 +643,20 @@ DTI
     done modulo the size of the frame_number field.
 
 
-next_layer_idc
-	Next Spatial ID And Temporal ID Values
-	0
-	The next Frame dependency template has the same spatial ID and temporal ID as the current template
-	1
-	The next Frame dependency template has the same spatial ID and temporal ID plus 1 compared with the current Frame dependency template.
-	2
-	The next Frame dependency template has temporal ID equal to 0 and spatial ID plus 1 compared with the current Frame dependency template.
-	3
-	No more Frame dependency templates are present in the Frame dependency structure.
-	Table 3. Derivation Of Next Spatial ID And Temporal ID Values.
+| next_layer_idc | Next Spatial ID And Temporal ID Values                   |
+| -------------- | -------------------------------------------------------- |
+| 0              | The next Frame dependency template has the same spatial ID and temporal ID as the current template
+| 1              | The next Frame dependency template has the same spatial ID and temporal ID plus 1 compared with the current Frame dependency template.
+| 2              | The next Frame dependency template has temporal ID equal to 0 and spatial ID plus 1 compared with the current Frame dependency template.
+| 3              | No more Frame dependency templates are present in the Frame dependency structure.
+{:.table .table-sm .table-bordered }
+
+Table 3. Derivation Of Next Spatial ID And Temporal ID Values.
 
 
 **TODO:** Add process descriptions and examples.
+{:.alert .alert-danger }
+
 
 #### Implementing IDD with Chains[b]
 
@@ -667,10 +674,11 @@ In order to start/restart chains, a packet may reference its own Frame number as
 an indication that no previous frames are needed for the chain. Key frames are
 common cases for such '(re)start of chain' indications.
 
+**Note:** Chains may be used for more than just realizing the IDD property.
+{:.alert .alert-info }
 
-Note: chains may be used for more than just realizing the IDD property.
 
-####Switching
+#### Switching
 
 An SFU may begin forwarding packets belonging to a new decode target beginning
 with a decodable frame containing a switch indication to that decode target. An
@@ -690,10 +698,10 @@ payload is fragmented.
 
 The structure is as follows.
 
-         0 1 2 3 4 5 6 7
-        +-+-+-+-+-+-+-+-+
-        |Z|Y|-|-|-|-|-|-|
-        +-+-+-+-+-+-+-+-+
+     0 1 2 3 4 5 6 7
+    +-+-+-+-+-+-+-+-+
+    |Z|Y|-|-|-|-|-|-|
+    +-+-+-+-+-+-+-+-+
 
 Z: set to 1 if the first OBU contained in the packet is a continuation of a
 previous OBU, 0 otherwise
@@ -764,8 +772,11 @@ aggregation header.
 packets. I think a new temporal unit should start a new RTP packet. You skip the
 temporal delimiter OBU, and then packetize the remaining OBUs in one or more
 packets, with fragmentation as needed.
+{:.alert .alert-danger }
 
 * * *
+
+<div class="alert alert-danger" markdown="1">
 
 2019/01/15 Notes:
 
@@ -794,6 +805,7 @@ FH(0,1) TG0(0,1)  TD SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
 FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
 
 [ ........................ x  .....]
+</div>
 
 
 ## 5. Examples
@@ -811,27 +823,20 @@ related columns, Table 2.1 shows the symbol used to represent each DTI value.
 
   * Fdiffs - comma delimited list of TemplateFdiff[Idx] values
 
-  * Chain(s) - template_chain_fdiff[Idx] values for each Chain
+  * Chain(s) - **template_chain_fdiff[Idx]** values for each Chain
 
-  * DTI - template_dti[Idx]
+  * DTI - **template_dti[Idx]**
 
-  * R - template_repeatable[Idx]
+  * R - **template_repeatable[Idx]**
 
-DTI
-Value
-Symbol
-Not present
-0
--
-Discardable
-1
-D
-Switch indication
-2
-S
-Required
-3
-Q
+
+| DTI               | Value | Symbol   |
+| ----------------- | ----- | -------- |
+| Not present       | 0     | -        |
+| Discardable       | 1     | D        |
+| Switch indication | 2     | S        |
+| Required          | 3     | Q        |
+{:.table .table-sm .table-bordered }
 
 Table 2.1. DTI values.
 
@@ -901,8 +906,10 @@ decode_target_protected_by
 0
 
 
-Note: this example uses one Chain, which includes Frames with temporal ID equal
-to 0.
+**Note:** This example uses one Chain, which includes Frames with temporal ID
+equal to 0.
+{:.alert .alert-info }
+
 
 L2T1 Full SVC with occasional switch
 
@@ -968,9 +975,9 @@ decode_target_protected_by
 1
 0
 
-
-Note: this example uses two Chains. Chain 0 includes Frames with spatial ID
+**Note:** this example uses two Chains. Chain 0 includes Frames with spatial ID
 equal to 0. Chain 1 includes all Frames.
+{:.alert .alert-info }
 
 
 L3T3 Full SVC
@@ -1271,11 +1278,12 @@ decode_target_protected_by
 0
 0
 
-
-Note: this example uses three Chains. Chain 0 includes Frames with spatial ID
-equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial ID
-equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all Frames with
+**Note:** this example uses three Chains. Chain 0 includes Frames with spatial
+ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial
+ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all Frames with
 temporal ID equal to 0.
+{:.alert .alert-info }
+
 
 S3T3 K-SVC with temporal shift
 
@@ -1682,11 +1690,12 @@ decode_target_protected_by
 0
 0
 
-
-Note: this example uses three Chains. Chain 0 includes Frames with spatial ID
-equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames
+**Note:** this example uses three Chains. Chain 0 includes Frames with spatial
+ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames
 with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
+{:.alert .alert-info }
+
 
 ## 6. References
 
@@ -1698,11 +1707,15 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
   * RFC 7667 RTP Topologies
   * AV1 Bitstream & Decoding Process Specification
 
+
 **TODO:** flesh out list of normative references.
+{:.alert .alert-danger }
+
 
 6.2 Informative References
 
 **TODO:** list informative references.
+{:.alert .alert-danger }
 
 
 [AV1]: https://aomedia.org/av1-bitstream-and-decoding-process-specification/
