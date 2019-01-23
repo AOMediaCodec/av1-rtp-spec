@@ -31,7 +31,7 @@ This document is a working draft of the Real-Time Communications Subgroup.
 ## 1. Introduction
 
 This memo describes an RTP payload specification applicable to the transmission
-of video streams encoded using the AV1 video codec [AV1].
+of video streams encoded using the [AV1 video codec][AV1].
 
 In AV1 the smallest individual encoder entity presented for transport is the
 Open Bitstream Unit (OBU). This specification allows both for fragmentation and
