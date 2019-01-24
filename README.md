@@ -149,7 +149,7 @@ the `av1-rtp-spec` document is far simpler than the AV1 bitstream spec.
 
 ## Using Prince locally for PDF generation
 
-Building the document locally writess output to an untracked/ignored directory
+Building the document locally writes output to an untracked/ignored directory
 `_site`. The PDF input file is `_site/pdf.html`.
 
 ~~~~~
