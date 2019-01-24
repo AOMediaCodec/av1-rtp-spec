@@ -70,7 +70,7 @@ to have git installed locally. Then:
      meaningful name.
 
      ~~~~~
-     git checkout -b my-new-feature
+     git checkout -b clarify-section-3
      ~~~~~
 
      This both creates the branch (`-b`) and checks-out the new branch in your
@@ -99,7 +99,7 @@ to have git installed locally. Then:
   8. **Push** your branch to "origin" (your remote fork):
 
      ~~~~~
-     git push origin my-new-feature
+     git push origin clarify-section-3
      ~~~~~
 
   9. Now visit the project's page on GitHub.
@@ -128,7 +128,7 @@ to have git installed locally. Then:
 
      ~~~~~
      git checkout master  ## leave your branch, return to "master"
-     git branch -d my-new-feature
+     git branch -d clarify-section-3
      ~~~~~
 
 
