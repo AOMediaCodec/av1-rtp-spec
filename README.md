@@ -87,7 +87,7 @@ to have git installed locally. Then:
   7. **Commit** your changes locally:
 
      ~~~~~
-     git commit -m "Added section 7, Completely New Stuff"
+     git commit -m "Added section 3.3, Completely New Stuff"
      ~~~~~
 
      Alternatively (and preferably), do `git commit` only, which will spawn your
