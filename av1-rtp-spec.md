@@ -700,19 +700,19 @@ Table 3. Derivation Of Next Spatial ID And Temporal ID Values.
 
 #### 4.2.5 Implementing IDD with Chains
 
-The frame dependency structure includes a mapping between Decode targets and
-chains. The mapping gives an SFU the ability to know the set of chains it needs
+The Frame dependency structure includes a mapping between Decode targets and
+Chains. The mapping gives an SFU the ability to know the set of Chains it needs
 to track in order to ensure that the corresponding Decode targets remain
-decodable. Every packet includes, for every chain, the Frame number for the
-previous frame in that chain. An SFU can instantaneously detect a broken chain
-by checking whether or not the previous frame in that chain has been received.
-Due to the fact that chain information for all chains is present in all packets,
-an SFU can detect a broken chain regardless of whether the first packet received
-after a loss is part of that chain.
+decodable. Every packet includes, for every Chain, the Frame number for the
+previous Frame in that Chain. An SFU can instantaneously detect a broken Chain
+by checking whether or not the previous Frame in that Chain has been received.
+Due to the fact that Chain information for all Chains is present in all packets,
+an SFU can detect a broken Chain regardless of whether the first packet received
+after a loss is part of that Chain.
 
-In order to start/restart chains, a packet may reference its own Frame number as
-an indication that no previous frames are needed for the chain. Key frames are
-common cases for such '(re)start of chain' indications.
+In order to start/restart Chains, a packet may reference its own Frame number as
+an indication that no previous Frames are needed for the Chain. Key frames are
+common cases for such '(re)start of Chain' indications.
 
 **Note:** Chains may be used for more than just realizing the IDD property.
 {:.alert .alert-info }
@@ -720,14 +720,14 @@ common cases for such '(re)start of chain' indications.
 
 #### 4.2.6 Switching
 
-An SFU may begin forwarding packets belonging to a new decode target beginning
-with a decodable frame containing a switch indication to that decode target. An
+An SFU may begin forwarding packets belonging to a new Decode target beginning
+with a decodable Frame containing a Switch indication to that Decode target. An
 SFU may use the R-bit (Repeating) to determine whether or not a switch requires
 a layer refresh or key frame. A template with an R-bit value equal to one
 indicates Frames using that template appear in the stream in regular, repeating
 manner. Presence of a template with an R-bit value equal to one, non-zero DTI
-value for the current decode target, and a switch indication to the desired
-decode target indicates that a switch would be possible without explicit request
+value for the current Decode target, and a Switch indication to the desired
+Decode target indicates that a switch would be possible without explicit request
 for a layer refresh or key frame.
 
 
