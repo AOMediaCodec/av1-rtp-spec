@@ -158,6 +158,6 @@ prince _site/pdf.html -o /tmp/av1-rtp-spec.pdf
 
 
 
-[GRM]: https://github.github.com/gfm/
+[GFM]: https://github.github.com/gfm/
 [Prince]: https://www.princexml.com/
 [non-commercial version]: https://www.princexml.com/download/
