@@ -3,13 +3,15 @@
 This project is for authoring and generating the AV1 RTP Payload Format
 specification document, in HTML and PDF.
 
+The document is sourced in a light-duty markup format called Markdown. Markdown
+is a readable plain text format that transforms to HTML. See **[GitHub Flavored
+Markdown][GFM]**.
+
 **HTML output** is
 
   * generated automatically by GitHub Pages,
   * always reflects the current `HEAD`, and
-  * is automatically served here:
-
-    https://aomediacodec.github.io/av1-rtp-spec/
+  * is automatically served here: https://aomediacodec.github.io/av1-rtp-spec/
 
 **PDF output** must be generated locally, using the commercial HTML-to-PDF
 transformer **[Prince]** (formerly PrinceXML). The [non-commercial version] is
@@ -32,7 +34,8 @@ to have git installed locally. Then:
      the Fork button on the project's home page (top-right). You now have a
      copy.
 
-  2. **Clone** your fork locally and enter the directory that cloning creates:
+  2. **Clone** the fork down to your local system and enter the directory that's
+     created:
 
      ~~~~~
      git clone git@github.com:AOMediaCodec/av1-rtp-spec.git
@@ -47,9 +50,9 @@ to have git installed locally. Then:
      GitHub, from which it was cloned. This remote will be named "upstream"
      by default, but we're going to rename it.
 
-     We need the authoritative, parent repo to be called "upstream" and your
-     fork (on GitHub) to be named "origin." In a text editor, edit the
-     `[remote]` stanzas in the file `.git/config` to look like this example:
+     We want your fork to be called "origin" and the authoritative, parent
+     repository to be called "upstream." In a text editor, edit the `[remote]`
+     stanzas in the file `.git/config` to look like this example:
 
      ~~~~~
      [remote "upstream"]
@@ -88,11 +91,12 @@ to have git installed locally. Then:
      ~~~~~
 
      Alternatively (and preferably), do `git commit` only, which will spawn your
-     git-default text editor, where a multi-line commit message can be composed.
-     You will also have a chance to annotate your commit in the next step, on
-     the GitHub website.
+     git-default text editor for composing a multi-line commit message.
 
-  8. **Push** your branch to "origin" (your fork):
+     You will also have a chance to annotate your commit later, on the GitHub
+     website.
+
+  8. **Push** your branch to "origin" (your remote fork):
 
      ~~~~~
      git push origin my-new-feature
@@ -108,7 +112,7 @@ to have git installed locally. Then:
 
      The project maintainers will be notified of your pull request and will
      either merge it directly into "upstream," ask for changes, or ignore/reject
-     it. To this end, the pull request becomes a comment thread.
+     it. The pull request, then, is both a patch and a comment thread.
 
  10. Once your pull request ("PR") is merged, you'll want to sync your local
      clone (and your remote fork) with the adopted changes:
@@ -154,7 +158,6 @@ prince _site/pdf.html -o /tmp/av1-rtp-spec.pdf
 
 
 
-
-
+[GRM]: https://github.github.com/gfm/
 [Prince]: https://www.princexml.com/
 [non-commercial version]: https://www.princexml.com/download/
