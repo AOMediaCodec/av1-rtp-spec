@@ -32,7 +32,7 @@ to have git installed locally. Then:
 
   1. **Fork** the project you want to work on to your own GitHub account, using
      the Fork button on the project's home page (top-right). You now have a
-     copy.
+     remote copy.
 
   2. **Clone** the fork down to your local system and enter the directory that's
      created:
