@@ -132,7 +132,7 @@ to have git installed locally. Then:
      ~~~~~
 
 
-## Generating locally
+## Building locally
 
 **The file `av1-rtp-spec.md` is quite readable, and you can probably work in it
 without regenerating the HTML output.**
