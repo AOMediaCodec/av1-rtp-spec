@@ -106,8 +106,8 @@ to have git installed locally. Then:
 
      https://github.com/AOMediaCodec/av1-rtp-spec
 
-     Github sees that you've pushed a new branch to your fork, and offers to
-     create a **Pull request**. Follow the steps given. Annotate your pull
+     GitHub sees that you've pushed a new branch to your fork, and offers to
+     create a **pull request**. Follow the steps given. Annotate your pull
      request with any details that an approver might need, and submit it.
 
      The project maintainers will be notified of your pull request and will
