@@ -4,10 +4,10 @@ This project is for authoring and generating the AV1 RTP Payload Format
 specification document, in HTML and PDF.
 
 
-  * [Summary][#summary]
-  * [GitHub workflow][#github-workflow]
-  * [Building locally][#building-locally]
-  * [Local PDF generation][#local-pdf-generation]
+  * [Summary](#summary)
+  * [GitHub workflow](#github-workflow)
+  * [Building locally](#building-locally)
+  * [Local PDF generation](#local-pdf-generation)
 
 
 ## Summary
