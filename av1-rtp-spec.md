@@ -331,7 +331,8 @@ base_header() {
   <b>start_of_frame</b> = f(1)
   <b>end_of_frame</b> = f(1)
   <b>frame_dependency_template_id_or_structure_indicator</b> = f(6)
-  <b>frame_number</b> = f(16)
+  <b>frame_number</b> = f(15)
+  <b>cached_frame_flag</b> = f(1)
 }
 </code></pre>
 
@@ -579,6 +580,10 @@ described in this section.
     TD_STRUCTURE_INDICATOR, the template_dependency_structure MUST be present.
     Otherwise, template_dependency_structure MUST NOT be present.
 
+  * **cached_frame_flag**: Must be set to 1 if the Frame is a cached Frame, 
+    and must be set to 0 otherwise.  See the below Fast Forwarding section 
+    for a description of when such cached Frames are useful.
+
 
 #### 4.2.3 Template dependency structure
 
@@ -718,7 +723,21 @@ common cases for such '(re)start of Chain' indications.
 {:.alert .alert-info }
 
 
-#### 4.2.6 Switching
+#### 4.2.6 Fast Forwarding
+
+Most SFUs will cache the Frames of the Chains for possible retransmission.  For
+a new participant joining an existing conference, the SFUs can fast forward the
+cached Frames of a Chain rather than introducing a disruptive key Frame to many
+other participants.  The new participant should decode these cached Frames as 
+soon as possible, and preferably without rendering them.  This fast forwarding
+mechanism should be judicially used so that the fast forwarded Frames still meet
+the decoder level constraint of the participant.  Note that generally the Frames
+of a Chain are in lower frame rate than the frame rate of the Decode target that
+the participant can support and the decoder should be able to catch up to the
+current, non-cached Frame in a reasonable time.
+
+
+#### 4.2.7 Switching
 
 An SFU may begin forwarding packets belonging to a new Decode target beginning
 with a decodable Frame containing a Switch indication to that Decode target. An
