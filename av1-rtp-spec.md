@@ -352,6 +352,7 @@ template_dependency_structure() {
     render_resolutions()
   }
   populate_decode_target_layer()
+  template_cached_frames()
 }
 </code></pre>
 
@@ -362,6 +363,7 @@ self_defintion() {
   frame_fdiffs()
   frame_chains()
   populate_frame_layer()
+  <b>cached_frame_flag</b> = f(1)
 }
 </code></pre>
 
@@ -486,6 +488,28 @@ template_chains() {
 
 
 <pre><code>
+template_cached_frames() {
+  CachedFrameTemplatesCnt = 0
+  <b>cached_frame_templates_available_flag</b> = f(1)
+  if (cached_frame_templates_available_flag) {
+    for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
+      CorrespondingTemplateId[templateIndex] = templateIndex
+      TemplateIdForCachedFrames[templateIndex] = templateIndex
+      <b>cached_frame_template_flag</b> = f(1)
+      if (cached_frame_template_flag) {
+        CorrespondingTemplateId[TemplatesCnt + CachedFrameTemplatesCnt] = templateIndex
+        TemplateIdForCachedFrames[TemplatesCnt + CachedFrameTemplatesCnt] = TemplatesCnt + CachedFrameTemplatesCnt
+        TemplateIdForCachedFrames[templateIndex] = TemplatesCnt + CachedFrameTemplatesCnt
+        CachedFrameTemplatesCnt++
+      }
+    }
+  }
+  TemplatesCnt += CachedFrameTemplatesCnt
+}
+</code></pre>
+
+
+<pre><code>
 frame_chains() {
   for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
     <b>frame_chain_fdiff[chainIndex]</b> = f(8)
@@ -500,12 +524,12 @@ pre_definition() {
   If (templateIndex >= TemplatesCnt) {
     return  // error
   }
-  FrameSpatialId = TemplateSpatialId[templateIndex]
-  FrameTemporalId = TemplateTemporalId[templateIndex]
-  FrameFdiffsCnt = TemplateFdiffsCnt[templateIndex]
-  FrameFdiff = TemplateFdiff[templateIndex]
-  frame_dti = template_dti[templateIndex]
-  frame_chain_fdiff = template_chain_fdiff[templateIndex]
+  FrameSpatialId = TemplateSpatialId[CorrespondingTemplateId[templateIndex]]
+  FrameTemporalId = TemplateTemporalId[CorrespondingTemplateId[templateIndex]]
+  FrameFdiffsCnt = TemplateFdiffsCnt[CorrespondingTemplateId[templateIndex]]
+  FrameFdiff = TemplateFdiff[CorrespondingTemplateId[templateIndex]]
+  frame_dti = template_dti[CorrespondingTemplateId[templateIndex]]
+  frame_chain_fdiff = template_chain_fdiff[CorrespondingTemplateId[templateIndex]]
 }
 </code></pre>
 
@@ -648,6 +672,24 @@ described in this section.
   * **fdiff_minus_one**: the difference between Frame number and the Frame
     number of the Referred frame minus one.
 
+  * **cached_frame_templates_available_flag**: indicates whether there are one
+    or more Frame dependency templates whose corresponding Frames will be 
+    cached by the SFU for later fast forwarding.  See the below Fast Forwarding
+    section for a description of when fast forwarding of such cached Frames are
+    useful.
+
+  * **cached_frame_template_flag**: equal to 1 indicates that the Frames 
+    corresponding to the Frame dependency template with index equal to 
+    templateIndex can be cached by the SFU for later fast forwarding.  A new 
+    Frame dependency template with the exactly same template properties (e.g.,
+    TemplateSpatialId, TemplateTemploralId, template_chain_fdiff, etc...) as 
+    the template with the index equal to templateIndex is created.  When fast
+    forarding the cached Frames, the index of the Frame dependency template 
+    should be changed from templateIndex to 
+    TemplateIdForCachedFrames[templateIndex].  This indicates to the receiver
+    that the Frames are cached Frames and that they must be decoded as soon 
+    as possible without displaying them.
+
 
 | DTI               | Value |                                                        |
 | ----------------- | ----- | ------------------------------------------------------ |
@@ -680,6 +722,10 @@ Table 2. DTI values.
     frame_chain_fdiff[chainIdx]=3 and Frame number=112 the previous frame in the
     Chain with index equal to chainIdx has Frame number=109. The calculation is
     done modulo the size of the frame_number field.
+
+  * **cached_frame_flag**: equal to 1 indicates that the Frame is a cached 
+    Frame.  The receiver must decode this Frame as soon as possible without 
+    displaying it.
 
 
 | next_layer_idc | Next Spatial ID And Temporal ID Values                   |
@@ -718,7 +764,21 @@ common cases for such '(re)start of Chain' indications.
 {:.alert .alert-info }
 
 
-#### 4.2.6 Switching
+#### 4.2.6 Fast Forwarding
+
+Most SFUs will cache the Frames of the Chains for possible retransmission.  For
+a new participant joining an existing conference, the SFUs can fast forward the
+cached Frames of a Chain rather than introducing a disruptive key Frame to many
+other participants.  The new participant must decode these cached Frames as 
+soon as possible without rendering them.  This fast forwarding mechanism 
+should be judicially used so that the fast forwarded Frames still meet the 
+decoder level constraint of the participant.  Note that generally the Frames
+of a Chain are in lower frame rate than the frame rate of the Decode target that
+the participant can support, and the decoder should be able to catch up to the
+current, non-cached Frame in a reasonable time.
+
+
+#### 4.2.7 Switching
 
 An SFU may begin forwarding packets belonging to a new Decode target beginning
 with a decodable Frame containing a Switch indication to that Decode target. An
