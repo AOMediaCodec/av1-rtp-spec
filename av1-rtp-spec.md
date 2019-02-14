@@ -582,7 +582,7 @@ described in this section.
     Otherwise, template_dependency_structure MUST NOT be present.
 
 
-#### 4.2.3 Template dependency structure
+**Template dependency structure**
 
   * **self_defined_id**: indicates the value that frame_dependency_template_id
     MUST take when the Frame is self-defined. The value of self_defined_id
@@ -663,7 +663,7 @@ Table 2. DTI values.
 {: .caption }
 
 
-#### 4.2.4 Self-defined frame
+**Self-defined frame**
 
   * **next_fdiff_size**: indicates the size of following fdiff_minus_one syntax
     elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST
@@ -700,7 +700,7 @@ Table 3. Derivation Of Next Spatial ID And Temporal ID Values.
 {:.alert .alert-danger }
 
 
-#### 4.2.5 Implementing IDD with Chains
+#### 4.2.3 Implementing IDD with Chains
 
 The Frame dependency structure includes a mapping between Decode targets and
 Chains. The mapping gives an SFU the ability to know the set of Chains it needs
@@ -720,7 +720,7 @@ common cases for such '(re)start of Chain' indications.
 {:.alert .alert-info }
 
 
-#### 4.2.6 Switching
+#### 4.2.4 Switching
 
 An SFU may begin forwarding packets belonging to a new Decode target beginning
 with a decodable Frame containing a Switch indication to that Decode target. An
