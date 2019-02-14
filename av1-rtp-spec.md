@@ -380,8 +380,9 @@ template_layers() {
     // next_layer_idc == 0 - same sid and tid
     if (next_layer_idc == 1) {
       temporalId++
-        if (temporalId > MaxTemporalId)
+      if (temporalId > MaxTemporalId) {
         MaxTemporalId = temporalId
+      }
     } else if (next_layer_idc == 2) {
       temporalId = 0
       spatialId++
@@ -496,7 +497,8 @@ frame_chains() {
 
 <pre><code>
 pre_definition() {
-  templateIndex = (frame_dependency_template_id + MAX_TEMPLATE_ID + 1 - PreDefinedOffset) % (MAX_TEMPLATE_ID + 1)
+  templateIndex = (frame_dependency_template_id + (MAX_TEMPLATE_ID + 1) - 
+                   PreDefinedOffset) % (MAX_TEMPLATE_ID + 1)
   If (templateIndex >= TemplatesCnt) {
     return  // error
   }
