@@ -380,9 +380,8 @@ template_layers() {
     // next_layer_idc == 0 - same sid and tid
     if (next_layer_idc == 1) {
       temporalId++
-      if (temporalId > MaxTemporalId) {
+        if (temporalId > MaxTemporalId)
         MaxTemporalId = temporalId
-      }
     } else if (next_layer_idc == 2) {
       temporalId = 0
       spatialId++
