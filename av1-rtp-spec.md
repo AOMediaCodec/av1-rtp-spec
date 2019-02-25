@@ -164,8 +164,8 @@ Switch indication
   indication is decodable.
 
 Self-defined frame
-: A Frame for which the spatial ID, temporal ID, DTIs, Referred frames, and
-  Chain information is present in the packet(s) containing the Frame.
+: A Frame for which the DTIs, Referred frames, and/or Chain information is
+  present in the packet(s) containing the Frame.
 
 Switch request
 : A request for the encoder to produce a frame with Switch indication that would
@@ -290,12 +290,12 @@ section.
 above)
 
 
-| Symbol name            | Value | Description                                         |
-| ---------------------- | ----- | --------------------------------------------------- |
-| TD_STRUCTURE_INDICATOR | 63    | Value indicating presence of template dependency structure
-| MAX_TEMPLATE_ID        | 62    | Maximum value for a frame_dependency_template_id to identify a template
-| MAX_SPATIAL_ID         | 3     | Maximum value for a FrameSpatialId
-| MAX_TEMPORAL_ID        | 7     | Maximum value for a FrameTemporalId
+| Symbol name               | Value | Description                                         |
+| ------------------------- | ----- | --------------------------------------------------- |
+| EXTENDED_HEADER_INDICATOR | 63    | Value indicating presence of extended_header
+| MAX_TEMPLATE_ID           | 62    | Maximum value for a frame_dependency_template_id to identify a template
+| MAX_SPATIAL_ID            | 3     | Maximum value for a FrameSpatialId
+| MAX_TEMPORAL_ID           | 7     | Maximum value for a FrameTemporalId
 {:.table .table-sm .table-bordered }
 
 Table 1. Syntax constants
@@ -305,23 +305,13 @@ Table 1. Syntax constants
 <pre><code>
 av1_desriptor() {
   base_header()
-  if (frame_dependency_template_id_or_structure_indicator ==
-      TD_STRUCTURE_INDICATOR) {
-    <b>frame_dependency_template_id</b> = f(6)
-    template_dependency_structure()
+  if (frame_dependency_template_id_or_extended_header_indicator ==
+      EXTENDED_HEADER_INDICATOR) {
+    extended_header()
   } else {
-    frame_dependency_template_id =
-      frame_dependency_template_id_or_structure_indicator
+    no_extended_header()
   }
-  If (frame_dependency_template_id == self_defined_id) {
-    self_definition()
-  } else {
-    pre_definition()
-  }
-  if (resolutions_present_flag) {
-    FrameMaxWidth = max_render_width_minus_one[FrameSpatialId] + 1
-    FrameMaxHeight = max_render_height_minus_one[FrameSpatialId] + 1
-  }
+  frame_dependency_definition()
 }
 </code></pre>
 
@@ -330,16 +320,41 @@ av1_desriptor() {
 base_header() {
   <b>start_of_frame</b> = f(1)
   <b>end_of_frame</b> = f(1)
-  <b>frame_dependency_template_id_or_structure_indicator</b> = f(6)
+  <b>frame_dependency_template_id_or_extended_header_indicator</b> = f(6)
   <b>frame_number</b> = f(16)
 }
 </code></pre>
 
 
 <pre><code>
+extended_header() {
+  <b>frame_dependency_template_id</b> = f(6)
+  <b>template_dependency_structure_present_flag</b> = f(1)
+  <b>custom_dtis_flag</b> = f(1)
+  <b>custom_fdiffs_flag</b> = f(1)
+  <b>custom_chains_flag</b> = f(1)
+
+  if (template_dependency_structure_present_flag) {
+    template_dependency_structure()
+  }
+}
+</code></pre>
+
+
+<pre><code>
+no_extended_header() {
+  frame_dependency_template_id = 
+    frame_dependency_template_id_or_extended_header_indicator
+  custom_dtis_flag = 0
+  custom_fdiffs_flag = 0
+  custom_chains_flag = 0
+}
+</code></pre>
+
+
+<pre><code>
 template_dependency_structure() {
-  <b>self_defined_id</b> = f(6)
-  PreDefinedOffset = (self_defined_id + 1) % (MAX_TEMPLATE_ID + 1)
+  <b>template_id_offset</b> = f(6)
   <b>dtis_cnt_minus_one</b> = f(5)
   DtisCnt = dtis_cnt_minus_one + 1
   template_layers()
@@ -351,17 +366,43 @@ template_dependency_structure() {
   if (resolutions_present_flag) {
     render_resolutions()
   }
-  populate_decode_target_layer()
 }
 </code></pre>
 
 
 <pre><code>
-self_defintion() {
-  frame_dtis()
-  frame_fdiffs()
-  frame_chains()
-  populate_frame_layer()
+frame_dependency_definition() {
+  templateIndex = (frame_dependency_template_id + (MAX_TEMPLATE_ID + 1) -
+                   template_id_offset) % (MAX_TEMPLATE_ID + 1)
+  If (templateIndex >= TemplatesCnt) {
+    return  // error
+  }
+  FrameSpatialId = TemplateSpatialId[templateIndex]
+  FrameTemporalId = TemplateTemporalId[templateIndex]
+
+  if (custom_dtis_flag) {
+    frame_dtis()
+  } else {
+    frame_dti = template_dti[templateIndex]
+  }
+
+  if (custom_fdiffs_flag) {
+    frame_fdiffs()
+  } else {
+    FrameFdiffsCnt = TemplateFdiffsCnt[templateIndex]
+    FrameFdiff = TemplateFdiff[templateIndex]
+  }
+
+  if (custom_chains_flag) {
+    frame_chains()
+  } else {
+    frame_chain_fdiff = template_chain_fdiff[templateIndex]
+  }
+
+  if (resolutions_present_flag) {
+    FrameMaxWidth = max_render_width_minus_one[FrameSpatialId] + 1
+    FrameMaxHeight = max_render_height_minus_one[FrameSpatialId] + 1
+  }
 }
 </code></pre>
 
@@ -494,56 +535,6 @@ frame_chains() {
 }
 </code></pre>
 
-
-<pre><code>
-pre_definition() {
-  templateIndex = (frame_dependency_template_id + (MAX_TEMPLATE_ID + 1) - 
-                   PreDefinedOffset) % (MAX_TEMPLATE_ID + 1)
-  If (templateIndex >= TemplatesCnt) {
-    return  // error
-  }
-  FrameSpatialId = TemplateSpatialId[templateIndex]
-  FrameTemporalId = TemplateTemporalId[templateIndex]
-  FrameFdiffsCnt = TemplateFdiffsCnt[templateIndex]
-  FrameFdiff = TemplateFdiff[templateIndex]
-  frame_dti = template_dti[templateIndex]
-  frame_chain_fdiff = template_chain_fdiff[templateIndex]
-}
-</code></pre>
-
-
-<pre><code>
-populate_decode_target_layer() {
-  for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
-    spatialId = 0
-    temporalId = 0
-    for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
-      if (template_dti[templateIndex][dtiIndex]) {
-        spatialId = Max(spatialId, TemplateSpatialId[templateIndex])
-        temporalId = Max(temporalId, TemplateTemporalId[templateIndex])
-      }
-    }
-    DecodeTargetSpatialId[dtiIndex] = spatialId
-    DecodeTargetTemporalId[dtiIndex] = temporalId
-  }
-}
-</code></pre>
-
-
-<pre><code>
-populate_frame_layer() {
-  FrameSpatialId = MaxSpatialId + 1
-  FrameTemporalId = MaxTemporalId + 1
-  for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
-    if (frame_dti[dtiIndex]) {
-      FrameSpatialId = Min(FrameSpatialId, DecodeTargetSpatialId[dtiIndex])
-      FrameTemporalId = Min(FrameTemporalId, DecodeTargetTemporalId[dtiIndex])
-    }
-  }
-}
-</code></pre>
-
-
 #### 4.2.2 Semantics
 
 The semantics pertaining to the AV1 descriptor syntax section above is
@@ -564,11 +555,9 @@ described in this section.
     and MUST wrap after reaching the maximum value. All packets of the same
     Frame MUST have the same frame_number value.
 
-  * **frame_dependency_template_id**: ID of the Frame dependency template to use
-    or a special value to indicate a Self-defined frame. MUST be in the range of
-    self_defined_id to (self_defined_id + TemplatesCnt), inclusive. When
-    frame_dependency_template_id is equal to self_defined_id, the self_defintion
-    MUST be present. Otherwise, self_defintion MUST NOT be present.
+  * **frame_dependency_template_id**: ID of the Frame dependency template to use.
+    MUST be in the range of template_id_offset to
+    (template_id_offset + TemplatesCnt - 1), inclusive.
 
     frame_dependency_template_id MUST be the same for all packets of the same
     Frame.
@@ -577,20 +566,38 @@ described in this section.
     dependency structure.
     {:.alert .alert-info }
 
-  * **frame_dependency_template_id_or_structure_indicator**: when equal to
-    TD_STRUCTURE_INDICATOR, the template_dependency_structure MUST be present.
-    Otherwise, template_dependency_structure MUST NOT be present.
+  * **frame_dependency_template_id_or_extended_header_indicator**: when equal to
+    EXTENDED_HEADER_INDICATOR, extended_header MUST be present.
+    Otherwise, extended_header MUST NOT be present.
 
+**Extended header**
 
+  * **template_dependency_structure_present_flag**: indicates the presence the
+    template_dependency_structure. When the
+    template_dependency_structure_present_flag is set to 1,
+    template_dependency_structure MUST be present; otherwise
+    template_dependency_structure MUST NOT be present.
+
+  * **custom_dtis_flag**: indicates the presence the frame_dtis. When set to 1,
+    frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
+
+  * **custom_fdiffs_flag**: indicates the presence the frame_fdiffs. When set to
+    1, frame_dtis MUST be present. Otherwise, frame_fdiffs MUST NOT be present.
+
+  * **custom_chains_flag**: indicates the presence the frame_chain_fdiff. When
+    set to 1, frame_dtis MUST be present. Otherwise, frame_chain_fdiff MUST NOT
+    be present.
+   
 **Template dependency structure**
 
-  * **self_defined_id**: indicates the value that frame_dependency_template_id
-    MUST take when the Frame is self-defined. The value of self_defined_id
-    SHOULD be chosen so that the valid frame_dependency_template_id range,
-    self_defined_id to self_defined_id + TemplatesCnt, inclusive, of a new
+  * **template_id_offset**: indicates the value of the
+    frame_dependency_template_id having templateIndex=0. The value of
+    template_id_offset SHOULD be chosen so that the valid 
+    frame_dependency_template_id range, template_id_offset to
+    template_id_offset + TemplatesCnt - 1, inclusive, of a new
     template_dependency_structure, does not overlap the valid
     frame_dependency_template_id range for the existing
-    template_dependency_structure. When self_defined_id of a new
+    template_dependency_structure. When template_id_offset of a new
     template_dependency_structure is the same as in the existing
     template_dependency_structure, all fields in both
     template_dependency_structures MUST have identical values.
@@ -663,7 +670,7 @@ Table 2. DTI values.
 {: .caption }
 
 
-**Self-defined frame**
+**Frame dependency defintion**
 
   * **next_fdiff_size**: indicates the size of following fdiff_minus_one syntax
     elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST
