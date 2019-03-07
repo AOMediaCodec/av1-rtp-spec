@@ -292,7 +292,7 @@ above)
 
 | Symbol name               | Value | Description                                         |
 | ------------------------- | ----- | --------------------------------------------------- |
-| EXTENDED_HEADER_INDICATOR | 63    | Value indicating presence of extended_header
+| EXTENDED_FIELDS_INDICATOR | 63    | Value indicating presence of extended_descriptor_fields
 | MAX_TEMPLATE_ID           | 62    | Maximum value for a frame_dependency_template_id to identify a template
 | MAX_SPATIAL_ID            | 3     | Maximum value for a FrameSpatialId
 | MAX_TEMPORAL_ID           | 7     | Maximum value for a FrameTemporalId
@@ -304,12 +304,12 @@ Table 1. Syntax constants
 
 <pre><code>
 av1_desriptor() {
-  base_header()
-  if (frame_dependency_template_id_or_extended_header_indicator ==
-      EXTENDED_HEADER_INDICATOR) {
-    extended_header()
+  mandatory_descriptor_fields()
+  if (frame_dependency_template_id_or_extended_fields_indicator ==
+      EXTENDED_FIELDS_INDICATOR) {
+    extended_descriptor_fields()
   } else {
-    no_extended_header()
+    no_extended_descriptor_fields()
   }
   frame_dependency_definition()
 }
@@ -317,17 +317,17 @@ av1_desriptor() {
 
 
 <pre><code>
-base_header() {
+mandatory_descriptor_fields() {
   <b>start_of_frame</b> = f(1)
   <b>end_of_frame</b> = f(1)
-  <b>frame_dependency_template_id_or_extended_header_indicator</b> = f(6)
+  <b>frame_dependency_template_id_or_extended_fields_indicator</b> = f(6)
   <b>frame_number</b> = f(16)
 }
 </code></pre>
 
 
 <pre><code>
-extended_header() {
+extended_descriptor_fields() {
   <b>frame_dependency_template_id</b> = f(6)
   <b>template_dependency_structure_present_flag</b> = f(1)
   <b>custom_dtis_flag</b> = f(1)
@@ -342,9 +342,9 @@ extended_header() {
 
 
 <pre><code>
-no_extended_header() {
+no_extended_descriptor_fields() {
   frame_dependency_template_id = 
-    frame_dependency_template_id_or_extended_header_indicator
+    frame_dependency_template_id_or_extended_fields_indicator
   custom_dtis_flag = 0
   custom_fdiffs_flag = 0
   custom_chains_flag = 0
@@ -530,7 +530,7 @@ frame_chains() {
 The semantics pertaining to the AV1 descriptor syntax section above is
 described in this section.
 
-**Base header**
+**Mandatory Descriptor Fields**
 
   * **start_of_frame**: MUST be set to 1 if the first payload octet of the RTP
     packet is the beginning of a new Frame, and MUST be set to 0 otherwise. Note
@@ -556,11 +556,11 @@ described in this section.
     dependency structure.
     {:.alert .alert-info }
 
-  * **frame_dependency_template_id_or_extended_header_indicator**: when equal to
-    EXTENDED_HEADER_INDICATOR, extended_header MUST be present.
-    Otherwise, extended_header MUST NOT be present.
+  * **frame_dependency_template_id_or_extended_fields_indicator**: when equal to
+    EXTENDED_FIELDS_INDICATOR, extended_descriptor_fields MUST be present.
+    Otherwise, extended_descriptor_fields MUST NOT be present.
 
-**Extended header**
+**Extended Descriptor Fields**
 
   * **template_dependency_structure_present_flag**: indicates the presence the
     template_dependency_structure. When the
