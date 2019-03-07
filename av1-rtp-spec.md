@@ -830,7 +830,7 @@ FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
 </div>
 
 
-## 5. Examples
+### 5.4 Examples
 
 Each example in this section contains a prediction structure figure and a table
 describing the associated Frame dependency structure. The Frame dependency
@@ -857,7 +857,7 @@ Table 4. DTI values
 {: .caption }
 
 
-### 5.1 L1T3 Single spatial layer with 3 temporal layers
+#### 5.4.1 L1T3 Single spatial layer with 3 temporal layers
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L1T3.png" class="figure-img img-fluid">
@@ -897,7 +897,7 @@ equal to 0.
 {:.alert .alert-info }
 
 
-### 5.2 L2T1 Full SVC with occasional switch
+#### 5.4.2 L2T1 Full SVC with occasional switch
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L2T1.png" class="figure-img img-fluid">
@@ -937,7 +937,7 @@ equal to 0. Chain 1 includes all Frames.
 {:.alert .alert-info }
 
 
-### 5.3 L3T3 Full SVC
+#### 5.4.3 L3T3 Full SVC
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L3T3.png" class="figure-img img-fluid">
@@ -1009,7 +1009,7 @@ temporal ID equal to 0.
 {:.alert .alert-info }
 
 
-### 5.4 S3T3 K-SVC with temporal shift
+#### 5.4.4 S3T3 K-SVC with temporal shift
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/S3T3.png" class="figure-img img-fluid">
@@ -1098,6 +1098,65 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
 {:.alert .alert-info }
 
+## 5. Payload Format Parameters
+
+This payload format has two optional parameters.
+
+## 5.1. Media Type Definition
+
+Following template defined in [RFC6838] media type for AV1 codec described as:
+
+* Type name: 
+   * **video**
+* Subtype name: 
+  * **AV1** 
+* Required parameters:
+  * None.
+* Optional parameters:  
+  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, both parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
+    * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by receiver. Values are identical to **seq_profile** syntax element specified in [AV1]
+    * **level_idx**: The value of **level_idx** is and integer indicating the highest AV1 level supported by receiver. Values are identical to **seq_level_idx** syntax element specified in [AV1]
+* Encoding considerations:
+  * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
+* Security considerations:
+  * TODO 
+* Interoperability considerations:
+  * None.
+* Published specification:
+  * AV1 bitstream format [AV1]
+* Applications which use this media type:
+  * Video over IP, video conferencing.
+* Fragment identifier considerations:
+  * N/A.
+* Additional information:
+  * None.
+* Person & email address to contact for further information:
+  * TODO 
+* Intended usage:
+  * COMMON
+* Restrictions on usage:
+  * TODO
+* Author:
+  * TODO 
+* Change controller:
+  * TODO
+
+## 5.2. SDP Parameters
+The receiver MUST ignore any fmtp parameter unspecified in this memo.
+
+### 5.2.1. Mapping of Media Subtype Parameters to SDP
+The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) [RFC4566] as follows:
+* The media name in the "m=" line of SDP MUST be video.
+* The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
+* The clock rate in the "a=rtpmap" line MUST be 90000.
+* The parameters "**profile**", and "**level_idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
+
+### 5.2.1.1. Example
+An example of media representation in SDP is as follows:
+
+* m=video 49170 RTP/AVPF 98
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=2; level_idx=23;
 
 ## 6. References
 
@@ -1124,6 +1183,8 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 [RFC2119]: https://tools.ietf.org/html/rfc2119
 [RFC3550]: https://tools.ietf.org/html/rfc3550
 [RFC4585]: https://tools.ietf.org/html/rfc4585
+[RFC4566]: https://tools.ietf.org/html/rfc4566
+[RFC6838]: https://tools.ietf.org/html/rfc6838
 [RFC7667]: https://tools.ietf.org/html/rfc7667
 [RFC8285]: https://tools.ietf.org/html/rfc8285
 [Selective Forwarding Unit]: https://webrtcglossary.com/sfu/
