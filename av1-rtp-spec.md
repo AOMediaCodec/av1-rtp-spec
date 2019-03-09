@@ -1114,8 +1114,8 @@ Following template defined in [RFC6838] media type for AV1 codec described as:
   * None.
 * Optional parameters:  
   * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, both parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
-    * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by receiver. Values are identical to **seq_profile** syntax element specified in [AV1]
-    * **level_idx**: The value of **level_idx** is and integer indicating the highest AV1 level supported by receiver. Values are identical to **seq_level_idx** syntax element specified in [AV1]
+    * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by the receiver. The range of possible values is identical to **seq_profile** syntax element specified in [AV1]
+    * **level_idx**: The value of **level_idx** is and integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
 * Security considerations:
