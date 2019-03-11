@@ -830,7 +830,7 @@ FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
 </div>
 
 
-### 5.4 Examples
+### 4.5 Examples
 
 Each example in this section contains a prediction structure figure and a table
 describing the associated Frame dependency structure. The Frame dependency
@@ -857,7 +857,7 @@ Table 4. DTI values
 {: .caption }
 
 
-#### 5.4.1 L1T3 Single spatial layer with 3 temporal layers
+#### 4.5.1 L1T3 Single spatial layer with 3 temporal layers
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L1T3.png" class="figure-img img-fluid">
@@ -897,7 +897,7 @@ equal to 0.
 {:.alert .alert-info }
 
 
-#### 5.4.2 L2T1 Full SVC with occasional switch
+#### 4.5.2 L2T1 Full SVC with occasional switch
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L2T1.png" class="figure-img img-fluid">
@@ -937,7 +937,7 @@ equal to 0. Chain 1 includes all Frames.
 {:.alert .alert-info }
 
 
-#### 5.4.3 L3T3 Full SVC
+#### 4.5.3 L3T3 Full SVC
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L3T3.png" class="figure-img img-fluid">
@@ -1009,7 +1009,7 @@ temporal ID equal to 0.
 {:.alert .alert-info }
 
 
-#### 5.4.4 S3T3 K-SVC with temporal shift
+#### 4.5.4 S3T3 K-SVC with temporal shift
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/S3T3.png" class="figure-img img-fluid">
