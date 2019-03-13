@@ -360,6 +360,7 @@ values are explicitly defined rather than referenced in a predefined template.
 Typically, even in dynamic structures the majority of frames still follow one of
 the predefined templates.
 
+
 #### A.2 Conventions, definitions and acronyms
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
@@ -732,7 +733,7 @@ frame_chains() {
 
 ##### A.4.2 Semantics
 
-The semantics pertaining to the AV1 descriptor syntax section above is
+The semantics pertaining to the dependency descriptor syntax section above is
 described in this section.
 
 **Mandatory Descriptor Fields**
