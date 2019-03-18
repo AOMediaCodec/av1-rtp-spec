@@ -291,11 +291,75 @@ FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
 [ ........................ x  .....]
 </div>
 
+## 5. Payload Format Parameters
 
-## 5. References
+This payload format has three optional parameters.
+
+### 5.1. Media Type Definition
+
+TODO: proposed meda type for IANA registration:
+
+* Type name: 
+   * **video**
+* Subtype name: 
+  * **AV1** 
+* Required parameters:
+  * None.
+* Optional parameters:  
+  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level_idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
+    * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by the receiver. The range of possible values is identical to **seq_profile** syntax element specified in [AV1]
+    * **level_idx**: The value of **level_idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
+    * **tier**: The value of **tier** is an integer indicating tier of the indicated level.  The range of possible values is identical to **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
+
+* Encoding considerations:
+  * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
+* Security considerations:
+  * TODO
+* Interoperability considerations:
+  * None.
+* Published specification:
+  * AV1 bitstream format [AV1]
+* Applications which use this media type:
+  * Video over IP, video conferencing.
+* Fragment identifier considerations:
+  * N/A.
+* Additional information:
+  * None.
+* Person & email address to contact for further information:
+  * TODO 
+* Intended usage:
+  * COMMON
+* Restrictions on usage:
+  * TODO
+* Author:
+  * TODO 
+* Change controller:
+  * TODO
+
+### 5.2. SDP Parameters
+The receiver MUST ignore any fmtp parameter unspecified in this memo.
+
+#### 5.2.1. Mapping of Media Subtype Parameters to SDP
+The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) [RFC4566] as follows:
+* The media name in the "m=" line of SDP MUST be video.
+* The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
+* The clock rate in the "a=rtpmap" line MUST be 90000.
+* The parameters "**profile**", and "**level_idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
+* Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0. 
 
 
-### 5.1 Normative references
+#### 5.2.1.1. Example
+An example of media representation in SDP is as follows:
+
+* m=video 49170 RTP/AVPF 98
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=2; level_idx=8; tier=1;
+
+## 6. References
+
+
+### 6.1 Normative references
+
 
   * [RFC3550] for RTP header format
   * [RFC8285] for generic RTP header extensions
@@ -307,7 +371,7 @@ FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
 {:.alert .alert-danger }
 
 
-### 5.2 Informative references
+### 6.2 Informative references
 
 **TODO:** list informative references.
 {:.alert .alert-danger }
@@ -320,6 +384,7 @@ FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
 [RFC7667]: https://tools.ietf.org/html/rfc7667
 [RFC8285]: https://tools.ietf.org/html/rfc8285
 [Selective Forwarding Unit]: https://webrtcglossary.com/sfu/
+
 
 ## Appendix
 
@@ -1188,12 +1253,10 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 {:.alert .alert-info }
 
 
-
 #### A.6 References
 
 
 ##### A.6.1 Normative references
-
   * [RFC3550] for RTP header format
   * [RFC8285] for generic RTP header extensions
 
@@ -1206,3 +1269,13 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 **TODO:** list informative references.
 {:.alert .alert-danger }
 
+
+[AV1]: https://aomedia.org/av1-bitstream-and-decoding-process-specification/
+[RFC2119]: https://tools.ietf.org/html/rfc2119
+[RFC3550]: https://tools.ietf.org/html/rfc3550
+[RFC4566]: https://tools.ietf.org/html/rfc4566
+[RFC4585]: https://tools.ietf.org/html/rfc4585
+[RFC6838]: https://tools.ietf.org/html/rfc6838
+[RFC7667]: https://tools.ietf.org/html/rfc7667
+[RFC8285]: https://tools.ietf.org/html/rfc8285
+[Selective Forwarding Unit]: https://webrtcglossary.com/sfu/
