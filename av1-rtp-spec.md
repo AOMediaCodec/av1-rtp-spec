@@ -48,28 +48,6 @@ bitstream parameters greatly simplify the organization of the corresponding data
 at the RTP payload format level.
 
 
-To facilitate the work of selectively forwarding portions of a scalable video
-bitstream to each endpoint in a video conference, as is done by a Selective
-Forwarding Unit (SFU), for each packet, several pieces of information are
-required (e.g., spatial and temporal layer identification). To reduce overhead,
-highly redundant information can be predefined and sent once. Subsequent packets
-may index to a template containing predefined information. In particular, when
-an encoder uses an unchanging (static) prediction structure to encode a scalable
-bitstream, parameter values used to describe the bitstream repeat in a
-predictable way. The techniques described in this document provide means to send
-repeating information as predefined templates that can be referenced at future
-points of the bitstream. Since a reference index to a template requires fewer
-bits to convey than the associated structures themselves, header overhead can be
-substantially reduced.
-
-
-The techniques also provide ways to describe changing (dynamic) prediction
-structures. In cases where custom dependency information is required, parameter
-values are explicitly defined rather than referenced in a predefined template.
-Typically, even in dynamic structures the majority of frames still follow one of
-the predefined templates.
-
-
 ## 2. Conventions, definitions and acronyms
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
@@ -77,29 +55,8 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 interpreted as described in [RFC2119].
 
 
-Chain
-: A sequence of frames for which it can be determined instantly if a frame from
-  that sequence has been lost.
-
 Coded frame
 : The representation of one frame before the decoding process.
-
-Decode target
-: The set of frames needed to decode a coded video sequence at a given spatial
-  and temporal fidelity.
-
-Decode Target Information (DTI)
-: Describes the relationship of a frame to a Decode target. The DTI indicates
-  four distinct relationships: 'not present, 'discardable', 'switch indication',
-  and 'required'.
-
-Discardable
-: An indication for a frame, associated with a given Decode target, that it will
-  not be a Referred frame for any frame belonging to that Decode target.
-
-**Note:** A Frame belonging to more than one Decode target may be Discardable
-for one Decode target and not for another.
-{:.alert .alert-info }
 
 Frame
 : A frame in this document is synonymous to a Coded frame.
@@ -111,65 +68,13 @@ video signals in the spatial domain.
 **Note:** Multiple frames may be present at the same instant in time.
 {:.alert .alert-info }
 
-Frame dependency structure
-: Describes frame dependency information for the coded video sequence. The
-  structure includes the number of DTIs, an ordered list of Frame dependency
-  templates, and a mapping between Chains and Decode targets.
-
-Frame dependency template
-: Contains frame description information that many frames have in common.
-  Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and
-  Chain information.
-
-Frame number
-: Frame number increases strictly monotonically in decode order.
-
-**Note:** Frame number is not the same as Frame ID in [AV1 specification].
-{:.alert .alert-info }
-
-Instantaneous Decidability of Decodability (IDD)
-: The ability to decide, immediately upon receiving the very first packet after
-  packet loss, if the lost packet(s) contained a packet that is needed to decode
-  the information present in that first and following packets.
-
 Open Bitstream Unit (OBU)
 : The smallest bitstream data framing unit in AV1. All AV1 bitstream structures
   are packetized in OBUs.
 
-Predefined frame
-: A Frame for which the spatial ID, temporal ID, DTIs, Referred frames, and
-  Chain information is contained in the template_dependency_structure and
-  referenced using frame_dependency_template_id.
-
-Referred frame
-: A Frame on which the current frame depends.
-
-Required
-: An indication for a frame, associated with a given Decode target, that it
-  belongs to the Decode target and has neither a Discardable nor a Switch
-  indication.
-
-**Note:** A Frame belonging to more than one Decode target may be Required
-for one Decode target and not Required (i.e, either Discardable or Switch)
-for another.
-{:.alert .alert-info }
-
 [Selective Forwarding Unit] (SFU)
 : A middlebox that relays streams among transmitting and receiving clients by
   selectively forwarding packets ([RFC7667]).
-
-Switch indication
-: An indication associated with a specific Decode target that all subsequent
-  frames for that Decode target will be decodable if the frame containing the
-  indication is decodable.
-
-Self-defined frame
-: A Frame for which the DTIs, Referred frames, and/or Chain information is
-  present in the packet(s) containing the Frame.
-
-Switch request
-: A request for the encoder to produce a frame with Switch indication that would
-  allow the endpoint to decode a specified Decode target.
 
 
 ## 3. Media format description
@@ -220,7 +125,7 @@ octet order.
 The general RTP payload format follows the RTP header format [RFC3550] and
 generic RTP header extensions [RFC8285], and is shown below.
 
-The AV1 descriptor and AV1 aggregation header are described in this document.
+The dependency descriptor and AV1 aggregation header are described in this document.
 The payload itself is a series of OBUs, each preceded by length information as
 detailed later in this document.
 
@@ -242,7 +147,7 @@ detailed later in this document.
 |   0x1(ID)     |  hdr_length   |                               |
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+                               |
 |                                                               |
-|              AV1 descriptor (hdr_length #octets)              |
+|          dependency descriptor (hdr_length #octets)           |
 |                                                               |
 |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                               | Other rtp header extensions...|
@@ -262,7 +167,348 @@ detailed later in this document.
 {:.alert .alert-danger }
 
 
-### 4.2  AV1 descriptor
+### 4.2  Dependency Descriptor RTP Header Extension
+
+To facilitate the work of selectively forwarding portions of a scalable video
+bitstream, as is done by a Selective Forwarding Unit (SFU), certain information
+needs to be provided for each packet. The appendix of this specification defines
+how this information is communicated.
+
+
+### 4.3 AV1 aggregation header
+
+The aggregation header is used to indicate if the first and/or last OBU in the
+payload is fragmented.
+
+The structure is as follows.
+
+<pre><code>
+ 0 1 2 3 4 5 6 7
++-+-+-+-+-+-+-+-+
+|Z|Y|-|-|-|-|-|-|
++-+-+-+-+-+-+-+-+
+</code></pre>
+
+Z: set to 1 if the first OBU contained in the packet is a continuation of a
+previous OBU, 0 otherwise
+
+Y: set to 1 if the last OBU contained in the packet will continue in another
+packet, 0 otherwise
+
+
+### 4.4 Payload structure
+
+The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream
+structures are packetized in OBUs. Each OBU has a header, which provides
+identifying information for the contained data (payload).
+
+This specification allows to packetize:
+
+  * a single OBU;
+  * an OBU fragment (initial, middle, or trailing part); or
+  * a set of OBUs.
+
+The design allows combination of aggregation and fragmentation, i.e., allow for
+a set of OBUs in which the first and/or last one is fragmented.
+
+It is not allowed, however, to aggregate OBUs across frame boundaries. In other
+words, it is not allowed to have OBUs from different frames in the same RTP
+packet. OBUs in a temporal unit that precede the first frame are considered part
+of that first frame.
+
+The payload contains a series of one or more OBUs (with the first and/or last
+possibly being fragments). Each OBU (or OBU fragment) is preceded by a length
+field. The length field is encoded using leb128. Leb128 is defined in the AV1
+specification, and provides for a variable-sized, byte-oriented encoding of non-
+negative integers where the first bit of each (little-endian) byte indicates if
+additional bytes are used in the representation (AV1, Section 4.10.5).
+
+The following figure shows an example payload where the length field is shown as
+taking two bytes for the first and second OBU and one byte for the last (N) OBU.
+
+<pre><code>
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      OBU 1 size (leb128)      |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+|                                                               |
+|                  OBU 1 data                                   |
+|                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |      OBU 2 size (leb128)      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
+|                                                               |
+:                        OBU 2 data                             :
+:                                                               :
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   OBU N size  |                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+  OBU N data  +-+-+-+-+-+-+-+-+
+|                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre>
+
+Whether or not the first and/or last OBU is fragmented is signaled in the
+aggregation header.
+
+**TODO:** Add a paragraph that describes how a temporal unit is mapped into RTP
+packets. I think a new temporal unit should start a new RTP packet. You skip the
+temporal delimiter OBU, and then packetize the remaining OBUs in one or more
+packets, with fragmentation as needed.
+{:.alert .alert-danger }
+
+* * *
+
+<div class="alert alert-danger" markdown="1">
+
+2019/01/15 Notes:
+
+A packet must not include OBUs across a TD
+All OBUs in a packet must have the same temporal_id and spatial_id
+OBUs with layering information must not be aggregated with OBUs that don't have layering information (layering information=extension header).
+If sequence header is present, it should (not must) be the first OBU in a packet.
+Q: May not be needed.
+A packet cannot include OBUs from different frames.
+Q: for hidden frames, the various frames may all be required anyway, so maybe we allow aggregation of frames with associated hidden frames (of the same temporal unit).
+
+Q: Should we support tile list OBUs?
+
+Packetization Exercises:
+
+TD   SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1) ...
+
+ X   [.......................................................]
+ X   [.. ........][.........................][.............][.........................................]
+
+
+FH(0,1) TG0(0,1)  TD SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
+
+[ ....................... X   ... ] not allowed, SH must be at beginning of packet
+
+FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
+
+[ ........................ x  .....]
+</div>
+
+## 5. Payload Format Parameters
+
+This payload format has three optional parameters.
+
+### 5.1. Media Type Definition
+
+TODO: proposed meda type for IANA registration:
+
+* Type name: 
+   * **video**
+* Subtype name: 
+  * **AV1** 
+* Required parameters:
+  * None.
+* Optional parameters:  
+  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level_idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
+    * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by the receiver. The range of possible values is identical to **seq_profile** syntax element specified in [AV1]
+    * **level_idx**: The value of **level_idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
+    * **tier**: The value of **tier** is an integer indicating tier of the indicated level.  The range of possible values is identical to **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
+
+* Encoding considerations:
+  * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
+* Security considerations:
+  * TODO
+* Interoperability considerations:
+  * None.
+* Published specification:
+  * AV1 bitstream format [AV1]
+* Applications which use this media type:
+  * Video over IP, video conferencing.
+* Fragment identifier considerations:
+  * N/A.
+* Additional information:
+  * None.
+* Person & email address to contact for further information:
+  * TODO 
+* Intended usage:
+  * COMMON
+* Restrictions on usage:
+  * TODO
+* Author:
+  * TODO 
+* Change controller:
+  * TODO
+
+### 5.2. SDP Parameters
+The receiver MUST ignore any fmtp parameter unspecified in this memo.
+
+#### 5.2.1. Mapping of Media Subtype Parameters to SDP
+The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) [RFC4566] as follows:
+* The media name in the "m=" line of SDP MUST be video.
+* The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
+* The clock rate in the "a=rtpmap" line MUST be 90000.
+* The parameters "**profile**", and "**level_idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
+* Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0. 
+
+
+#### 5.2.1.1. Example
+An example of media representation in SDP is as follows:
+
+* m=video 49170 RTP/AVPF 98
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=2; level_idx=8; tier=1;
+
+## 6. References
+
+
+### 6.1 Normative references
+
+
+  * [RFC3550] for RTP header format
+  * [RFC8285] for generic RTP header extensions
+  * [RFC7667] RTP Topologies
+  * [AV1 Bitstream & Decoding Process Specification][AV1]
+
+
+**TODO:** flesh out list of normative references.
+{:.alert .alert-danger }
+
+
+### 6.2 Informative references
+
+**TODO:** list informative references.
+{:.alert .alert-danger }
+
+
+## Appendix
+
+### Dependency Descriptor RTP Header Extension
+
+#### A.1 Introduction
+
+This appendix describes the Dependency Descriptor (DD) RTP Header extension for
+conveying information about individual video frames and the dependencies between
+these frames. The Dependency Descriptor includes provisions for both temporal
+and spatial scalability.
+
+
+In the DD, the smallest unit for which dependencies are described is an RTP Frame.
+An RTP frame contains one complete coded video frame and may also contain additional
+information (e.g., metadata). This specification allows for fragmentation of RTP
+Frames over multiple packets. RTP frame aggregation is explicitly disallowed.
+
+
+To facilitate the work of selectively forwarding portions of a scalable video
+bitstream to each endpoint in a video conference, as is done by a Selective
+Forwarding Unit (SFU), for each packet, several pieces of information are
+required (e.g., spatial and temporal layer identification). To reduce overhead,
+highly redundant information can be predefined and sent once. Subsequent packets
+may index to a template containing predefined information. In particular, when
+an encoder uses an unchanging (static) prediction structure to encode a scalable
+bitstream, parameter values used to describe the bitstream repeat in a
+predictable way. The techniques described in this document provide means to send
+repeating information as predefined templates that can be referenced at future
+points of the bitstream. Since a reference index to a template requires fewer
+bits to convey than the associated structures themselves, header overhead can be
+substantially reduced.
+
+
+The techniques also provide ways to describe changing (dynamic) prediction
+structures. In cases where custom dependency information is required, parameter
+values are explicitly defined rather than referenced in a predefined template.
+Typically, even in dynamic structures the majority of frames still follow one of
+the predefined templates.
+
+
+#### A.2 Conventions, definitions and acronyms
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in [RFC2119].
+
+
+Chain
+: A sequence of frames for which it can be determined instantly if a frame from
+  that sequence has been lost.
+
+Decode target
+: The set of frames needed to decode a coded video sequence at a given spatial
+  and temporal fidelity.
+
+Decode Target Information (DTI)
+: Describes the relationship of a frame to a Decode target. The DTI indicates
+  four distinct relationships: 'not present, 'discardable', 'switch indication',
+  and 'required'.
+
+Discardable
+: An indication for a frame, associated with a given Decode target, that it will
+  not be a Referred frame for any frame belonging to that Decode target.
+
+**Note:** A Frame belonging to more than one Decode target may be Discardable
+for one Decode target and not for another.
+{:.alert .alert-info }
+
+Frame dependency structure
+: Describes frame dependency information for the coded video sequence. The
+  structure includes the number of DTIs, an ordered list of Frame dependency
+  templates, and a mapping between Chains and Decode targets.
+
+Frame dependency template
+: Contains frame description information that many frames have in common.
+  Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and
+  Chain information.
+
+Frame number
+: Frame number increases strictly monotonically in decode order.
+
+**Note:** Frame number is not the same as Frame ID in [AV1 specification].
+{:.alert .alert-info }
+
+Instantaneous Decidability of Decodability (IDD)
+: The ability to decide, immediately upon receiving the very first packet after
+  packet loss, if the lost packet(s) contained a packet that is needed to decode
+  the information present in that first and following packets.
+
+Predefined frame
+: A Frame for which the spatial ID, temporal ID, DTIs, Referred frames, and
+  Chain information is contained in the template_dependency_structure and
+  referenced using frame_dependency_template_id.
+
+Referred frame
+: A Frame on which the current frame depends.
+
+Required
+: An indication for a frame, associated with a given Decode target, that it
+  belongs to the Decode target and has neither a Discardable nor a Switch
+  indication.
+
+**Note:** A Frame belonging to more than one Decode target may be Required
+for one Decode target and not Required (i.e, either Discardable or Switch)
+for another.
+{:.alert .alert-info }
+
+Switch indication
+: An indication associated with a specific Decode target that all subsequent
+  frames for that Decode target will be decodable if the frame containing the
+  indication is decodable.
+
+Self-defined frame
+: A Frame for which the DTIs, Referred frames, and/or Chain information is
+  present in the packet(s) containing the Frame.
+
+Switch request
+: A request for the encoder to produce a frame with Switch indication that would
+  allow the endpoint to decode a specified Decode target.
+
+
+#### A.3 Media stream requirements
+
+A bitstream conformant to this extension must adhere to the following statement(s).
+
+A frame for which all Referred frames are decodable MUST itself be decodable.
+
+**Note:** dependencies are not limited to motion compensated prediction, other
+relevant information such as entropy decoder state also constitute dependencies.
+
+
+#### A.4 Dependency Descriptor format
 
 To facilitate the work of selectively forwarding portions of a scalable video
 bitstream, as is done by a selective forwarding unit (SFU), for each packet, the
@@ -277,10 +523,9 @@ present in every packet).
   * Frame numbers of last frame in each Chain
 
 
-#### 4.2.1 Syntax
+##### A.4.1 Syntax
 
-The syntax for the AV1 descriptor is described in pseudo-code form in this
-section.
+The syntax for the descriptor is described in pseudo-code form in this section.
 
   * **f(n)** - unsigned n-bit number appearing directly in the bitstream.
   * **ns(n)** - unsigned encoded integer with maximum number of values n (i.e.
@@ -298,12 +543,12 @@ above)
 | MAX_TEMPORAL_ID           | 7     | Maximum value for a FrameTemporalId
 {:.table .table-sm .table-bordered }
 
-Table 1. Syntax constants
+Table A.1. Syntax constants
 {: .caption }
 
 
 <pre><code>
-av1_desriptor() {
+dependency_desriptor() {
   mandatory_descriptor_fields()
   if (frame_dependency_template_id_or_extended_fields_indicator ==
       EXTENDED_FIELDS_INDICATOR) {
@@ -447,7 +692,7 @@ render_resolutions() {
 template_dtis() {
   for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
     for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
-      // See table 2 below for meaning of DTI values.
+      // See table A.2 below for meaning of DTI values.
       <b>template_dti[templateIndex][dtiIndex]</b> = f(2)
     }
   }
@@ -458,7 +703,7 @@ template_dtis() {
 <pre><code>
 frame_dtis() {
   for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
-    // See table 2 below for meaning of DTI values.
+    // See table A.2 below for meaning of DTI values.
     <b>frame_dti[dtiIndex]</b> = f(2)
   }
 }
@@ -525,9 +770,9 @@ frame_chains() {
 }
 </code></pre>
 
-#### 4.2.2 Semantics
+##### A.4.2 Semantics
 
-The semantics pertaining to the AV1 descriptor syntax section above is
+The semantics pertaining to the dependency descriptor syntax section above is
 described in this section.
 
 **Mandatory Descriptor Fields**
@@ -600,7 +845,7 @@ described in this section.
     present; otherwise render_resolutions MUST NOT be present.
 
   * **next_layer_idc**: used to determine spatial ID and temporal ID for the
-    next Frame dependency template. Table 3 describes how the spatial ID and
+    next Frame dependency template. Table A.3 describes how the spatial ID and
     temporal ID values are determined. A next_layer_idc equal to 3 indicates
     that no more Frame dependency templates are present in the Frame dependency
     structure.
@@ -622,7 +867,7 @@ described in this section.
 
   * **template_dti[templateIndex][]**: an array of size dtis_cnt_minus_one + 1
     containing Decode target information for the Frame dependency template
-    having index value equal to templateIndex. Table 2 contains a description of
+    having index value equal to templateIndex. Table A.2 contains a description of
     the Decode target information values.
 
   * **template_chain_fdiff[templateIndex][]**: an array of size chains_cnt
@@ -647,7 +892,7 @@ described in this section.
 | Required          | 3   | Payload for this Decode target is present but it is neither discardable nor is it a Switch indication.
 {:.table .table-sm .table-bordered }
 
-Table 2. DTI values.
+Table A.2. DTI values.
 {: .caption }
 
 
@@ -660,7 +905,7 @@ Table 2. DTI values.
 
   * **frame_dti[dtiIndex]**: decode target information describing the
     relationship between the current frame and the Decode target having index
-    equal to dtiIndex. Table 2 contains a description of the Decode target
+    equal to dtiIndex. Table A.2 contains a description of the Decode target
     information values.
 
   * **frame_chain_fdiff[chainIdx]**: indicates the difference between the Frame
@@ -680,7 +925,7 @@ Table 2. DTI values.
 | 3              | No more Frame dependency templates are present in the Frame dependency structure.
 {:.table .table-sm .table-bordered }
 
-Table 3. Derivation Of Next Spatial ID And Temporal ID Values.
+Table A.3. Derivation Of Next Spatial ID And Temporal ID Values.
 {: .caption }
 
 
@@ -688,7 +933,7 @@ Table 3. Derivation Of Next Spatial ID And Temporal ID Values.
 {:.alert .alert-danger }
 
 
-#### 4.2.3 Implementing IDD with Chains
+##### A.4.3 Implementing IDD with Chains
 
 The Frame dependency structure includes a mapping between Decode targets and
 Chains. The mapping gives an SFU the ability to know the set of Chains it needs
@@ -708,134 +953,17 @@ common cases for such '(re)start of Chain' indications.
 {:.alert .alert-info }
 
 
-#### 4.2.4 Switching
+##### A.4.4 Switching
 
 An SFU may begin forwarding packets belonging to a new Decode target beginning
 with a decodable Frame containing a Switch indication to that Decode target.
 
-### 4.3 AV1 aggregation header
-
-The aggregation header is used to indicate if the first and/or last OBU in the
-payload is fragmented.
-
-The structure is as follows.
-
-<pre><code>
- 0 1 2 3 4 5 6 7
-+-+-+-+-+-+-+-+-+
-|Z|Y|-|-|-|-|-|-|
-+-+-+-+-+-+-+-+-+
-</code></pre>
-
-Z: set to 1 if the first OBU contained in the packet is a continuation of a
-previous OBU, 0 otherwise
-
-Y: set to 1 if the last OBU contained in the packet will continue in another
-packet, 0 otherwise
-
-
-### 4.4 Payload structure
-
-The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream
-structures are packetized in OBUs. Each OBU has a header, which provides
-identifying information for the contained data (payload).
-
-This specification allows to packetize:
-
-  * a single OBU;
-  * an OBU fragment (initial, middle, or trailing part); or
-  * a set of OBUs.
-
-The design allows combination of aggregation and fragmentation, i.e., allow for
-a set of OBUs in which the first and/or last one is fragmented.
-
-It is not allowed, however, to aggregate OBUs across frame boundaries. In other
-words, it is not allowed to have OBUs from different frames in the same RTP
-packet. OBUs in a temporal unit that precede the first frame are considered part
-of that first frame.
-
-The payload contains a series of one or more OBUs (with the first and/or last
-possibly being fragments). Each OBU (or OBU fragment) is preceded by a length
-field. The length field is encoded using leb128. Leb128 is defined in the AV1
-specification, and provides for a variable-sized, byte-oriented encoding of non-
-negative integers where the first bit of each (little-endian) byte indicates if
-additional bytes are used in the representation (AV1, Section 4.10.5).
-
-The following figure shows an example payload where the length field is shown as
-taking two bytes for the first and second OBU and one byte for the last (N) OBU.
-
-<pre><code>
-0                   1                   2                   3
-0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      OBU 1 size (leb128)      |                               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
-|                                                               |
-|                  OBU 1 data                                   |
-|                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                               |      OBU 2 size (leb128)      |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                                                               |
-|                                                               |
-:                        OBU 2 data                             :
-:                                                               :
-|                                                               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   OBU N size  |                                               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+  OBU N data  +-+-+-+-+-+-+-+-+
-|                                               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</code></pre>
-
-Whether or not the first and/or last OBU is fragmented is signaled in the
-aggregation header.
-
-**TODO:** Add a paragraph that describes how a temporal unit is mapped into RTP
-packets. I think a new temporal unit should start a new RTP packet. You skip the
-temporal delimiter OBU, and then packetize the remaining OBUs in one or more
-packets, with fragmentation as needed.
-{:.alert .alert-danger }
-
-* * *
-
-<div class="alert alert-danger" markdown="1">
-
-2019/01/15 Notes:
-
-A packet must not include OBUs across a TD
-All OBUs in a packet must have the same temporal_id and spatial_id
-OBUs with layering information must not be aggregated with OBUs that don't have layering information (layering information=extension header).
-If sequence header is present, it should (not must) be the first OBU in a packet.
-Q: May not be needed.
-A packet cannot include OBUs from different frames.
-Q: for hidden frames, the various frames may all be required anyway, so maybe we allow aggregation of frames with associated hidden frames (of the same temporal unit).
-
-Q: Should we support tile list OBUs?
-
-Packetization Exercises:
-
-TD   SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1) ...
-
- X   [.......................................................]
- X   [.. ........][.........................][.............][.........................................]
-
-
-FH(0,1) TG0(0,1)  TD SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
-
-[ ....................... X   ... ] not allowed, SH must be at beginning of packet
-
-FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
-
-[ ........................ x  .....]
-</div>
-
-
-## 5. Examples
+#### A.5 Examples
 
 Each example in this section contains a prediction structure figure and a table
 describing the associated Frame dependency structure. The Frame dependency
 structure table column headings have the meanings listed below. For the DTI-
-related columns, Table 4 shows the symbol used to represent each DTI value.
+related columns, Table A.4 shows the symbol used to represent each DTI value.
 
   * Idx - template index
   * S - spatial ID
@@ -853,11 +981,11 @@ related columns, Table 4 shows the symbol used to represent each DTI value.
 | Required          | 3     | R        |
 {:.table .table-sm .table-bordered }
 
-Table 4. DTI values
+Table A.4. DTI values
 {: .caption }
 
 
-### 5.1 L1T3 Single spatial layer with 3 temporal layers
+##### A.5.1 L1T3 Single spatial layer with 3 temporal layers
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L1T3.png" class="figure-img img-fluid">
@@ -897,7 +1025,7 @@ equal to 0.
 {:.alert .alert-info }
 
 
-### 5.2 L2T1 Full SVC with occasional switch
+##### A.5.2 L2T1 Full SVC with occasional switch
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L2T1.png" class="figure-img img-fluid">
@@ -937,7 +1065,7 @@ equal to 0. Chain 1 includes all Frames.
 {:.alert .alert-info }
 
 
-### 5.3 L3T3 Full SVC
+##### A.5.3 L3T3 Full SVC
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L3T3.png" class="figure-img img-fluid">
@@ -1009,7 +1137,7 @@ temporal ID equal to 0.
 {:.alert .alert-info }
 
 
-### 5.4 S3T3 K-SVC with temporal shift
+##### A.5.4 S3T3 K-SVC with temporal shift
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/S3T3.png" class="figure-img img-fluid">
@@ -1098,86 +1226,19 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
 {:.alert .alert-info }
 
-## 6. Payload Format Parameters
 
-This payload format has three optional parameters.
-
-### 6.1. Media Type Definition
-
-TODO: proposed meda type for IANA registration:
-
-* Type name: 
-   * **video**
-* Subtype name: 
-  * **AV1** 
-* Required parameters:
-  * None.
-* Optional parameters:  
-  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level_idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
-    * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by the receiver. The range of possible values is identical to **seq_profile** syntax element specified in [AV1]
-    * **level_idx**: The value of **level_idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
-    * **tier**: The value of **tier** is an integer indicating tier of the indicated level.  The range of possible values is identical to **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
-
-* Encoding considerations:
-  * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
-* Security considerations:
-  * TODO
-* Interoperability considerations:
-  * None.
-* Published specification:
-  * AV1 bitstream format [AV1]
-* Applications which use this media type:
-  * Video over IP, video conferencing.
-* Fragment identifier considerations:
-  * N/A.
-* Additional information:
-  * None.
-* Person & email address to contact for further information:
-  * TODO 
-* Intended usage:
-  * COMMON
-* Restrictions on usage:
-  * TODO
-* Author:
-  * TODO 
-* Change controller:
-  * TODO
-
-### 6.2. SDP Parameters
-The receiver MUST ignore any fmtp parameter unspecified in this memo.
-
-#### 6.2.1. Mapping of Media Subtype Parameters to SDP
-The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) [RFC4566] as follows:
-* The media name in the "m=" line of SDP MUST be video.
-* The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
-* The clock rate in the "a=rtpmap" line MUST be 90000.
-* The parameters "**profile**", and "**level_idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
-* Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0. 
+#### A.6 References
 
 
-#### 6.2.1.1. Example
-An example of media representation in SDP is as follows:
-
-* m=video 49170 RTP/AVPF 98
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level_idx=8; tier=1;
-
-## 7. References
-
-
-### 7.1 Normative references
-
+##### A.6.1 Normative references
   * [RFC3550] for RTP header format
   * [RFC8285] for generic RTP header extensions
-  * [RFC7667] RTP Topologies
-  * [AV1 Bitstream & Decoding Process Specification][AV1]
-
 
 **TODO:** flesh out list of normative references.
 {:.alert .alert-danger }
 
 
-### 7.2 Informative references
+##### A.6.2 Informative references
 
 **TODO:** list informative references.
 {:.alert .alert-danger }
