@@ -377,15 +377,6 @@ An example of media representation in SDP is as follows:
 {:.alert .alert-danger }
 
 
-[AV1]: https://aomedia.org/av1-bitstream-and-decoding-process-specification/
-[RFC2119]: https://tools.ietf.org/html/rfc2119
-[RFC3550]: https://tools.ietf.org/html/rfc3550
-[RFC4585]: https://tools.ietf.org/html/rfc4585
-[RFC7667]: https://tools.ietf.org/html/rfc7667
-[RFC8285]: https://tools.ietf.org/html/rfc8285
-[Selective Forwarding Unit]: https://webrtcglossary.com/sfu/
-
-
 ## Appendix
 
 ### Dependency Descriptor RTP Header Extension
@@ -437,9 +428,6 @@ Chain
 : A sequence of frames for which it can be determined instantly if a frame from
   that sequence has been lost.
 
-Coded frame
-: The representation of one frame before the decoding process.
-
 Decode target
 : The set of frames needed to decode a coded video sequence at a given spatial
   and temporal fidelity.
@@ -455,16 +443,6 @@ Discardable
 
 **Note:** A Frame belonging to more than one Decode target may be Discardable
 for one Decode target and not for another.
-{:.alert .alert-info }
-
-Frame
-: A frame in this document is synonymous to a Coded frame.
-
-**Note:** In contrast, in [AV1], Frame is defined as the representation of
-video signals in the spatial domain.
-{:.alert .alert-info }
-
-**Note:** Multiple frames may be present at the same instant in time.
 {:.alert .alert-info }
 
 Frame dependency structure
@@ -505,10 +483,6 @@ Required
 for one Decode target and not Required (i.e, either Discardable or Switch)
 for another.
 {:.alert .alert-info }
-
-[Selective Forwarding Unit] (SFU)
-: A middlebox that relays streams among transmitting and receiving clients by
-  selectively forwarding packets ([RFC7667]).
 
 Switch indication
 : An indication associated with a specific Decode target that all subsequent
