@@ -3,6 +3,15 @@
 This project is for authoring and generating the AV1 RTP Payload Format
 specification document, in HTML and PDF.
 
+
+  * [Summary](#summary)
+  * [GitHub workflow](#github-workflow)
+  * [Building locally](#building-locally)
+  * [Local PDF generation](#local-pdf-generation)
+
+
+## Summary
+
 The document is sourced in a light-duty markup format called Markdown. Markdown
 is a readable plain text format that transforms to HTML. See **[GitHub Flavored
 Markdown][GFM]**.
@@ -131,6 +140,11 @@ to have git installed locally. Then:
      git branch -d clarify-section-3
      ~~~~~
 
+**Note** that it's usually wise to `fetch` and `merge` `upstream/master` before
+beginning new work, to ensure that you have the latest commits made by others.
+This matters less in a documentation project (vs. code), because resolving merge
+conflicts is usually quite easy, but it's good practice absent a reason not to.
+
 
 ## Building locally
 
@@ -147,7 +161,7 @@ Ignore the steps related to Node, npm and Grunt. These are not needed because
 the `av1-rtp-spec` document is far simpler than the AV1 bitstream spec.
 
 
-## Using Prince locally for PDF generation
+## Local PDF generation
 
 Building the document locally writes output to an untracked/ignored directory
 `_site`. The PDF input file is `_site/pdf.html`.
