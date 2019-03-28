@@ -434,14 +434,14 @@ Decode target
 
 Decode Target Information (DTI)
 : Describes the relationship of a frame to a Decode target. The DTI indicates
-  four distinct relationships: 'not present, 'discardable', 'switch indication',
+  four distinct relationships: 'not present', 'discardable', 'switch',
   and 'required'.
 
-Discardable
+Discardable indication
 : An indication for a frame, associated with a given Decode target, that it will
   not be a Referred frame for any frame belonging to that Decode target.
 
-**Note:** A Frame belonging to more than one Decode target may be Discardable
+**Note:** A Frame belonging to more than one Decode target may be discardable
 for one Decode target and not for another.
 {:.alert .alert-info }
 
@@ -458,29 +458,24 @@ Frame dependency template
 Frame number
 : Frame number increases strictly monotonically in decode order.
 
-**Note:** Frame number is not the same as Frame ID in [AV1 specification].
-{:.alert .alert-info }
-
 Instantaneous Decidability of Decodability (IDD)
 : The ability to decide, immediately upon receiving the very first packet after
   packet loss, if the lost packet(s) contained a packet that is needed to decode
   the information present in that first and following packets.
-
-Predefined frame
-: A Frame for which the spatial ID, temporal ID, DTIs, Referred frames, and
-  Chain information is contained in the template_dependency_structure and
-  referenced using frame_dependency_template_id.
+  
+Not present indication 
+: An indication for a frame, that it is not associated with a given Decode target. 
 
 Referred frame
 : A Frame on which the current frame depends.
 
-Required
+Required indication 
 : An indication for a frame, associated with a given Decode target, that it
-  belongs to the Decode target and has neither a Discardable nor a Switch
+  belongs to the Decode target and has neither a Discardable indication nor a Switch
   indication.
 
-**Note:** A Frame belonging to more than one Decode target may be Required
-for one Decode target and not Required (i.e, either Discardable or Switch)
+**Note:** A Frame belonging to more than one Decode target may be required
+for one Decode target and not required (i.e, either discardable or switch)
 for another.
 {:.alert .alert-info }
 
@@ -488,15 +483,6 @@ Switch indication
 : An indication associated with a specific Decode target that all subsequent
   frames for that Decode target will be decodable if the frame containing the
   indication is decodable.
-
-Self-defined frame
-: A Frame for which the DTIs, Referred frames, and/or Chain information is
-  present in the packet(s) containing the Frame.
-
-Switch request
-: A request for the encoder to produce a frame with Switch indication that would
-  allow the endpoint to decode a specified Decode target.
-
 
 #### A.3 Media stream requirements
 
@@ -531,8 +517,7 @@ The syntax for the descriptor is described in pseudo-code form in this section.
   * **ns(n)** - unsigned encoded integer with maximum number of values n (i.e.
     output in range 0..n-1).
 
-(See AV1 specification Section 4 for syntax details including the two functions
-above)
+[f(n) and ns(n) need to be defined. A definition may be found in the AV1 specification Section 4.]
 
 
 | Symbol name               | Value | Description                                         |
@@ -548,7 +533,7 @@ Table A.1. Syntax constants
 
 
 <pre><code>
-dependency_desriptor() {
+dependency_descriptor() {
   mandatory_descriptor_fields()
   if (frame_dependency_template_id_or_extended_fields_indicator ==
       EXTENDED_FIELDS_INDICATOR) {
@@ -884,12 +869,12 @@ described in this section.
     number of the Referred frame minus one.
 
 
-| DTI               | Value |                                                        |
-| ----------------- | ----- | ------------------------------------------------------ |
-| Not present       | 0     | No payload for this Decode target is present.
-| Discardable       | 1     | Payload for this Decode target is present and discardable.
-| Switch indication | 2   | Payload for this Decode target is present and switch is possible (Switch indication).
-| Required          | 3   | Payload for this Decode target is present but it is neither discardable nor is it a Switch indication.
+| DTI                    | Value |                                                        |
+| ---------------------- | ----- | ------------------------------------------------------ |
+| Not present indication | 0     | No payload for this Decode target is present.
+| Discardable indication | 1     | Payload for this Decode target is present and discardable.
+| Switch indication      | 2     | Payload for this Decode target is present and switch is possible (Switch indication).
+| Required indication    | 3     | Payload for this Decode target is present but it is neither discardable nor is it a Switch indication.
 {:.table .table-sm .table-bordered }
 
 Table A.2. DTI values.
@@ -901,7 +886,7 @@ Table A.2. DTI values.
   * **next_fdiff_size**: indicates the size of following fdiff_minus_one syntax
     elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST
     immediately follow; otherwise a value of 0 indicates no more frame
-    difference values are present for the current Self-defined frame.
+    difference values are present.
 
   * **frame_dti[dtiIndex]**: decode target information describing the
     relationship between the current frame and the Decode target having index
@@ -973,12 +958,12 @@ related columns, Table A.4 shows the symbol used to represent each DTI value.
   * DTI - **template_dti[Idx]**
 
 
-| DTI               | Value | Symbol   |
-| ----------------- | ----- | -------- |
-| Not present       | 0     | -        |
-| Discardable       | 1     | D        |
-| Switch indication | 2     | S        |
-| Required          | 3     | R        |
+| DTI                    | Value | Symbol   |
+| ---------------------- | ----- | -------- |
+| Not present indication | 0     | -        |
+| Discardable indication | 1     | D        |
+| Switch indication      | 2     | S        |
+| Required indication    | 3     | R        |
 {:.table .table-sm .table-bordered }
 
 Table A.4. DTI values
