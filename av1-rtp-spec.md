@@ -798,14 +798,14 @@ described in this section.
     template_dependency_structure MUST be present; otherwise
     template_dependency_structure MUST NOT be present.
 
-  * **custom_dtis_flag**: indicates the presence the frame_dtis. When set to 1,
+  * **custom_dtis_flag**: indicates the presence of frame_dtis. When set to 1,
     frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
 
-  * **custom_fdiffs_flag**: indicates the presence the frame_fdiffs. When set to
-    1, frame_dtis MUST be present. Otherwise, frame_fdiffs MUST NOT be present.
+  * **custom_fdiffs_flag**: indicates the presence of frame_fdiffs. When set to
+    1, frame_fdiffs MUST be present. Otherwise, frame_fdiffs MUST NOT be present.
 
-  * **custom_chains_flag**: indicates the presence the frame_chain_fdiff. When
-    set to 1, frame_dtis MUST be present. Otherwise, frame_chain_fdiff MUST NOT
+  * **custom_chains_flag**: indicates the presence of frame_chain_fdiff. When
+    set to 1, frame_chain_fdiff MUST be present. Otherwise, frame_chain_fdiff MUST NOT
     be present.
    
 **Template dependency structure**
