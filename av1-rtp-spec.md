@@ -774,6 +774,9 @@ described in this section.
     monotonically in decode order. frame_number MAY start on a random number,
     and MUST wrap after reaching the maximum value. All packets of the same
     Frame MUST have the same frame_number value.
+    
+    **Note:** Frame number is not the same as Frame ID in [AV1 specification].	
+    {:.alert .alert-info }
 
   * **frame_dependency_template_id**: ID of the Frame dependency template to use.
     MUST be in the range of template_id_offset to
