@@ -211,11 +211,6 @@ This specification allows to packetize:
 The design allows combination of aggregation and fragmentation, i.e., allow for
 a set of OBUs in which the first and/or last one is fragmented.
 
-It is not allowed, however, to aggregate OBUs across frame boundaries. In other
-words, it is not allowed to have OBUs from different frames in the same RTP
-packet. OBUs in a temporal unit that precede the first frame are considered part
-of that first frame.
-
 The payload contains a series of one or more OBUs (with the first and/or last
 possibly being fragments). Each OBU (or OBU fragment) is preceded by a length
 field. The length field is encoded using leb128. Leb128 is defined in the AV1
@@ -252,50 +247,32 @@ taking two bytes for the first and second OBU and one byte for the last (N) OBU.
 Whether or not the first and/or last OBU is fragmented is signaled in the
 aggregation header.
 
-**TODO:** Add a paragraph that describes how a temporal unit is mapped into RTP
-packets. I think a new temporal unit should start a new RTP packet. You skip the
-temporal delimiter OBU, and then packetize the remaining OBUs in one or more
-packets, with fragmentation as needed.
-{:.alert .alert-danger }
+## 5. Packetization Rules
 
-* * *
+Each RTP packet MUST contain OBUs that belong to a single temporal unit.
 
-<div class="alert alert-danger" markdown="1">
+The temporal delimiter OBU, if present, SHOULD be removed when transmitting, and
+MUST be ignored by receivers.
 
-2019/01/15 Notes:
+With the exception of sequence header and metadata OBUs, an RTP packet MUST
+contain OBUs associated with a single frame.
 
-A packet must not include OBUs across a TD
-All OBUs in a packet must have the same temporal_id and spatial_id
-OBUs with layering information must not be aggregated with OBUs that don't have layering information (layering information=extension header).
-If sequence header is present, it should (not must) be the first OBU in a packet.
-Q: May not be needed.
-A packet cannot include OBUs from different frames.
-Q: for hidden frames, the various frames may all be required anyway, so maybe we allow aggregation of frames with associated hidden frames (of the same temporal unit).
+*[Ed.(AE): Does this	create issues with hidden frames?]
 
-Q: Should we support tile list OBUs?
+If more than one OBU contained in an RPT packet has an OBU extension header then
+the values of the temporal_id and spatial_id must be the same in all such OBUs
+in the RTP packet.
 
-Packetization Exercises:
-
-TD   SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1) ...
-
- X   [.......................................................]
- X   [.. ........][.........................][.............][.........................................]
+If a sequence header OBU is present in an RTP packet it	SHOULD be the first OBU
+in the packet.	
 
 
-FH(0,1) TG0(0,1)  TD SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
 
-[ ....................... X   ... ] not allowed, SH must be at beginning of packet
-
-FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
-
-[ ........................ x  .....]
-</div>
-
-## 5. Payload Format Parameters
+## 6. Payload Format Parameters
 
 This payload format has three optional parameters.
 
-### 5.1. Media Type Definition
+### 6.1. Media Type Definition
 
 TODO: proposed meda type for IANA registration:
 
@@ -336,10 +313,10 @@ TODO: proposed meda type for IANA registration:
 * Change controller:
   * TODO
 
-### 5.2. SDP Parameters
+### 6.2. SDP Parameters
 The receiver MUST ignore any fmtp parameter unspecified in this memo.
 
-#### 5.2.1. Mapping of Media Subtype Parameters to SDP
+#### 6.2.1. Mapping of Media Subtype Parameters to SDP
 The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) [RFC4566] as follows:
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
@@ -348,17 +325,21 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 * Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0. 
 
 
-#### 5.2.1.1. Example
+#### 6.2.1.1. Example
 An example of media representation in SDP is as follows:
 
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=2; level_idx=8; tier=1;
 
-## 6. References
+
+............... x  .....]
+</div>
+
+## 7. References
 
 
-### 6.1 Normative references
+### 7.1 Normative references
 
 
   * [RFC3550] for RTP header format
@@ -371,7 +352,7 @@ An example of media representation in SDP is as follows:
 {:.alert .alert-danger }
 
 
-### 6.2 Informative references
+### 7.2 Informative references
 
 **TODO:** list informative references.
 {:.alert .alert-danger }
