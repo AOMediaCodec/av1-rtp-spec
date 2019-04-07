@@ -266,7 +266,7 @@ in the RTP packet.
 If a sequence header OBU is present in an RTP packet it	SHOULD be the first OBU
 in the packet.	
 
-
+Tile list OBUs are not supported. They SHOULD be removed by transmitted, and MUST be ignored by receivers. 
 
 ## 6. Payload Format Parameters
 
