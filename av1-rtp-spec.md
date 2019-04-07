@@ -355,10 +355,64 @@ An example of media representation in SDP is as follows:
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=2; level_idx=8; tier=1;
 
-## 6. References
+## 6. Security Considerations
+
+RTP packets using the payload format defined in this document are subject 
+to the security considerations discussed in the RTP specification [RFC3550] 
+and in any appropriate RTP profile.  
+This implies that confidentiality of the media streams is achieved by 
+encryption, for example, through the application of SRTP [26].  
+Because the data compression used with this payload format is
+applied end-to-end, any encryption needs to be performed after
+compression.  A potential denial-of-service threat exists for data
+encodings using compression techniques that have non-uniform
+receiver-end computational load.  The attacker can inject
+pathological datagrams into the stream that are complex to decode and
+that cause the receiver to be overloaded.  H.264 is particularly
+vulnerable to such attacks, as it is extremely simple to generate
+datagrams containing NAL units that affect the decoding process of
+many future NAL units.  Therefore, the usage of data origin
+authentication and data integrity protection of at least the RTP
+packet is RECOMMENDED, for example, with SRTP [RFC3711].   
+   
+   
+Note that the appropriate mechanism to ensure confidentiality and
+integrity of RTP packets and their payloads is very dependent on the
+application and on the transport and signaling protocols employed.
+Thus, although SRTP is given as an example above, other possible
+choices exist.
+
+Decoders MUST exercise caution with respect to the handling of user
+data SEI messages, particularly if they contain active elements, and
+MUST restrict their domain of applicability to the presentation
+containing the stream.
+
+Decoders MUST exercise caution with respect to the handling of
+reserved OBU types and reserved metadata OBU types, particularly if
+they contain active elements, and MUST restrict their domain of
+applicability to the presentation containing the stream. The safest
+way is to simply discard these OBUs.
+
+When integrity protection is applied to a stream, care MUST be taken
+that the stream being transported may be scalable; hence a receiver
+may be able to access only part of the entire stream.
+
+End-to-end security with either authentication, integrity, or
+confidentiality protection will prevent a MANE from performing media-
+aware operations other than discarding complete packets.  And in the
+case of confidentiality protection it will even be prevented from
+performing discarding of packets in a media-aware way.  To allow any
+MANE to perform its operations, it will be required to be a trusted
+entity that is included in the security context establishment.  This
+applies both for the media path and for the RTCP path, if RTCP packets 
+need to be rewritten. Alternatively, a 
+double encryption procedure may be used in which both end-to-end 
+and hop-by-hop security guarantees are provided.
+   
+## 7. References
 
 
-### 6.1 Normative references
+### 7.1 Normative references
 
 
   * [RFC3550] for RTP header format
@@ -371,11 +425,13 @@ An example of media representation in SDP is as follows:
 {:.alert .alert-danger }
 
 
-### 6.2 Informative references
+### 7.2 Informative references
 
 **TODO:** list informative references.
 {:.alert .alert-danger }
 
+  * [RFC3711] SRTP, example enryption protocol
+  
 
 ## Appendix
 
