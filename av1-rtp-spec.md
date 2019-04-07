@@ -252,6 +252,13 @@ taking two bytes for the first and second OBU and one byte for the last (N) OBU.
 Whether or not the first and/or last OBU is fragmented is signaled in the
 aggregation header.
 
+The AV1 specification allows OBUs to have an optional size field called 
+obu_size (also leb128 encoded), signaled by the obu_has_size_field flag 
+in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD 
+be set to zero in all OBUs. If the obu_size field is present, it SHOULD 
+be ignored by receivers. 
+
+
 **TODO:** Add a paragraph that describes how a temporal unit is mapped into RTP
 packets. I think a new temporal unit should start a new RTP packet. You skip the
 temporal delimiter OBU, and then packetize the remaining OBUs in one or more
