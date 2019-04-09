@@ -355,6 +355,11 @@ An example of media representation in SDP is as follows:
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=2; level_idx=8; tier=1;
 
+## 7. IANA Considerations
+
+   A new media type, as specified in Section 5.1 of this memo, has been
+   registered with IANA.
+
 ## 6. References
 
 
