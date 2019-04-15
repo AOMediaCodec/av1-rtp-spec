@@ -357,7 +357,7 @@ An example of media representation in SDP is as follows:
 
 ## 7. IANA Considerations
 
-   A new media type, as specified in Section 5.1 of this memo, has been
+   Upon publication, a new media type, as specified in Section 5.1 of this document, will be
    registered with IANA.
 
 ## 6. References
