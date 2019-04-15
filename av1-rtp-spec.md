@@ -9,13 +9,13 @@ RTP Payload Format For AV1 (v0.1.6)
 ## Abstract
 {:.no_toc }
 
-This memo describes an RTP payload format for the [AV1 video codec][AV1]. The
+This document describes an RTP payload format for the [AV1 video codec][AV1]. The
 payload format has wide applicability, from low bit-rate peer-to-peer usage, to
 high bit-rate multi-party video conferences. It includes provisions for temporal
 and spatial scalability.
 
 
-## Status of this memo
+## Status of this document
 {:.no_toc }
 
 This document is a working draft of the Real-Time Communications Subgroup.
@@ -30,7 +30,7 @@ This document is a working draft of the Real-Time Communications Subgroup.
 
 ## 1. Introduction
 
-This memo describes an RTP payload specification applicable to the transmission
+This document describes an RTP payload specification applicable to the transmission
 of video streams encoded using the [AV1 video codec][AV1].
 
 In AV1 the smallest individual encoder entity presented for transport is the
@@ -337,7 +337,7 @@ TODO: proposed meda type for IANA registration:
   * TODO
 
 ### 5.2. SDP Parameters
-The receiver MUST ignore any fmtp parameter unspecified in this memo.
+The receiver MUST ignore any fmtp parameter unspecified in this document.
 
 #### 5.2.1. Mapping of Media Subtype Parameters to SDP
 The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) [RFC4566] as follows:
