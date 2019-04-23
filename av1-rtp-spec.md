@@ -355,18 +355,71 @@ An example of media representation in SDP is as follows:
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=2; level_idx=8; tier=1;
 
+## 6. Feedback Messages
+
+## 6.1.  Full Intra Request (FIR)
+
+   The Full Intra Request (FIR) [RFC5104] RTCP feedback message allows a
+   receiver to request a full state refresh of an encoded stream.
+
+   Upon receipt of an FIR request, an AV1 sender MUST send a picture with
+   a keyframe for its spatial layer 0 layer frame, and then send frames
+   without inter-picture prediction for any higher layer frames.
+
+## 6.2.  Layer Refresh Request (LRR)
+
+   The Layer Refresh Request [I-D.ietf-avtext-lrr] allows a receiver to
+   request a single layer of a spatially or temporally encoded stream to
+   be refreshed, without necessarily affecting the stream's other
+   layers.
+
+               +---------------+---------------+
+               |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
+               +---------------+---------+-----+
+               |   RES   | TID | RES     | SID |
+               +---------------+---------+-----+
+
+                                 Figure 4
+
+   Figure 4 shows the format of LRR's layer index fields for AV1
+   streams.  The two "RES" fields MUST be set to 0 on transmission and
+   ingnored on reception.  See Sections 2, 5.3.3 and 6.2.3 of the AV1 bitstream
+   specification for details on the temporal_id (TID) and
+   spatial_id (SID) fields.
+
+   Identification of a layer refresh frame can be derived from the
+   reference IDs of each frame by backtracking the dependency chain
+   until reaching a point where only decodable frames are being
+   referenced.  Therefore it's recommended for both the flexible and the
+   non-flexible mode that, when upgrade frames are being encoded in
+   response to a LRR, those packets should contain layer indices and the
+   reference fields so that the decoder or an MCU can make this
+   derivation.
+
+   Example:
+
+   LRR {1,0}, {2,1} is sent by an MCU when it is currently relaying
+   {1,0} to a receiver and which wants to upgrade to {2,1}. In response
+   the encoder should encode the next frames in layers {1,1} and {2,1}
+   by only referring to frames in {1,0}, or {0,0}.
+
+   In the non-flexible mode, periodic upgrade frames can be defined by
+   the layer structure of the SS, thus periodic upgrade frames can be
+   automatically identified by the frame ID.
+
 ## 7. IANA Considerations
 
    Upon publication, a new media type, as specified in Section 5.1 of this document, will be
    registered with IANA.
 
-## 6. References
+## 8. References
 
 
-### 6.1 Normative references
+### 8.1 Normative references
 
-
+  * [I-D.ietf-avtext-lrr] for LRR feedback message
   * [RFC3550] for RTP header format
+  * [RFC5104] for FIR feedback message
   * [RFC8285] for generic RTP header extensions
   * [RFC7667] RTP Topologies
   * [AV1 Bitstream & Decoding Process Specification][AV1]
@@ -376,7 +429,7 @@ An example of media representation in SDP is as follows:
 {:.alert .alert-danger }
 
 
-### 6.2 Informative references
+### 8.2 Informative references
 
 **TODO:** list informative references.
 {:.alert .alert-danger }
