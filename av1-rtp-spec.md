@@ -259,14 +259,14 @@ contain OBUs associated with a single frame.
 
 *[Ed.(AE): Does this	create issues with hidden frames?]
 
-If more than one OBU contained in an RPT packet has an OBU extension header then
+If more than one OBU contained in an RTP packet has an OBU extension header then
 the values of the temporal_id and spatial_id must be the same in all such OBUs
 in the RTP packet.
 
 If a sequence header OBU is present in an RTP packet it	SHOULD be the first OBU
 in the packet.	
 
-Tile list OBUs are not supported. They SHOULD be removed by transmitted, and MUST be ignored by receivers. 
+Tile list OBUs are not supported. They SHOULD be removed when transmitted, and MUST be ignored by receivers. 
 
 ## 6. Payload Format Parameters
 
