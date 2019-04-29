@@ -368,10 +368,10 @@ compression.  A potential denial-of-service threat exists for data
 encodings using compression techniques that have non-uniform
 receiver-end computational load.  The attacker can inject
 pathological datagrams into the stream that are complex to decode and
-that cause the receiver to be overloaded.  H.264 is particularly
-vulnerable to such attacks, as it is extremely simple to generate
-datagrams containing NAL units that affect the decoding process of
-many future NAL units.  Therefore, the usage of data origin
+that cause the receiver to be overloaded.  AV1 is 
+vulnerable to such attacks, as it is exremely simple to generate
+datagrams containing OBUs that affect the decoding process of
+many future OBUs.  Therefore, the usage of data origin
 authentication and data integrity protection of at least the RTP
 packet is RECOMMENDED, for example, with SRTP [RFC3711].   
    
@@ -380,12 +380,7 @@ Note that the appropriate mechanism to ensure confidentiality and
 integrity of RTP packets and their payloads is very dependent on the
 application and on the transport and signaling protocols employed.
 Thus, although SRTP is given as an example above, other possible
-choices exist.
-
-Decoders MUST exercise caution with respect to the handling of user
-data SEI messages, particularly if they contain active elements, and
-MUST restrict their domain of applicability to the presentation
-containing the stream.
+choices exist [RFC7202].
 
 Decoders MUST exercise caution with respect to the handling of
 reserved OBU types and reserved metadata OBU types, particularly if
@@ -399,16 +394,16 @@ may be able to access only part of the entire stream.
 
 End-to-end security with either authentication, integrity, or
 confidentiality protection will prevent a MANE from performing media-
-aware operations other than discarding complete packets.  And in the
-case of confidentiality protection it will even be prevented from
-performing discarding of packets in a media-aware way.  To allow any
-MANE to perform its operations, it will be required to be a trusted
-entity that is included in the security context establishment.  This
+aware operations other than discarding complete packets. The use of the 
+Dependency Descriptor RTP extension described in Appendix A allows discarding
+of packets in a media-aware way even when confidentiality protection is used. 
+A MANE is required to be a trusted
+entity that is included in the security context establishment only when repacketization 
+is needed.  This
 applies both for the media path and for the RTCP path, if RTCP packets 
-need to be rewritten. Alternatively, a 
-double encryption procedure may be used in which both end-to-end 
-and hop-by-hop security guarantees are provided.
-   
+need to be rewritten. 
+
+
 ## 7. References
 
 
@@ -431,6 +426,7 @@ and hop-by-hop security guarantees are provided.
 {:.alert .alert-danger }
 
   * [RFC3711] SRTP, example enryption protocol
+  * [RFC7202] Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution
   
 
 ## Appendix
