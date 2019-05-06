@@ -310,6 +310,22 @@ TODO: proposed meda type for IANA registration:
     * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by the receiver. The range of possible values is identical to **seq_profile** syntax element specified in [AV1]
     * **level_idx**: The value of **level_idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
     * **tier**: The value of **tier** is an integer indicating tier of the indicated level.  The range of possible values is identical to **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
+    * **level-asymmetry-allowed**:
+         This parameter MAY be used in SDP Offer/Answer to indicate
+         whether level/profile asymmetry, i.e., sending media encoded at a
+         different level and profile in the offerer-to-answerer direction than the
+         level and profile in the answerer-to-offerer direction, is allowed.  The
+         value MAY be equal to either 0 or 1.  When the parameter is not
+         present, the value MUST be inferred to be equal to 0.  The
+         value 1 in both the offer and the answer indicates that level/profile
+         asymmetry is allowed.  The value of 0 in either the offer or
+         the answer indicates that level/profile asymmetry is not allowed.
+
+         If level-asymmetry-allowed is equal to 0 (or not present) in
+         either the offer or the answer, level/profile asymmetry is not allowed.
+         In this case, the level and profile to use in the direction from the
+         offerer to the answerer MUST be the same as the level and profile to use in
+         the opposite direction.
 
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
@@ -347,6 +363,54 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 * The parameters "**profile**", and "**level_idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
 * Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0. 
 
+#### 5.2.2.  Usage with the SDP Offer/Answer Model
+
+When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for negotiation for unicast usage, the following limitations and rules apply:
+  *  The media format configuration is identified by **level**, **profile_idx** and **tier**.
+* The parameter **level-asymmetry-allowed** indicates whether level/profile asymmetry is allowed.
+If level-asymmetry-allowed is equal to 0 (or not present) in either the offer or the answer, level/profile asymmetry is not allowed.
+In this case, the level to use in the direction from the offerer to the answerer MUST be the same as the level to use in the
+opposite direction, and the common level to use is equal to the lower value of the default level in the offer and the default level in the answer. The same limitation applies to profile.
+
+  Otherwise, level-asymmetry-allowed equals 1 in both the offer and the answer, and level/profile asymmetry is allowed.  In this case, the
+  level/profile to use in the offerer-to-answerer direction MUST be equal to the highest level/profile the answerer supports for receiving, and the
+  level/profile to use in the answerer-to-offerer direction MUST be equal to the highest level/profile the offerer supports for receiving.
+
+  When level/profile asymmetry is not allowed, level/profile upgrade is not allowed, i.e., the default level and profile in the answer MUST be equal to or lower
+  than the default level and profile in the offer.
+
+For streams being delivered over multicast, the following rules apply:
+
+*  The media format configuration is identified by **level**, **profile_idx** and **tier**. These media format configuration parameters MUST be used symmetrically; that is, the answerer MUST either maintain all configuration parameters or remove the media format (payload type) completely. 
+
+    To simplify the handling and matching of these configurations, the same RTP payload type number used in the offer SHOULD also be used in the answer, as specified in [RFC3264].  An answer MUST NOT contain a payload type number used in the offer unless the configuration is  the same as in the offer.
+
+
+Parameters used for declaring receiver capabilities are in general
+downgradable; that is, they express the upper limit for a sender's
+possible behavior.  Thus, a sender MAY select to set its encoder
+using only lower/less or equal values of these parameters.
+
+A receiver SHOULD understand all media type parameters, even if it
+only supports a subset of the payload format's functionality.  This
+ensures that a receiver is capable of understanding when an offer to
+receive media can be downgraded to what is supported by the receiver
+of the offer.
+
+An answerer MAY extend the offer with additional media format
+configurations.  However, to enable their usage, in most cases, a
+second offer is required from the offerer to provide the stream
+property parameters that the media sender will use.  This also has
+the effect that the offerer has to be able to receive this media
+format configuration, not only to send it.
+
+If an offerer wishes to have non-symmetric capabilities between
+sending and receiving, the offerer can allow asymmetric levels via
+**level-asymmetry-allowed** being equal to 1.  Alternatively, the offerer
+could offer different RTP sessions, i.e., different media lines
+declared as "recvonly" and "sendonly", respectively.  This may have
+further implications on the system and may require additional
+external semantics to associate the two media lines.
 
 #### 5.2.1.1. Example
 An example of media representation in SDP is as follows:
@@ -354,6 +418,22 @@ An example of media representation in SDP is as follows:
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=2; level_idx=8; tier=1;
+
+In the following example, the offer is accepted with level upgrading. The level to use in the offerer-to-answerer
+direction is Level 2.0, and the level to use in the answerer-to-offerer direction is Level 3.0.  The answerer is allowed to send at
+any level up to and including Level 2.0, and the offerer is allowed to send at any level up to and including Level 3.0:
+
+Offer SDP:
+* m=video 49170 RTP/AVPF 98
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=0; level_idx=0; level-asymmetry-allowed=1
+  
+Answer SDP:
+* m=video 49170 RTP/AVPF 98
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=0; level_idx=4; level-asymmetry-allowed=1
+
+
 
 ## 7. IANA Considerations
 
@@ -1239,6 +1319,7 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 
 [AV1]: https://aomedia.org/av1-bitstream-and-decoding-process-specification/
 [RFC2119]: https://tools.ietf.org/html/rfc2119
+[RFC3264]: https://tools.ietf.org/html/rfc3264
 [RFC3550]: https://tools.ietf.org/html/rfc3550
 [RFC4566]: https://tools.ietf.org/html/rfc4566
 [RFC4585]: https://tools.ietf.org/html/rfc4585
