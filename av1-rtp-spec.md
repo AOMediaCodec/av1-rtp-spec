@@ -352,10 +352,10 @@ TODO: proposed meda type for IANA registration:
 * Change controller:
   * TODO
 
-### 5.2. SDP Parameters
+### 5.2 SDP Parameters
 The receiver MUST ignore any fmtp parameter unspecified in this document.
 
-#### 5.2.1. Mapping of Media Subtype Parameters to SDP
+#### 5.2.1 Mapping of Media Subtype Parameters to SDP
 The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) [RFC4566] as follows:
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
@@ -363,7 +363,7 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 * The parameters "**profile**", and "**level_idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
 * Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0. 
 
-#### 5.2.2.  Usage with the SDP Offer/Answer Model
+#### 5.2.2  Usage with the SDP Offer/Answer Model
 
 When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for negotiation for unicast usage, the following limitations and rules apply:
   *  The media format configuration is identified by **level**, **profile_idx** and **tier**.
@@ -412,7 +412,7 @@ declared as "recvonly" and "sendonly", respectively.  This may have
 further implications on the system and may require additional
 external semantics to associate the two media lines.
 
-#### 5.2.1.1. Example
+### 5.3 Example
 An example of media representation in SDP is as follows:
 
 * m=video 49170 RTP/AVPF 98
