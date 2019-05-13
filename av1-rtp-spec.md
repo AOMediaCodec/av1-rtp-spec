@@ -336,10 +336,10 @@ TODO: proposed meda type for IANA registration:
 * Change controller:
   * TODO
 
-### 5.2. SDP Parameters
+### 5.2 SDP Parameters
 The receiver MUST ignore any fmtp parameter unspecified in this document.
 
-#### 5.2.1. Mapping of Media Subtype Parameters to SDP
+#### 5.2.1 Mapping of Media Subtype Parameters to SDP
 The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) [RFC4566] as follows:
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
@@ -347,14 +347,34 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 * The parameters "**profile**", and "**level_idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
 * Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0. 
 
+#### 5.2.2  Usage with the SDP Offer/Answer Model
 
-#### 5.2.1.1. Example
+When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for negotiation for unicast usage, the following limitations and rules apply:
+  *  The media format configuration is identified by **level**, **profile_idx** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and answerer COULD declare its own media configuration if answerer capabilities are different to offerer. 
+     *  The  profile to use in the offerer-to-answerer direction MUST be lesser or equal to the profile the answerer supports for receiving, and the profile to use in the answerer-to-offerer direction MUST be lesser or equal to the profile the offerer supports for receiving.
+     *  The level to use in the offerer-to-answerer direction MUST be lesser or equal to the level the answerer supports for receiving, and the level to use in the answerer-to-offerer direction MUST be lesser or equal to the level the offerer supports for receiving. 
+     *  The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be lesser or equal to the tier the offerer supports for receiving.  
+
+### 5.3 Example
 An example of media representation in SDP is as follows:
 
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=2; level_idx=8; tier=1;
 
+In the following example, the offer is accepted with level upgrading. The level to use in the offerer-to-answerer
+direction is Level 2.0, and the level to use in the answerer-to-offerer direction is Level 3.0/Tier 1.  The answerer is allowed to send at
+any level up to and including Level 2.0, and the offerer is allowed to send at any level up to and including Level 3.0/Tier 1:
+
+Offer SDP:
+* m=video 49170 RTP/AVPF 98
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=0; level_idx=0;
+*   
+Answer SDP:
+* m=video 49170 RTP/AVPF 98
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=0; level_idx=4; tier=1;
 ## 7. IANA Considerations
 
    Upon publication, a new media type, as specified in Section 5.1 of this document, will be
@@ -1239,6 +1259,7 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 
 [AV1]: https://aomedia.org/av1-bitstream-and-decoding-process-specification/
 [RFC2119]: https://tools.ietf.org/html/rfc2119
+[RFC3264]: https://tools.ietf.org/html/rfc3264
 [RFC3550]: https://tools.ietf.org/html/rfc3550
 [RFC4566]: https://tools.ietf.org/html/rfc4566
 [RFC4585]: https://tools.ietf.org/html/rfc4585
