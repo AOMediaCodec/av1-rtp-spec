@@ -361,20 +361,17 @@ RTP packets using the payload format defined in this document are subject
 to the security considerations discussed in the RTP specification [RFC3550] 
 and in any appropriate RTP profile.  
 This implies that confidentiality of the media streams is achieved by 
-encryption, for example, through the application of SRTP [26].  
+encryption, for example, through the application of SRTP [RFC3711].  
 Because the data compression used with this payload format is
 applied end-to-end, any encryption needs to be performed after
 compression.  A potential denial-of-service threat exists for data
 encodings using compression techniques that have non-uniform
 receiver-end computational load.  The attacker can inject
 pathological datagrams into the stream that are complex to decode and
-that cause the receiver to be overloaded.  AV1 is 
-vulnerable to such attacks, as it is exremely simple to generate
-datagrams containing OBUs that affect the decoding process of
-many future OBUs.  Therefore, the usage of data origin
+that cause the receiver to be overloaded. Therefore, the usage of data origin
 authentication and data integrity protection of at least the RTP
-packet is RECOMMENDED, for example, with SRTP [RFC3711].   
-   
+packet is RECOMMENDED, for example, with SRTP [RFC3711]. End-to-end encryption
+helps mitigate these attacks [perc-double].
    
 Note that the appropriate mechanism to ensure confidentiality and
 integrity of RTP packets and their payloads is very dependent on the
@@ -397,11 +394,7 @@ confidentiality protection will prevent a MANE from performing media-
 aware operations other than discarding complete packets. The use of the 
 Dependency Descriptor RTP extension described in Appendix A allows discarding
 of packets in a media-aware way even when confidentiality protection is used. 
-A MANE is required to be a trusted
-entity that is included in the security context establishment only when repacketization 
-is needed.  This
-applies both for the media path and for the RTCP path, if RTCP packets 
-need to be rewritten. 
+Repacketizastion by a MANE requires access to the media payload. 
 
 
 ## 7. References
@@ -427,6 +420,7 @@ need to be rewritten.
 
   * [RFC3711] SRTP, example enryption protocol
   * [RFC7202] Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution
+  * [perc-double] SRTP Double Encryption Procedures, October 17, 2018 
   
 
 ## Appendix
