@@ -264,9 +264,40 @@ the values of the temporal_id and spatial_id must be the same in all such OBUs
 in the RTP packet.
 
 If a sequence header OBU is present in an RTP packet it	SHOULD be the first OBU
-in the packet.	
+in the packet. OBUs that are not associated with a particular layer (and thus do not have
+an OBU extension header) SHOULD be in the beginning of a packet, following the 
+sequence header OBU if present.
 
 Tile list OBUs are not supported. They SHOULD be removed when transmitted, and MUST be ignored by receivers. 
+
+### 5.1 Examples
+
+The following are example packetizations of OBU sequences. A two-letter notation is used to identify the OBU type: FH frame header, TG - tile group, FR - frame, SH - sequence header, TD - temporal delimitered, MD - metadata. Parentheses after the type indicate the temporal_id and spatial_id combination. For example "TG(0,1)" indicates a tile group OBU with temporal_id equal to 0 and spatial_id equal to 1. 
+
+The following is an example coded video sequence:
+
+TD SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG(0,1) 
+
+This sequence would be packetized as follows. First, the TD OBU is dropped. Then, the following packetization 
+grouping (indicated using square brackets) can be used. 
+
+\[ SH MD MD(0,0) FH(0,0) TG0(0,0) ]  \[ MD(0,1) FH(0,1) TG(0,1) ]
+
+The following packetization grouping would not be allowed, since it combines data from different spatial layers 
+in the same packet. 
+
+\[ SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG(0,1) ]
+
+
+## 5X. SFU Behavior
+
+Selective Forwarding Units operating using a specific operating point MUST forward all OBUs that have no OBU extension 
+header, and MUST forward all OBUs with spatial_id and temporal_id values that are included in the specific operating point.
+They SHOULD drop all OBUs with spatial_id or temporal_id values that are not included in the specific operating point. 
+
+SFUs can operate using end-to-end encryption, i.e., with encrypted payload, using the RTP header extension defined in
+Appendix A. The extension exposes the layer information of a packet so that the SFU can make the appropriate forwarding
+decision.
 
 ## 6. Payload Format Parameters
 
