@@ -1,5 +1,5 @@
 
-RTP Payload Format For AV1 (v0.2)
+RTP Payload Format For AV1 (v0.2.1)
 ===================================
 {:.no_toc }
 
@@ -460,7 +460,7 @@ Answer SDP:
 
 ## 9. IANA Considerations
 
-   Upon publication, a new media type, as specified in Section 5.1 of this document, will be
+   Upon publication, a new media type, as specified in Section 7.1 of this document, will be
    registered with IANA.
 
 ## 10. Security Considerations
