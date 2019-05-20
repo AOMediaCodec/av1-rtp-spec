@@ -1,5 +1,5 @@
-﻿
-RTP Payload Format For AV1 (v0.1.6)
+
+RTP Payload Format For AV1 (v0.2.1)
 ===================================
 {:.no_toc }
 
@@ -68,13 +68,17 @@ video signals in the spatial domain.
 **Note:** Multiple frames may be present at the same instant in time.
 {:.alert .alert-info }
 
+Media-Aware Network Element (MANE
+: A middlebox that relays streams among transmitting and receiving clients
+by selectively forwarding packets and which may have access to the media ([RFC6184]).
+
 Open Bitstream Unit (OBU)
 : The smallest bitstream data framing unit in AV1. All AV1 bitstream structures
   are packetized in OBUs.
 
 [Selective Forwarding Unit] (SFU)
 : A middlebox that relays streams among transmitting and receiving clients by
-  selectively forwarding packets ([RFC7667]).
+  selectively forwarding packets without requiring access to the media ([RFC7667]).
 
 
 ## 3. Media format description
@@ -211,11 +215,6 @@ This specification allows to packetize:
 The design allows combination of aggregation and fragmentation, i.e., allow for
 a set of OBUs in which the first and/or last one is fragmented.
 
-It is not allowed, however, to aggregate OBUs across frame boundaries. In other
-words, it is not allowed to have OBUs from different frames in the same RTP
-packet. OBUs in a temporal unit that precede the first frame are considered part
-of that first frame.
-
 The payload contains a series of one or more OBUs (with the first and/or last
 possibly being fragments). Each OBU (or OBU fragment) is preceded by a length
 field. The length field is encoded using leb128. Leb128 is defined in the AV1
@@ -252,60 +251,90 @@ taking two bytes for the first and second OBU and one byte for the last (N) OBU.
 Whether or not the first and/or last OBU is fragmented is signaled in the
 aggregation header.
 
-**TODO:** Add a paragraph that describes how a temporal unit is mapped into RTP
-packets. I think a new temporal unit should start a new RTP packet. You skip the
-temporal delimiter OBU, and then packetize the remaining OBUs in one or more
-packets, with fragmentation as needed.
-{:.alert .alert-danger }
+## 5. Packetization rules
 
-* * *
+Each RTP packet MUST contain OBUs that belong to a single temporal unit.
 
-<div class="alert alert-danger" markdown="1">
+The temporal delimiter OBU, if present, SHOULD be removed when transmitting, and
+MUST be ignored by receivers.
 
-2019/01/15 Notes:
+If more than one OBU contained in an RTP packet has an OBU extension header then
+the values of the temporal_id and spatial_id must be the same in all such OBUs
+in the RTP packet.
 
-A packet must not include OBUs across a TD
-All OBUs in a packet must have the same temporal_id and spatial_id
-OBUs with layering information must not be aggregated with OBUs that don't have layering information (layering information=extension header).
-If sequence header is present, it should (not must) be the first OBU in a packet.
-Q: May not be needed.
-A packet cannot include OBUs from different frames.
-Q: for hidden frames, the various frames may all be required anyway, so maybe we allow aggregation of frames with associated hidden frames (of the same temporal unit).
+If a sequence header OBU is present in an RTP packet it	SHOULD be the first OBU
+in the packet. OBUs that are not associated with a particular layer (and thus do not have
+an OBU extension header) SHOULD be in the beginning of a packet, following the
+sequence header OBU if present.
 
-Q: Should we support tile list OBUs?
+A sequence header OBU SHOULD be included in the base layer when scalable encoding is used,
+and it SHOULD be aggregated with each spatial layer in the case of simulcast.
 
-Packetization Exercises:
+Tile list OBUs are not supported. They SHOULD be removed when transmitted, and MUST be ignored by receivers.
 
-TD   SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1) ...
+### 5.1 Examples
 
- X   [.......................................................]
- X   [.. ........][.........................][.............][.........................................]
+The following are example packetizations of OBU sequences. A two-letter notation is used to identify the OBU type: FH frame header, TG - tile group, FR - frame, SH - sequence header, TD - temporal delimitered, MD - metadata. Parentheses after the type indicate the temporal_id and spatial_id combination. For example "TG(0,1)" indicates a tile group OBU with temporal_id equal to 0 and spatial_id equal to 1.
+
+The following is an example coded video sequence:
+
+<pre><code>
+    TD SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG(0,1)
+</code></pre>
+
+This sequence could be packetized as follows. First, the TD OBU is dropped. Then, the following packetization
+grouping (indicated using square brackets) may be used.
+
+<pre><code>
+    [ SH MD MD(0,0) FH(0,0) TG(0,0) ] [ MD(0,1) FH(0,1) TG(0,1) ]
+</code></pre>
+
+It is also possible to send each OBU in its own RTP packet:
+
+<pre><code>
+    [ SH ] [ MD ] [ MD(0,0) ] [ FH(0,0) ] [ TG(0,0) ] ...
+</code></pre>
+
+The following packetization grouping would not be allowed, since it combines data from different spatial layers
+in the same packet.
+
+<pre><code>
+    [ SH MD MD(0,0) FH(0,0) TG(0,0) MD(0,1) FH(0,1) TG(0,1) ]
+</code></pre>
 
 
-FH(0,1) TG0(0,1)  TD SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
+## 6. MANE and SFU Behavior
 
-[ ....................... X   ... ] not allowed, SH must be at beginning of packet
+If a packet contains an OBU with an OBU extension header then the entire packet
+is considered associated with the layer identified by the temporal_id and spatial_id combination that are indicated in the extension header.
+If a packet does not contain any OBU with an OBU extension header, then it is considered
+to be associated with all operating points.
 
-FH(0,1) TG0(0,1)  TD MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG0(0,1)
+A MANE or SFU performs its function based on a target operating point. A packet MUST be forwarded if it is associated with the target
+operating point, or with all operating points. A packet SHOULD NOT be forwarded if it is associated with an operating point different than the
+target operating point.
 
-[ ........................ x  .....]
-</div>
+SFUs can operate using end-to-end encryption, i.e., with encrypted payload, using the RTP header extension defined in
+Appendix A. The extension exposes the layer information of a packet so that the SFU can make the appropriate forwarding
+decision.
 
-## 5. Payload Format Parameters
+
+
+## 7. Payload Format Parameters
 
 This payload format has three optional parameters.
 
-### 5.1. Media Type Definition
+### 7.1. Media Type Definition
 
 TODO: proposed meda type for IANA registration:
 
-* Type name: 
+* Type name:
    * **video**
-* Subtype name: 
-  * **AV1** 
+* Subtype name:
+  * **AV1**
 * Required parameters:
   * None.
-* Optional parameters:  
+* Optional parameters:
   * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level_idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
     * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by the receiver. The range of possible values is identical to **seq_profile** syntax element specified in [AV1]
     * **level_idx**: The value of **level_idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
@@ -326,36 +355,36 @@ TODO: proposed meda type for IANA registration:
 * Additional information:
   * None.
 * Person & email address to contact for further information:
-  * TODO 
+  * TODO
 * Intended usage:
   * COMMON
 * Restrictions on usage:
   * TODO
 * Author:
-  * TODO 
+  * TODO
 * Change controller:
   * TODO
 
-### 5.2 SDP Parameters
+### 7.2 SDP Parameters
 The receiver MUST ignore any fmtp parameter unspecified in this document.
 
-#### 5.2.1 Mapping of Media Subtype Parameters to SDP
+#### 7.2.1 Mapping of Media Subtype Parameters to SDP
 The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) [RFC4566] as follows:
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
 * The clock rate in the "a=rtpmap" line MUST be 90000.
 * The parameters "**profile**", and "**level_idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
-* Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0. 
+* Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0.
 
-#### 5.2.2  Usage with the SDP Offer/Answer Model
+#### 7.2.2  Usage with the SDP Offer/Answer Model
 
 When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for negotiation for unicast usage, the following limitations and rules apply:
-  *  The media format configuration is identified by **level**, **profile_idx** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and answerer COULD declare its own media configuration if answerer capabilities are different to offerer. 
+  *  The media format configuration is identified by **level**, **profile_idx** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and answerer COULD declare its own media configuration if answerer capabilities are different to offerer.
      *  The  profile to use in the offerer-to-answerer direction MUST be lesser or equal to the profile the answerer supports for receiving, and the profile to use in the answerer-to-offerer direction MUST be lesser or equal to the profile the offerer supports for receiving.
-     *  The level to use in the offerer-to-answerer direction MUST be lesser or equal to the level the answerer supports for receiving, and the level to use in the answerer-to-offerer direction MUST be lesser or equal to the level the offerer supports for receiving. 
-     *  The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be lesser or equal to the tier the offerer supports for receiving.  
+     *  The level to use in the offerer-to-answerer direction MUST be lesser or equal to the level the answerer supports for receiving, and the level to use in the answerer-to-offerer direction MUST be lesser or equal to the level the offerer supports for receiving.
+     *  The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be lesser or equal to the tier the offerer supports for receiving.
 
-### 5.3 Example
+### 7.3 Example
 An example of media representation in SDP is as follows:
 
 * m=video 49170 RTP/AVPF 98
@@ -370,36 +399,131 @@ Offer SDP:
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=0; level_idx=0;
-*   
+*
 Answer SDP:
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=0; level_idx=4; tier=1;
-## 7. IANA Considerations
 
-   Upon publication, a new media type, as specified in Section 5.1 of this document, will be
+
+## 8. Feedback Messages
+
+## 8.1.  Full Intra Request (FIR)
+
+   The Full Intra Request (FIR) [RFC5104] RTCP feedback message allows a
+   receiver to request a full state refresh of an encoded stream.
+
+   Upon receipt of an FIR request, an AV1 sender MUST send a picture with
+   a keyframe for its spatial layer 0 layer frame, and then send frames
+   without inter-picture prediction for any higher layer frames.
+
+## 8.2.  Layer Refresh Request (LRR)
+
+   The Layer Refresh Request [I-D.ietf-avtext-lrr] allows a receiver to
+   request a single layer of a spatially or temporally encoded stream to
+   be refreshed, without necessarily affecting the stream's other
+   layers.
+
+               +---------------+---------------+
+               |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
+               +---------------+---------+-----+
+               |   RES   | TID | RES     | SID |
+               +---------------+---------+-----+
+
+                                 Figure 4
+
+   Figure 4 shows the format of LRR's layer index fields for AV1
+   streams.  The two "RES" fields MUST be set to 0 on transmission and
+   ingnored on reception.  See Sections 2, 5.3.3 and 6.2.3 of the AV1 bitstream
+   specification for details on the temporal_id (TID) and
+   spatial_id (SID) fields.
+
+   Identification of a layer refresh frame can be derived from the
+   reference IDs of each frame by backtracking the dependency chain
+   until reaching a point where only decodable frames are being
+   referenced.  Therefore it's recommended for both the flexible and the
+   non-flexible mode that, when upgrade frames are being encoded in
+   response to a LRR, those packets should contain layer indices and the
+   reference fields so that the decoder or an MCU can make this
+   derivation.
+
+   Example:
+
+   LRR {1,0}, {2,1} is sent by an MCU when it is currently relaying
+   {1,0} to a receiver and which wants to upgrade to {2,1}. In response
+   the encoder should encode the next frames in layers {1,1} and {2,1}
+   by only referring to frames in {1,0}, or {0,0}.
+
+   In the non-flexible mode, periodic upgrade frames can be defined by
+   the layer structure of the SS, thus periodic upgrade frames can be
+   automatically identified by the frame ID.
+
+## 9. IANA Considerations
+
+   Upon publication, a new media type, as specified in Section 7.1 of this document, will be
    registered with IANA.
 
-## 6. References
+## 10. Security Considerations
+
+   RTP packets using the payload format defined in this document are subject
+   to the security considerations discussed in the RTP specification [RFC3550]
+   and in any appropriate RTP profile.
+   This implies that confidentiality of the media streams is achieved by
+   encryption, for example, through the application of SRTP [RFC3711].
+   A potential denial-of-service threat exists for data
+   encodings using compression techniques that have non-uniform
+   receiver-end computational load.  The attacker can inject
+   pathological datagrams into the stream that are complex to decode and
+   that cause the receiver to be overloaded. Therefore, the usage of data origin
+   authentication and data integrity protection of at least the RTP
+   packet is RECOMMENDED, for example, with SRTP [RFC3711]. End-to-end encryption
+   helps mitigate these attacks [perc-double].
+
+   Note that the appropriate mechanism to ensure confidentiality and
+   integrity of RTP packets and their payloads is very dependent on the
+   application and on the transport and signaling protocols employed.
+   Thus, although SRTP is given as an example above, other possible
+   choices exist [RFC7202].
+
+   Decoders MUST exercise caution with respect to the handling of
+   reserved OBU types and reserved metadata OBU types, particularly if
+   they contain active elements, and MUST restrict their domain of
+   applicability to the presentation containing the stream. The safest
+   way is to simply discard these OBUs.
+
+   When integrity protection is applied to a stream, care MUST be taken
+   that the stream being transported may be scalable; hence a receiver
+   may be able to access only part of the entire stream.
+
+   End-to-end security with either authentication, integrity, or
+   confidentiality protection will prevent a MANE from performing media-
+   aware operations other than discarding complete packets. The use of the
+   Dependency Descriptor RTP extension described in Appendix A allows discarding
+   of packets in a media-aware way even when confidentiality protection is used.
+   Repacketization by a MANE requires access to the media payload.
 
 
-### 6.1 Normative references
+## 11. References
 
 
+### 11.1 Normative references
+
+  * [I-D.ietf-avtext-lrr] for LRR feedback message
   * [RFC3550] for RTP header format
+  * [RFC5104] for FIR feedback message
+  * [RFC6184] for definition of MANE
   * [RFC8285] for generic RTP header extensions
   * [RFC7667] RTP Topologies
   * [AV1 Bitstream & Decoding Process Specification][AV1]
 
 
-**TODO:** flesh out list of normative references.
-{:.alert .alert-danger }
 
+### 11.2 Informative references
 
-### 6.2 Informative references
+* [RFC3711] SRTP, example enryption protocol
+* [RFC7202] Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution
+* [perc-double] SRTP Double Encryption Procedures, October 17, 2018
 
-**TODO:** list informative references.
-{:.alert .alert-danger }
 
 
 ## Appendix
@@ -487,14 +611,14 @@ Instantaneous Decidability of Decodability (IDD)
 : The ability to decide, immediately upon receiving the very first packet after
   packet loss, if the lost packet(s) contained a packet that is needed to decode
   the information present in that first and following packets.
-  
-Not present indication 
-: An indication for a frame, that it is not associated with a given Decode target. 
+
+Not present indication
+: An indication for a frame, that it is not associated with a given Decode target.
 
 Referred frame
 : A Frame on which the current frame depends.
 
-Required indication 
+Required indication
 : An indication for a frame, associated with a given Decode target, that it
   belongs to the Decode target and has neither a Discardable indication nor a Switch
   indication.
@@ -598,7 +722,7 @@ extended_descriptor_fields() {
 
 <pre><code>
 no_extended_descriptor_fields() {
-  frame_dependency_template_id = 
+  frame_dependency_template_id =
     frame_dependency_template_id_or_extended_fields_indicator
   custom_dtis_flag = 0
   custom_fdiffs_flag = 0
@@ -799,8 +923,8 @@ described in this section.
     monotonically in decode order. frame_number MAY start on a random number,
     and MUST wrap after reaching the maximum value. All packets of the same
     Frame MUST have the same frame_number value.
-    
-    **Note:** Frame number is not the same as Frame ID in [AV1 specification].	
+
+    **Note:** Frame number is not the same as Frame ID in [AV1 specification].
     {:.alert .alert-info }
 
   * **frame_dependency_template_id**: ID of the Frame dependency template to use.
@@ -835,12 +959,12 @@ described in this section.
   * **custom_chains_flag**: indicates the presence of frame_chain_fdiff. When
     set to 1, frame_chain_fdiff MUST be present. Otherwise, frame_chain_fdiff MUST NOT
     be present.
-   
+
 **Template dependency structure**
 
   * **template_id_offset**: indicates the value of the
     frame_dependency_template_id having templateIndex=0. The value of
-    template_id_offset SHOULD be chosen so that the valid 
+    template_id_offset SHOULD be chosen so that the valid
     frame_dependency_template_id range, template_id_offset to
     template_id_offset + TemplatesCnt - 1, inclusive, of a new
     template_dependency_structure, does not overlap the valid
