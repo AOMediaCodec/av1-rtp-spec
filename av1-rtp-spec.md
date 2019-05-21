@@ -343,7 +343,7 @@ TODO: proposed meda type for IANA registration:
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
 * Security considerations:
-  * TODO
+  * See Section 10.
 * Interoperability considerations:
   * None.
 * Published specification:
@@ -359,11 +359,11 @@ TODO: proposed meda type for IANA registration:
 * Intended usage:
   * COMMON
 * Restrictions on usage:
-  * TODO
+  *  This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].
 * Author:
   * TODO
 * Change controller:
-  * TODO
+  * AoMedia Codec Group, RTC sub-group
 
 ### 7.2 SDP Parameters
 The receiver MUST ignore any fmtp parameter unspecified in this document.
