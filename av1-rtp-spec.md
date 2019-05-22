@@ -199,14 +199,12 @@ previous OBU, 0 otherwise
 Y: set to 1 if the last OBU contained in the packet will continue in another
 packet, 0 otherwise
 
-X: set to 1 if the last OBU contained in the packet is not preceded by a
-length field. If the X flag is set to 0, each OBU (or OBU fragment) MUST
-be preceded by a length field. If the X flag is set to 1, all OBUs other
-than the last one MUST be preceded by a length field, but the last OBU
-MUST NOT be preceded by a length field. Instead, the portion of the last OBU
-contained in the packet can be determined from the overall packet size,
-the size of the RTP header, the combined lengths of the other OBUs and the
-value of the padding octet.
+X: if set to 0, each OBU (or OBU fragment) MUST be preceded by a length
+field. If set to 1, all OBUs other than the last one MUST be preceded by
+a length field, but the last OBU MUST NOT be preceded by a length field.
+Instead, the length of the last OBU contained in the packet can be
+calculated from the packet size, the size of the RTP header, the
+combined lengths of the other OBUs and the value of the padding octet.
 
 ### 4.4 Payload structure
 
