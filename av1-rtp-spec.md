@@ -229,15 +229,15 @@ specification, and provides for a variable-sized, byte-oriented encoding of non-
 negative integers where the first bit of each (little-endian) byte indicates if
 additional bytes are used in the representation (AV1, Section 4.10.5).
 
-The AV1 specification allows OBUs to have an optional size field called 
-obu_size (also leb128 encoded), signaled by the obu_has_size_field flag 
-in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD 
-be set to zero in all OBUs. If the obu_size field is present, it SHOULD 
-be ignored by receivers.
-
 Whether or not the first and/or last OBU is fragmented is signaled in the
 aggregation header. Fragmentation may occur regardless of how the X flag
 is set.
+
+The AV1 specification allows OBUs to have an optional size field called 
+obu_size (also leb128 encoded), signaled by the obu_has_size_field flag 
+in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD 
+be set to zero in all OBUs except fragmented OBUs where it MUST be set to
+one.
 
 The following figure shows an example payload where the length field is shown as
 taking two bytes for the first and second OBU and one byte for the last (N) OBU.
