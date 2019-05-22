@@ -203,8 +203,9 @@ X: if set to 0, each OBU (or OBU fragment) MUST be preceded by a length
 field. If set to 1, all OBUs other than the last one MUST be preceded by
 a length field, but the last OBU (or OBU fragement) MUST NOT be preceded
 by a length field. Instead, the length of the last OBU (or OBU fragment)
-can be calculated from the packet size, the size of the UDP and RTP headers,
-the combined lengths of the other OBUs and the value of the padding octet.
+contained in the packet can be calculated from the packet size, the size
+of the UDP and RTP headers, the combined length fields of the other OBUs
+and the value of the padding octet.
 
 ### 4.4 Payload structure
 
