@@ -189,7 +189,7 @@ The structure is as follows.
 <pre><code>
  0 1 2 3 4 5 6 7
 +-+-+-+-+-+-+-+-+
-|Z|Y|X|-|-|-|-|-|
+|Z|Y| W |-|-|-|-|
 +-+-+-+-+-+-+-+-+
 </code></pre>
 
@@ -199,10 +199,10 @@ previous OBU, 0 otherwise
 Y: set to 1 if the last OBU contained in the packet will continue in another
 packet, 0 otherwise
 
-X: if set to 0, each OBU (or OBU fragment) MUST be preceded by a length
-field. If set to 1, all OBUs other than the last one MUST be preceded by
-a length field, but the last OBU (or OBU fragement) MUST NOT be preceded
-by a length field. Instead, the length of the last OBU (or OBU fragment)
+W: two bits, which if set to 0, mean that each OBU (or OBU fragment) MUST
+be preceded by a length field. If either bit is set, provides the number
+of OBUs that are packetized; the last OBU (or OBU fragment) MUST NOT be
+preceded by a length field. Instead, the length of the last OBU (or OBU fragment)
 contained in the packet can be calculated from the packet size, the size
 of the UDP and RTP headers, the combined length fields of the other OBUs
 and the value of the padding octet.
@@ -231,14 +231,13 @@ negative integers where the first bit of each (little-endian) byte indicates if
 additional bytes are used in the representation (AV1, Section 4.10.5).
 
 Whether or not the first and/or last OBU is fragmented is signaled in the
-aggregation header. Fragmentation may occur regardless of how the X flag
-is set.
+aggregation header. Fragmentation may occur regardless of how the W bits
+are set.
 
 The AV1 specification allows OBUs to have an optional size field called 
 obu_size (also leb128 encoded), signaled by the obu_has_size_field flag 
 in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD 
-be set to zero in all OBUs except fragmented OBUs where it MUST be set to
-one.
+be set to zero in all OBUs.
 
 The following figure shows an example payload where the length field is shown as
 taking two bytes for the first and second OBU and one byte for the last (N) OBU.
