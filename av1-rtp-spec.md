@@ -200,8 +200,8 @@ Y: set to 1 if the last OBU contained in the packet will continue in another
 packet, 0 otherwise
 
 W: two bits, which if set to 0, mean that each OBU (or OBU fragment) MUST
-be preceded by a length field. If either bit is set, provides the number
-of OBUs that are packetized; the last OBU (or OBU fragment) MUST NOT be
+be preceded by a length field. If either bit is set, the field provides the
+number of OBUs that are packetized; the last OBU (or OBU fragment) MUST NOT be
 preceded by a length field. Instead, the length of the last OBU (or OBU fragment)
 contained in the packet can be calculated from the packet size, the size
 of the UDP and RTP headers, the combined length fields of the other OBUs
@@ -265,15 +265,16 @@ taking two bytes for the first and second OBU and one byte for the last (N) OBU.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
-The following figure shows an example payload where the Z and X flags
-are set to 1 and the Y flag is set to 0:
+The following figure shows an example payload containing two
+OBUs where the last OBU omits the length field (and the W
+field is set to 2):
 
 <pre><code>
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      OBU 1 size (leb128)      |                               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+|Z|Y|1 0|-|-|-|-|   OBU 1 size (leb128)         |               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
 |                                                               |
 |                  OBU 1 data                                   |
 |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
