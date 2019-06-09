@@ -203,9 +203,11 @@ W: two bits, which if set to 0, mean that each OBU (or OBU fragment) MUST
 be preceded by a length field. If either bit is set, the field provides the
 number of OBUs that are packetized; the last OBU (or OBU fragment) MUST NOT be
 preceded by a length field. Instead, the length of the last OBU (or OBU fragment)
-contained in the packet can be calculated from the packet size, the size
-of the UDP and RTP headers, the combined length fields of the other OBUs
-and the value of the padding octet.
+contained in the packet can be calculated as follows:
+
+<pre><code>
+Length of the last OBU = UDP packet length - 20 - CC * 4 - length of RTP header extensions - value of the padding octet - length of previous OBUs
+</code></pre>
 
 ### 4.4 Payload structure
 
