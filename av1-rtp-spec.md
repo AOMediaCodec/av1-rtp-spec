@@ -386,8 +386,8 @@ When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for ne
 
 #### 7.2.3  Usage in Declarative Session Descriptions
 
- When AV1 over RTP is offered with SDP in a declarative style, as in Real Time Streaming Protocol (RTSP) [RFC2326] or Session Announcement Protocol (SAP) [RFC2974], the following considerations are necessary.
- * All parameters capable of indicating both stream properties and receiver capabilities are used to indicate only stream properties. In this case, the parameters **profile**, **level-idx** and **tier** declares only the values used by the stream, not the capabilities for receiving streams.  
+ When AV1 over RTP is offered with SDP in a declarative style, as in Real Time Streaming Protocol (RTSP) [RFC2326] or Session Announcement Protocol (SAP) [RFC2974], the following considerations apply.
+ * All parameters capable of indicating both stream properties and receiver capabilities are used to indicate only stream properties. In this case, the parameters **profile**, **level-idx** and **tier** declare only the values used by the stream, not the capabilities for receiving streams.  
  * A receiver of the SDP is required to support all parameters and values of the parameters provided; otherwise, the receiver MUST reject (RTSP) or not participate in (SAP) the session. It falls on the creator of the session to use values that are expected to be supported by the receiving application.
 
 ### 7.3 Example
