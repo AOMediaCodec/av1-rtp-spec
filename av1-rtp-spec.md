@@ -1,4 +1,4 @@
-
+﻿
 RTP Payload Format For AV1 (v0.2.1)
 ===================================
 {:.no_toc }
@@ -335,9 +335,9 @@ TODO: proposed meda type for IANA registration:
 * Required parameters:
   * None.
 * Optional parameters:
-  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level_idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
+  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level-idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
     * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by the receiver. The range of possible values is identical to **seq_profile** syntax element specified in [AV1]
-    * **level_idx**: The value of **level_idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
+    * **level-idx**: The value of **level-idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
     * **tier**: The value of **tier** is an integer indicating tier of the indicated level.  The range of possible values is identical to **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
 
 * Encoding considerations:
@@ -373,23 +373,29 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
 * The clock rate in the "a=rtpmap" line MUST be 90000.
-* The parameters "**profile**", and "**level_idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
-* Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0.
+* The parameters "**profile**", and "**level-idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
+* Parameter "**tier**" COULD be included alongside "**profile**" and "**level-idx** parameters in "a=fmtp" line if indicated level supports tier different to 0.
 
 #### 7.2.2  Usage with the SDP Offer/Answer Model
 
 When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for negotiation for unicast usage, the following limitations and rules apply:
-  *  The media format configuration is identified by **level**, **profile_idx** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and answerer COULD declare its own media configuration if answerer capabilities are different to offerer.
+  *  The media format configuration is identified by **level-idx**, **profile** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and answerer COULD declare its own media configuration if answerer capabilities are different to offerer.
      *  The  profile to use in the offerer-to-answerer direction MUST be lesser or equal to the profile the answerer supports for receiving, and the profile to use in the answerer-to-offerer direction MUST be lesser or equal to the profile the offerer supports for receiving.
      *  The level to use in the offerer-to-answerer direction MUST be lesser or equal to the level the answerer supports for receiving, and the level to use in the answerer-to-offerer direction MUST be lesser or equal to the level the offerer supports for receiving.
      *  The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be lesser or equal to the tier the offerer supports for receiving.
+
+#### 7.2.3  Usage in Declarative Session Descriptions
+
+ When AV1 over RTP is offered with SDP in a declarative style, as in Real Time Streaming Protocol (RTSP) [RFC2326] or Session Announcement Protocol (SAP) [RFC2974], the following considerations are necessary.
+ * All parameters capable of indicating both stream properties and receiver capabilities are used to indicate only stream properties. In this case, the parameters **profile**, **level-idx** and **tier** declares only the values used by the stream, not the capabilities for receiving streams.  
+ * A receiver of the SDP is required to support all parameters and values of the parameters provided; otherwise, the receiver MUST reject (RTSP) or not participate in (SAP) the session. It falls on the creator of the session to use values that are expected to be supported by the receiving application.
 
 ### 7.3 Example
 An example of media representation in SDP is as follows:
 
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level_idx=8; tier=1;
+* a=fmtp:98 profile=2; level-idx=8; tier=1;
 
 In the following example, the offer is accepted with level upgrading. The level to use in the offerer-to-answerer
 direction is Level 2.0, and the level to use in the answerer-to-offerer direction is Level 3.0/Tier 1.  The answerer is allowed to send at
@@ -398,12 +404,12 @@ any level up to and including Level 2.0, and the offerer is allowed to send at a
 Offer SDP:
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=0; level_idx=0;
+* a=fmtp:98 profile=0; level-idx=0;
 *
 Answer SDP:
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=0; level_idx=4; tier=1;
+* a=fmtp:98 profile=0; level-idx=4; tier=1;
 
 
 ## 8. Feedback Messages
