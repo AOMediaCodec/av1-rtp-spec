@@ -76,7 +76,7 @@ Open Bitstream Unit (OBU)
 : The smallest bitstream data framing unit in AV1. All AV1 bitstream structures
   are packetized in OBUs.
 
-[Selective Forwarding Unit] (SFU)
+Selective Forwarding Unit (SFU)
 : A middlebox that relays streams among transmitting and receiving clients by
   selectively forwarding packets without requiring access to the media ([RFC7667]).
 
@@ -504,21 +504,29 @@ Answer SDP:
 
 ### 11.1 Normative references
 
-  * [I-D.ietf-avtext-lrr] for LRR feedback message
-  * [RFC3550] for RTP header format
-  * [RFC5104] for FIR feedback message
-  * [RFC6184] for definition of MANE
-  * [RFC8285] for generic RTP header extensions
-  * [RFC7667] RTP Topologies
-  * [AV1 Bitstream & Decoding Process Specification][AV1]
+ 
+  * [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf "AV1 1.0.0 with Errata1") **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
+  * [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
+  
+  * [RFC5104](https://tools.ietf.org/html/rfc5104 "RFC5104") **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008. 
+
+  * [RFC6184](https://tools.ietf.org/html/rfc6184 "RFC6184") **RTP Payload Format for H.264 Video**, Y.-K. Wang, R. Even, T. Kristensen, and R. Jesup, May 2011.
+
+  * [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
+  
+  * [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+  
+ * [I-D.ietf-avtext-lrr](https://tools.ietf.org/html/draft-ietf-avtext-lrr-07 "ietf-avtext-lrr")  **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
 
 
 ### 11.2 Informative references
 
-* [RFC3711] SRTP, example enryption protocol
-* [RFC7202] Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution
-* [perc-double] SRTP Double Encryption Procedures, October 17, 2018
+* [RFC3711](https://tools.ietf.org/html/rfc3711 "RFC3711") **The Secure Real-time Transport Protocol (SRTP)**, M. Baugher, D. McGrew, M. Naslund, E. Carrara, and K. Norrman, March 2004.
+
+* [RFC7202](https://tools.ietf.org/html/rfc7202 "RFC7202") **Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution**, C. Perkins and M. Westerlund, April 2014.
+
+* [perc-double](https://tools.ietf.org/html/draft-ietf-perc-double-10 "perc-double") **SRTP Double Encryption Procedures**, C. Jennings, P. Jones, R. Barnes, and A. Roach, October 17, 2018
 
 
 
@@ -1364,26 +1372,26 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 
 
 ##### A.6.1 Normative references
-  * [RFC3550] for RTP header format
-  * [RFC8285] for generic RTP header extensions
+ 
+ * [RFC2119](https://tools.ietf.org/html/rfc2119 "RFC2119") **Key words for use in RFCs to Indicate Requirement Levels, S. Bradner, March 1997. 
+ 
+  * [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
 
-**TODO:** flesh out list of normative references.
-{:.alert .alert-danger }
-
+   * [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
+  
 
 ##### A.6.2 Informative references
 
-**TODO:** list informative references.
-{:.alert .alert-danger }
+* [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf "AV1 1.0.0 with Errata1") **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
+
+* [RFC3264](https://tools.ietf.org/html/rfc3264 "RFC3264") **An Offer/Answer Model with the Session Description Protocol (SDP)**, J. Rosenberg and H. Schulzrinne, June 2002. 
+
+* [RFC4566](https://tools.ietf.org/html/rfc4566 "RFC4566") **SDP: Session Description Protocol**, M. Handley, V. Jacobson, and C. Perkins, July 2006.
+
+* [RFC4585](https://tools.ietf.org/html/rfc4585 "RFC4585") **Extended RTP Profile for Real-time Transport Control Protocol (RTCP)-Based Feedback (RTP/AVPF)**, J. Ott, S. Wenger, N. Sato, C. Burmeister, and J. Rey, July 2006. 
+
+* [RFC6838](https://tools.ietf.org/html/rfc6838 "RFC6838") **Media Type Specifications and Registration Procedures**, N. Freed, J. Klensin, and T. Hansen, January 2013.
+
+ * [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
 
 
-[AV1]: https://aomedia.org/av1-bitstream-and-decoding-process-specification/
-[RFC2119]: https://tools.ietf.org/html/rfc2119
-[RFC3264]: https://tools.ietf.org/html/rfc3264
-[RFC3550]: https://tools.ietf.org/html/rfc3550
-[RFC4566]: https://tools.ietf.org/html/rfc4566
-[RFC4585]: https://tools.ietf.org/html/rfc4585
-[RFC6838]: https://tools.ietf.org/html/rfc6838
-[RFC7667]: https://tools.ietf.org/html/rfc7667
-[RFC8285]: https://tools.ietf.org/html/rfc8285
-[Selective Forwarding Unit]: https://webrtcglossary.com/sfu/
