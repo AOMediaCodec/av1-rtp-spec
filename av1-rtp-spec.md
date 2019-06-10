@@ -167,9 +167,6 @@ detailed later in this document.
 </code></pre>
 
 
-**TODO:** Decide whether to keep the ascii art in this document.
-{:.alert .alert-danger }
-
 
 ### 4.2  Dependency Descriptor RTP Header Extension
 
@@ -326,7 +323,6 @@ This payload format has three optional parameters.
 
 ### 7.1. Media Type Definition
 
-TODO: proposed meda type for IANA registration:
 
 * Type name:
    * **video**
