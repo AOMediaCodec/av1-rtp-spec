@@ -206,7 +206,7 @@ preceded by a length field. Instead, the length of the last OBU (or OBU fragment
 contained in the packet can be calculated as follows:
 
 <pre><code>
-Length of the last OBU = UDP packet length - 20 - CC * 4 - length of RTP header extensions - value of the padding octet - length of previous OBUs
+Length of the last OBU = length of the RTP payload - length of aggregation header - length of previous OBUs including length fields
 </code></pre>
 
 ### 4.4 Payload structure
