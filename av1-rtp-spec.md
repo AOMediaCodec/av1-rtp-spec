@@ -186,7 +186,7 @@ The structure is as follows.
 <pre><code>
  0 1 2 3 4 5 6 7
 +-+-+-+-+-+-+-+-+
-|Z|Y|-|-|-|-|-|-|
+|Z|Y| W |-|-|-|-|
 +-+-+-+-+-+-+-+-+
 </code></pre>
 
@@ -196,6 +196,15 @@ previous OBU, 0 otherwise
 Y: set to 1 if the last OBU contained in the packet will continue in another
 packet, 0 otherwise
 
+W: two bits, which if set to 0, mean that each OBU (or OBU fragment) MUST
+be preceded by a length field. If either bit is set, the field provides the
+number of OBUs that are packetized; the last OBU (or OBU fragment) MUST NOT be
+preceded by a length field. Instead, the length of the last OBU (or OBU fragment)
+contained in the packet can be calculated as follows:
+
+<pre><code>
+Length of the last OBU = length of the RTP payload - length of aggregation header - length of previous OBUs including length fields
+</code></pre>
 
 ### 4.4 Payload structure
 
@@ -213,11 +222,21 @@ The design allows combination of aggregation and fragmentation, i.e., allow for
 a set of OBUs in which the first and/or last one is fragmented.
 
 The payload contains a series of one or more OBUs (with the first and/or last
-possibly being fragments). Each OBU (or OBU fragment) is preceded by a length
-field. The length field is encoded using leb128. Leb128 is defined in the AV1
+possibly being fragments).
+
+The length field is encoded using leb128. Leb128 is defined in the AV1
 specification, and provides for a variable-sized, byte-oriented encoding of non-
 negative integers where the first bit of each (little-endian) byte indicates if
 additional bytes are used in the representation (AV1, Section 4.10.5).
+
+Whether or not the first and/or last OBU is fragmented is signaled in the
+aggregation header. Fragmentation may occur regardless of how the W bits
+are set.
+
+The AV1 specification allows OBUs to have an optional size field called 
+obu_size (also leb128 encoded), signaled by the obu_has_size_field flag 
+in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD 
+be set to zero in all OBUs.
 
 The following figure shows an example payload where the length field is shown as
 taking two bytes for the first and second OBU and one byte for the last (N) OBU.
@@ -245,8 +264,30 @@ taking two bytes for the first and second OBU and one byte for the last (N) OBU.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
-Whether or not the first and/or last OBU is fragmented is signaled in the
-aggregation header.
+The following figure shows an example payload containing two
+OBUs where the last OBU omits the length field (and the W
+field is set to 2):
+
+<pre><code>
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Z|Y|1 0|-|-|-|-|   OBU 1 size (leb128)         |               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
+|                                                               |
+:                        OBU 1 data                             :
+:                                                               :
+|                                                               |
+|                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+|                                                               |
+|                                                               |
+:                        OBU 2 data                             :
+:                                                               :
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre>
 
 ## 5. Packetization rules
 
