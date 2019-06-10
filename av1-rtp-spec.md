@@ -509,7 +509,7 @@ Answer SDP:
 ### 11.1 Normative references
 
  
-  * [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf **AV1 1.0.0 with Errata1") AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
+  * [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf "AV1 1.0.0 with Errata1") **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
   * [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
   
