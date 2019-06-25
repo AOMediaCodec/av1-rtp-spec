@@ -709,12 +709,18 @@ mandatory_descriptor_fields() {
 extended_descriptor_fields() {
   <b>frame_dependency_template_id</b> = f(6)
   <b>template_dependency_structure_present_flag</b> = f(1)
+  <b>active_decode_targets_present_flag</b> = f(1)
   <b>custom_dtis_flag</b> = f(1)
   <b>custom_fdiffs_flag</b> = f(1)
   <b>custom_chains_flag</b> = f(1)
 
   if (template_dependency_structure_present_flag) {
     template_dependency_structure()
+    <b>active_decode_targets_bitmask</b> = (1 << DtisCnt) - 1
+  }
+
+  if (active_decode_targets_present_flag) {
+    <b>active_decode_targets_bitmask</b> = f(DtisCnt)
   }
 }
 </code></pre>
@@ -949,6 +955,13 @@ described in this section.
     template_dependency_structure_present_flag is set to 1,
     template_dependency_structure MUST be present; otherwise
     template_dependency_structure MUST NOT be present.
+
+  * **active_decode_targets_present_flag**: indicates the presense of
+    active_decode_targets_bitmask. When set to 1, active_decode_targets_bitmask
+    MUST be present, Otherwise, active_decode_targets_bitmask MUT NOT be present.
+
+  * **active_decode_targets_bitmask**: indicates the set of decode targets
+    decodable at full fidelity.
 
   * **custom_dtis_flag**: indicates the presence of frame_dtis. When set to 1,
     frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
