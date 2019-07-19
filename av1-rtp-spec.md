@@ -453,23 +453,26 @@ Answer SDP:
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=0; level-idx=4; tier=1;
 
-In the following example, an offer is made to send 3 simulcast streams at different resolutions, along with retransmission and forward error correction.
+In the following example, an offer is made by a conferencing server to receive 3 simulcast streams.  The answerer agrees to send 3 simulcast streams at different resolutions.
 
 Offer SDP:
-
-*   v=0
-*   o=alex 238947129 823479223 IN IP6 2001:db8::c000:27d
-*   s=Offer from Simulcast Enabled Client using Redundancy
-*   c=IN IP6 2001:db8::c000:27d
-*   t=0 0
 *   m=video 49170 RTP/AVPF 98
 *   a=mid:foo
 *   a=rtpmap:98 AV1/90000
-*   a=rtpmap:99 rtx/90000
-*   a=rtpmap:100 flexfec/90000
 *   a=fmtp:98 profile=2; level-idx=8; tier=1;
-*   a=fmtp:99 apt=98;rtx-time=200
-*   a=fmtp:100 repair-window=2000
+*   a=rid:1 recv pt=98
+*   a=rid:2 recv pt=98
+*   a=rid:3 recv pt=98
+*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+*   a=rtcp-fb:* ccm pause nowait
+*   a=simulcast:recv 1,2,3;
+
+Answer SDP:
+*   m=video 48120 RTP/AVPF 98
+*   a=mid:foo
+*   a=rtpmap:98 AV1/90000
+*   a=fmtp:98 profile=2; level-idx=8; tier=1;
 *   a=rid:1 send pt=98;max-width=1280;max-height=720;max-fps=30; max-br=6300000
 *   a=rid:2 send pt=98;max-width=640;max-height=360;max-fps=30;max-br=300000
 *   a=rid:3 send pt=98;max-width=320;max-height=180;max-fps=30;max-br=150000
@@ -478,7 +481,6 @@ Offer SDP:
 *   a=extmap:3 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
 *   a=rtcp-fb:* ccm pause nowait
 *   a=simulcast:send 1,2,3;
-
 
 ## 8. Feedback Messages
 
