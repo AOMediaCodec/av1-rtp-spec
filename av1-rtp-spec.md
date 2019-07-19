@@ -356,7 +356,12 @@ SFUs can operate using end-to-end encryption, i.e., with encrypted payload, usin
 Appendix A. The extension exposes the layer information of a packet so that the SFU can make the appropriate forwarding
 decision.
 
+### 6.1. Simulcast
 
+The [AV1 Bitstream & Decoding Specification][AV1] supports inclusion of multiple simulcast encodings within a
+single bitstream. However, for implementations of this specification, it is RECOMMENDED that a separate RTP
+stream be used for each simulcast encoding, since this approach is compatible with simulcast negotiation in
+SDP as described in [I-D.ietf-mmusic-sdp-simulcast]. 
 
 ## 7. Payload Format Parameters
 
@@ -447,6 +452,32 @@ Answer SDP:
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=0; level-idx=4; tier=1;
+
+In the following example, an offer is made to send 3 simulcast streams at different resolutions, along with retransmission and forward error correction.
+
+Offer SDP:
+
+*   v=0
+*   o=alex 238947129 823479223 IN IP6 2001:db8::c000:27d
+*   s=Offer from Simulcast Enabled Client using Redundancy
+*   c=IN IP6 2001:db8::c000:27d
+*   t=0 0
+*   m=video 49170 RTP/AVPF 98
+*   a=mid:foo
+*   a=rtpmap:98 AV1/90000
+*   a=rtpmap:99 rtx/90000
+*   a=rtpmap:100 flexfec/90000
+*   a=fmtp:98 profile=2; level-idx=8; tier=1;
+*   a=fmtp:99 apt=98;rtx-time=200
+*   a=fmtp:100 repair-window=2000
+*   a=rid:1 send pt=98;max-width=1280;max-height=720;max-fps=30; max-br=6300000
+*   a=rid:2 send pt=98;max-width=640;max-height=360;max-fps=30;max-br=300000
+*   a=rid:3 send pt=98;max-width=320;max-height=180;max-fps=30;max-br=150000
+*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+*   a=extmap:3 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
+*   a=rtcp-fb:* ccm pause nowait
+*   a=simulcast:send 1,2,3;
 
 
 ## 8. Feedback Messages
@@ -565,6 +596,8 @@ Answer SDP:
   * [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
   
  * [I-D.ietf-avtext-lrr](https://tools.ietf.org/html/draft-ietf-avtext-lrr-07 "ietf-avtext-lrr")  **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
+ 
+  * [I-D.ietf-mmusic-sdp-simulcast](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast "ietf-mmusic-sdp-simulcast")  ** Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar, M. Zanaty, March 5, 2019.
 
 
 ### 11.2 Informative references
