@@ -456,8 +456,8 @@ Answer SDP:
 In the following example, an offer is made by a conferencing server to receive 3 simulcast streams.  The answerer agrees to send 3 simulcast streams at different resolutions.
 
 Offer SDP:
-*   m=video 49170 RTP/AVPF 98
-*   a=mid:foo
+*   m=video 49170 UDP/TLS/RTP/SAVPF 98
+*   a=mid:0
 *   a=rtpmap:98 AV1/90000
 *   a=fmtp:98 profile=2; level-idx=8; tier=1;
 *   a=rid:1 recv pt=98
@@ -469,8 +469,8 @@ Offer SDP:
 *   a=simulcast:recv 1,2,3;
 
 Answer SDP:
-*   m=video 48120 RTP/AVPF 98
-*   a=mid:foo
+*   m=video 48120 UDP/TLS/RTP/SAVPF 98
+*   a=mid:0
 *   a=rtpmap:98 AV1/90000
 *   a=fmtp:98 profile=2; level-idx=8; tier=1;
 *   a=rid:1 send pt=98;max-width=1280;max-height=720;max-fps=30; max-br=6300000
