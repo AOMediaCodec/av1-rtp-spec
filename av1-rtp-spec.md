@@ -469,13 +469,13 @@ Offer SDP:
 *   a=rtcp-rsize
 *   a=rtpmap:98 AV1/90000
 *   a=fmtp:98 profile=2; level-idx=8; tier=1;
-*   a=rid:1 recv pt=98
-*   a=rid:2 recv pt=98
-*   a=rid:3 recv pt=98
 *   a=rtcp-fb:98 ccm fir
 *   a=rtcp-fb:98 nack
 *   a=rtcp-fb:98 nack pli
-*   a=simulcast:recv 1,2,3;
+*   a=rid:f recv
+*   a=rid:h recv
+*   a=rid:q recv
+*   a=simulcast:recv f;h;q
 
 Answer SDP:
 *   m=video 48120 UDP/TLS/RTP/SAVPF 98
@@ -491,13 +491,13 @@ Answer SDP:
 *   a=rtcp-rsize
 *   a=rtpmap:98 AV1/90000
 *   a=fmtp:98 profile=2; level-idx=8; tier=1;
-*   a=rid:1 send pt=98;max-width=1280;max-height=720;max-fps=30; max-br=6300000
-*   a=rid:2 send pt=98;max-width=640;max-height=360;max-fps=30;max-br=300000
-*   a=rid:3 send pt=98;max-width=320;max-height=180;max-fps=30;max-br=150000
 *   a=rtcp-fb:98 ccm fir
 *   a=rtcp-fb:98 nack
 *   a=rtcp-fb:98 nack pli
-*   a=simulcast:send 1,2,3;
+*   a=rid:f send
+*   a=rid:h send
+*   a=rid:q send
+*   a=simulcast:send f;h;q
 
 ## 8. Feedback Messages
 
