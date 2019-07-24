@@ -359,9 +359,9 @@ decision.
 ### 6.1. Simulcast
 
 The [AV1 Bitstream & Decoding Specification][AV1] supports inclusion of multiple simulcast encodings within a
-single bitstream. However, for implementations of this specification, it is RECOMMENDED that a separate RTP
-stream be used for each simulcast encoding, since this approach is compatible with simulcast negotiation in
-SDP as described in [I-D.ietf-mmusic-sdp-simulcast]. 
+single bitstream. Implementations of this specification supporting simulcast MUST implement sending each
+simulcast encoding on a separate RTP stream as described in [I-D.ietf-mmusic-sdp-simulcast]. Implementations
+MAY also support sending multiple simulcast encodings on a single RTP stream.
 
 ## 7. Payload Format Parameters
 
@@ -458,28 +458,45 @@ In the following example, an offer is made by a conferencing server to receive 3
 Offer SDP:
 *   m=video 49170 UDP/TLS/RTP/SAVPF 98
 *   a=mid:0
+*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+*   a=extmap:3 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
+*   a=extmap:4 urn:3gpp:video-orientation
+*   a=extmap:5 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+*   a=sendrecv
+*   a=msid:- d5973f55-bed2-4cf2-a13f-1c9b33c2297a
+*   a=rtcp-mux
+*   a=rtcp-rsize
 *   a=rtpmap:98 AV1/90000
 *   a=fmtp:98 profile=2; level-idx=8; tier=1;
 *   a=rid:1 recv pt=98
 *   a=rid:2 recv pt=98
 *   a=rid:3 recv pt=98
-*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
-*   a=rtcp-fb:* ccm pause nowait
+*   a=rtcp-fb:98 ccm fir
+*   a=rtcp-fb:98 nack
+*   a=rtcp-fb:98 nack pli
 *   a=simulcast:recv 1,2,3;
 
 Answer SDP:
 *   m=video 48120 UDP/TLS/RTP/SAVPF 98
 *   a=mid:0
+*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+*   a=extmap:3 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
+*   a=extmap:4 urn:3gpp:video-orientation
+*   a=extmap:5 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+*   a=sendrecv
+*   a=msid:- d5973f55-bed2-4cf2-a13f-1c9b33c2297a
+*   a=rtcp-mux
+*   a=rtcp-rsize
 *   a=rtpmap:98 AV1/90000
 *   a=fmtp:98 profile=2; level-idx=8; tier=1;
 *   a=rid:1 send pt=98;max-width=1280;max-height=720;max-fps=30; max-br=6300000
 *   a=rid:2 send pt=98;max-width=640;max-height=360;max-fps=30;max-br=300000
 *   a=rid:3 send pt=98;max-width=320;max-height=180;max-fps=30;max-br=150000
-*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
-*   a=extmap:3 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
-*   a=rtcp-fb:* ccm pause nowait
+*   a=rtcp-fb:98 ccm fir
+*   a=rtcp-fb:98 nack
+*   a=rtcp-fb:98 nack pli
 *   a=simulcast:send 1,2,3;
 
 ## 8. Feedback Messages
