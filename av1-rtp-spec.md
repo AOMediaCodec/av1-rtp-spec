@@ -358,10 +358,9 @@ decision.
 
 ### 6.1. Simulcast
 
-The [AV1 Bitstream & Decoding Specification][AV1] supports inclusion of multiple simulcast encodings within a
-single bitstream. Implementations of this specification supporting simulcast MUST implement sending each
-simulcast encoding on a separate RTP stream as described in [I-D.ietf-mmusic-sdp-simulcast]. Implementations
-MAY support sending multiple simulcast encodings on a single RTP stream.
+The [AV1 Bitstream & Decoding Specification][AV1] enables multiple simulcast encodings to be provided within
+a single bitstream. Within the RTP payload defined in this specification, simulcast encodings can be transported
+each on a separate RTP stream as described in [I-D.ietf-mmusic-sdp-simulcast], or on a single RTP stream. 
 
 ## 7. Payload Format Parameters
 
