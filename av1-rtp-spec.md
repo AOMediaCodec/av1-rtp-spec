@@ -495,6 +495,41 @@ Answer SDP:
 *   a=rid:q send
 *   a=simulcast:send f;h;q
 
+In the following example, an offer is made by a browser to send a single RTP stream to a conferencing server.
+This single stream could include include any AV1 scalability mode, including "S" modes involving simulcast.
+
+Offer SDP:
+*   m=video 49170 UDP/TLS/RTP/SAVPF 98
+*   a=mid:0
+*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+*   a=extmap:3 urn:3gpp:video-orientation
+*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+*   a=sendrecv
+*   a=rtcp-mux
+*   a=rtcp-rsize
+*   a=rtpmap:98 AV1/90000
+*   a=fmtp:98 profile=2; level-idx=8; tier=1;
+*   a=rtcp-fb:98 ccm fir
+*   a=rtcp-fb:98 nack
+*   a=rtcp-fb:98 nack pli
+
+Answer SDP:
+*   m=video 48120 UDP/TLS/RTP/SAVPF 98
+*   a=mid:0
+*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+*   a=extmap:3 urn:3gpp:video-orientation
+*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+*   a=sendrecv
+*   a=rtcp-mux
+*   a=rtcp-rsize
+*   a=rtpmap:98 AV1/90000
+*   a=fmtp:98 profile=2; level-idx=8; tier=1;
+*   a=rtcp-fb:98 ccm fir
+*   a=rtcp-fb:98 nack
+*   a=rtcp-fb:98 nack pli
+
 ## 8. Feedback Messages
 
 ## 8.1.  Full Intra Request (FIR)
