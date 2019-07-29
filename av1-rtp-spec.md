@@ -460,9 +460,8 @@ Offer SDP:
 *   a=mid:0
 *   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
 *   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
-*   a=extmap:3 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
-*   a=extmap:4 urn:3gpp:video-orientation
-*   a=extmap:5 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+*   a=extmap:3 urn:3gpp:video-orientation
+*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
 *   a=sendrecv
 *   a=rtcp-mux
 *   a=rtcp-rsize
@@ -481,9 +480,8 @@ Answer SDP:
 *   a=mid:0
 *   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
 *   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
-*   a=extmap:3 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
-*   a=extmap:4 urn:3gpp:video-orientation
-*   a=extmap:5 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+*   a=extmap:3 urn:3gpp:video-orientation
+*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
 *   a=sendrecv
 *   a=msid:- d5973f55-bed2-4cf2-a13f-1c9b33c2297a
 *   a=rtcp-mux
