@@ -501,7 +501,6 @@ Offer SDP:
 *   m=video 49170 UDP/TLS/RTP/SAVPF 98
 *   a=mid:0
 *   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
 *   a=extmap:3 urn:3gpp:video-orientation
 *   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
 *   a=sendrecv
@@ -517,7 +516,6 @@ Answer SDP:
 *   m=video 48120 UDP/TLS/RTP/SAVPF 98
 *   a=mid:0
 *   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
 *   a=extmap:3 urn:3gpp:video-orientation
 *   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
 *   a=sendrecv
