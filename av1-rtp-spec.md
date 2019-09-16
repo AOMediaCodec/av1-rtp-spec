@@ -362,7 +362,7 @@ The [AV1 Bitstream & Decoding Specification][AV1] enables multiple simulcast enc
 a single bitstream. Within the RTP payload defined in this specification, simulcast encodings can be transported
 each on a separate RTP stream [I-D.ietf-avtext-rid] with Session Description Protocol (SDP) signaling as
 described in [I-D.ietf-mmusic-sdp-simulcast][I-D.ietf-mmusic-rid]. Alternatively, simulcast encodings can
-be transported on a single RTP stream, in which case Restrictions Identifiers (RIDs) are not used. In either
+be transported on a single RTP stream, in which case Restriction Identifiers (RIDs) are not used. In either
 case, simulcast transport MUST only be used to convey multiple encodings from the same source.
 
 ## 7. Payload Format Parameters
