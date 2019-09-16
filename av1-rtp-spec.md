@@ -647,11 +647,11 @@ Answer SDP:
   
  * [I-D.ietf-avtext-lrr](https://tools.ietf.org/html/draft-ietf-avtext-lrr-07 "ietf-avtext-lrr")  **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
  
-  * [I-D.ietf-avtext-rid](https://tools.ietf.org/html/draft-ietf-avtext-rid "ietf-avtext-rid")  ** RTP Stream Identifier Source Description (SDES)**, A. Roach, S. Nandakumar, P. Thatcher, October 06, 2016.
+  * [I-D.ietf-avtext-rid](https://tools.ietf.org/html/draft-ietf-avtext-rid "ietf-avtext-rid")  ** RTP Stream Identifier Source Description (SDES)**, A. Roach, S. Nandakumar and P. Thatcher, October 06, 2016.
   
   * [I-D.ietf-mmusic-rid](https://tools.ietf.org/html/draft-ietf-mmusic-rid "ietf-mmusic-rid")  ** RTP Payload Format Restrictions**, A. Roach, May 15, 2018.
   
-  * [I-D.ietf-mmusic-sdp-simulcast](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast "ietf-mmusic-sdp-simulcast")  ** Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar, M. Zanaty, March 5, 2019.
+  * [I-D.ietf-mmusic-sdp-simulcast](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast "ietf-mmusic-sdp-simulcast")  ** Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar and M. Zanaty, March 5, 2019.
 
 
 ### 11.2 Informative references
