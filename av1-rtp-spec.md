@@ -360,7 +360,9 @@ decision.
 
 The [AV1 Bitstream & Decoding Specification][AV1] enables multiple simulcast encodings to be provided within
 a single bitstream. Within the RTP payload defined in this specification, simulcast encodings can be transported
-each on a separate RTP stream as described in [I-D.ietf-mmusic-sdp-simulcast], or on a single RTP stream. 
+each on a separate RTP stream [I-D.ietf-avtext-rid] using the Session Description Protocol (SDP) semantics 
+described in [I-D.ietf-mmusic-sdp-simulcast][I-D.ietf-mmusic-rid], or on a single RTP stream. In either
+case, simulcast transport MUST be used to convey multiple encodings from the same source.
 
 ## 7. Payload Format Parameters
 
@@ -644,6 +646,10 @@ Answer SDP:
   
  * [I-D.ietf-avtext-lrr](https://tools.ietf.org/html/draft-ietf-avtext-lrr-07 "ietf-avtext-lrr")  **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
  
+  * [I-D.ietf-avtext-rid](https://tools.ietf.org/html/draft-ietf-avtext-rid "ietf-avtext-rid")  ** RTP Stream Identifier Source Description (SDES)**, A. Roach, S. Nandakumar, P. Thatcher, October 06, 2016.
+  
+  * [I-D.ietf-mmusic-rid](https://tools.ietf.org/html/draft-ietf-mmusic-rid "ietf-mmusic-rid")  ** RTP Payload Format Restrictions**, A. Roach, May 15, 2018.
+  
   * [I-D.ietf-mmusic-sdp-simulcast](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast "ietf-mmusic-sdp-simulcast")  ** Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar, M. Zanaty, March 5, 2019.
 
 
