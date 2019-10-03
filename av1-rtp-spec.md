@@ -296,6 +296,13 @@ Each RTP packet MUST contain OBUs that belong to a single temporal unit.
 The temporal delimiter OBU, if present, SHOULD be removed when transmitting, and
 MUST be ignored by receivers.
 
+If a sequence header OBU is present in an RTP packet and operating_points_cnt_minus_1 > 0 then for any number i where 0 <= i < operating_points_cnt_minus_1 the following MUST be true: (operating_point_idc[i] & operating_point_idc[i+1]) == operating_point_idc[i+1].
+
+A sender MAY produce a sequence header with operating_points_cnt_minus_1 = 0 and operating_point_idc[0] == 0xFFF and seq_level_idx[0] = 0. In such case, seq_level_idx[0] does not reflect the level of the operating point.
+
+**Note:** The intent is to disable OBU dropping in the decoder. To ensure a decoder’s capabilities are not exceeded, OBU filtering should instead be implemented at the system level (e.g., SFU).
+
+
 If more than one OBU contained in an RTP packet has an OBU extension header then
 the values of the temporal_id and spatial_id must be the same in all such OBUs
 in the RTP packet.
