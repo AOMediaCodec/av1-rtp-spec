@@ -1,4 +1,4 @@
-
+﻿
 RTP Payload Format For AV1 (v0.2.1)
 ===================================
 {:.no_toc }
@@ -76,7 +76,7 @@ Open Bitstream Unit (OBU)
 : The smallest bitstream data framing unit in AV1. All AV1 bitstream structures
   are packetized in OBUs.
 
-[Selective Forwarding Unit] (SFU)
+Selective Forwarding Unit (SFU)
 : A middlebox that relays streams among transmitting and receiving clients by
   selectively forwarding packets without requiring access to the media ([RFC7667]).
 
@@ -167,9 +167,6 @@ detailed later in this document.
 </code></pre>
 
 
-**TODO:** Decide whether to keep the ascii art in this document.
-{:.alert .alert-danger }
-
 
 ### 4.2  Dependency Descriptor RTP Header Extension
 
@@ -189,7 +186,7 @@ The structure is as follows.
 <pre><code>
  0 1 2 3 4 5 6 7
 +-+-+-+-+-+-+-+-+
-|Z|Y|-|-|-|-|-|-|
+|Z|Y| W |-|-|-|-|
 +-+-+-+-+-+-+-+-+
 </code></pre>
 
@@ -199,6 +196,15 @@ previous OBU, 0 otherwise
 Y: set to 1 if the last OBU contained in the packet will continue in another
 packet, 0 otherwise
 
+W: two bits, which if set to 0, mean that each OBU (or OBU fragment) MUST
+be preceded by a length field. If either bit is set, the field provides the
+number of OBUs that are packetized; the last OBU (or OBU fragment) MUST NOT be
+preceded by a length field. Instead, the length of the last OBU (or OBU fragment)
+contained in the packet can be calculated as follows:
+
+<pre><code>
+Length of the last OBU = length of the RTP payload - length of aggregation header - length of previous OBUs including length fields
+</code></pre>
 
 ### 4.4 Payload structure
 
@@ -216,11 +222,21 @@ The design allows combination of aggregation and fragmentation, i.e., allow for
 a set of OBUs in which the first and/or last one is fragmented.
 
 The payload contains a series of one or more OBUs (with the first and/or last
-possibly being fragments). Each OBU (or OBU fragment) is preceded by a length
-field. The length field is encoded using leb128. Leb128 is defined in the AV1
+possibly being fragments).
+
+The length field is encoded using leb128. Leb128 is defined in the AV1
 specification, and provides for a variable-sized, byte-oriented encoding of non-
 negative integers where the first bit of each (little-endian) byte indicates if
 additional bytes are used in the representation (AV1, Section 4.10.5).
+
+Whether or not the first and/or last OBU is fragmented is signaled in the
+aggregation header. Fragmentation may occur regardless of how the W bits
+are set.
+
+The AV1 specification allows OBUs to have an optional size field called 
+obu_size (also leb128 encoded), signaled by the obu_has_size_field flag 
+in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD 
+be set to zero in all OBUs.
 
 The following figure shows an example payload where the length field is shown as
 taking two bytes for the first and second OBU and one byte for the last (N) OBU.
@@ -248,8 +264,30 @@ taking two bytes for the first and second OBU and one byte for the last (N) OBU.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
-Whether or not the first and/or last OBU is fragmented is signaled in the
-aggregation header.
+The following figure shows an example payload containing two
+OBUs where the last OBU omits the length field (and the W
+field is set to 2):
+
+<pre><code>
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Z|Y|1 0|-|-|-|-|   OBU 1 size (leb128)         |               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
+|                                                               |
+:                        OBU 1 data                             :
+:                                                               :
+|                                                               |
+|                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+|                                                               |
+|                                                               |
+:                        OBU 2 data                             :
+:                                                               :
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre>
 
 ## 5. Packetization rules
 
@@ -257,6 +295,12 @@ Each RTP packet MUST contain OBUs that belong to a single temporal unit.
 
 The temporal delimiter OBU, if present, SHOULD be removed when transmitting, and
 MUST be ignored by receivers.
+
+If a sequence header OBU is present in an RTP packet and operating_points_cnt_minus_1 > 0 then for any number i where 0 <= i < operating_points_cnt_minus_1 the following MUST be true: (operating_point_idc[i] & operating_point_idc[i+1]) == operating_point_idc[i+1].
+
+A sender MAY produce a sequence header with operating_points_cnt_minus_1 = 0 and operating_point_idc[0] = 0xFFF and seq_level_idx[0] = 0. In such case, seq_level_idx[0] does not reflect the level of the operating point.
+
+**Note:** The intent is to disable OBU dropping in the decoder. To ensure a decoder’s capabilities are not exceeded, OBU filtering should instead be implemented at the system level (e.g., SFU).
 
 If more than one OBU contained in an RTP packet has an OBU extension header then
 the values of the temporal_id and spatial_id must be the same in all such OBUs
@@ -326,7 +370,6 @@ This payload format has three optional parameters.
 
 ### 7.1. Media Type Definition
 
-TODO: proposed meda type for IANA registration:
 
 * Type name:
    * **video**
@@ -335,9 +378,9 @@ TODO: proposed meda type for IANA registration:
 * Required parameters:
   * None.
 * Optional parameters:
-  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level_idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
+  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level-idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
     * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by the receiver. The range of possible values is identical to **seq_profile** syntax element specified in [AV1]
-    * **level_idx**: The value of **level_idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
+    * **level-idx**: The value of **level-idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
     * **tier**: The value of **tier** is an integer indicating tier of the indicated level.  The range of possible values is identical to **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
 
 * Encoding considerations:
@@ -373,23 +416,29 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
 * The clock rate in the "a=rtpmap" line MUST be 90000.
-* The parameters "**profile**", and "**level_idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
-* Parameter "**tier**" COULD be included alongside "**profile**" and "**level_idx** parameters in "a=fmtp" line if indicated level supports tier different to 0.
+* The parameters "**profile**", and "**level-idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
+* Parameter "**tier**" COULD be included alongside "**profile**" and "**level-idx** parameters in "a=fmtp" line if indicated level supports tier different to 0.
 
 #### 7.2.2  Usage with the SDP Offer/Answer Model
 
 When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for negotiation for unicast usage, the following limitations and rules apply:
-  *  The media format configuration is identified by **level**, **profile_idx** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and answerer COULD declare its own media configuration if answerer capabilities are different to offerer.
+  *  The media format configuration is identified by **level-idx**, **profile** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and answerer COULD declare its own media configuration if answerer capabilities are different to offerer.
      *  The  profile to use in the offerer-to-answerer direction MUST be lesser or equal to the profile the answerer supports for receiving, and the profile to use in the answerer-to-offerer direction MUST be lesser or equal to the profile the offerer supports for receiving.
      *  The level to use in the offerer-to-answerer direction MUST be lesser or equal to the level the answerer supports for receiving, and the level to use in the answerer-to-offerer direction MUST be lesser or equal to the level the offerer supports for receiving.
      *  The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be lesser or equal to the tier the offerer supports for receiving.
+
+#### 7.2.3  Usage in Declarative Session Descriptions
+
+ When AV1 over RTP is offered with SDP in a declarative style, as in Real Time Streaming Protocol (RTSP) [RFC2326] or Session Announcement Protocol (SAP) [RFC2974], the following considerations apply.
+ * All parameters capable of indicating both stream properties and receiver capabilities are used to indicate only stream properties. In this case, the parameters **profile**, **level-idx** and **tier** declare only the values used by the stream, not the capabilities for receiving streams.  
+ * A receiver of the SDP is required to support all parameters and values of the parameters provided; otherwise, the receiver MUST reject (RTSP) or not participate in (SAP) the session. It falls on the creator of the session to use values that are expected to be supported by the receiving application.
 
 ### 7.3 Example
 An example of media representation in SDP is as follows:
 
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level_idx=8; tier=1;
+* a=fmtp:98 profile=2; level-idx=8; tier=1;
 
 In the following example, the offer is accepted with level upgrading. The level to use in the offerer-to-answerer
 direction is Level 2.0, and the level to use in the answerer-to-offerer direction is Level 3.0/Tier 1.  The answerer is allowed to send at
@@ -398,12 +447,12 @@ any level up to and including Level 2.0, and the offerer is allowed to send at a
 Offer SDP:
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=0; level_idx=0;
+* a=fmtp:98 profile=0; level-idx=0;
 *
 Answer SDP:
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=0; level_idx=4; tier=1;
+* a=fmtp:98 profile=0; level-idx=4; tier=1;
 
 
 ## 8. Feedback Messages
@@ -508,21 +557,29 @@ Answer SDP:
 
 ### 11.1 Normative references
 
-  * [I-D.ietf-avtext-lrr] for LRR feedback message
-  * [RFC3550] for RTP header format
-  * [RFC5104] for FIR feedback message
-  * [RFC6184] for definition of MANE
-  * [RFC8285] for generic RTP header extensions
-  * [RFC7667] RTP Topologies
-  * [AV1 Bitstream & Decoding Process Specification][AV1]
+ 
+  * [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf "AV1 1.0.0 with Errata1") **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
+  * [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
+  
+  * [RFC5104](https://tools.ietf.org/html/rfc5104 "RFC5104") **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008. 
+
+  * [RFC6184](https://tools.ietf.org/html/rfc6184 "RFC6184") **RTP Payload Format for H.264 Video**, Y.-K. Wang, R. Even, T. Kristensen, and R. Jesup, May 2011.
+
+  * [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
+  
+  * [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+  
+ * [I-D.ietf-avtext-lrr](https://tools.ietf.org/html/draft-ietf-avtext-lrr-07 "ietf-avtext-lrr")  **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
 
 
 ### 11.2 Informative references
 
-* [RFC3711] SRTP, example enryption protocol
-* [RFC7202] Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution
-* [perc-double] SRTP Double Encryption Procedures, October 17, 2018
+* [RFC3711](https://tools.ietf.org/html/rfc3711 "RFC3711") **The Secure Real-time Transport Protocol (SRTP)**, M. Baugher, D. McGrew, M. Naslund, E. Carrara, and K. Norrman, March 2004.
+
+* [RFC7202](https://tools.ietf.org/html/rfc7202 "RFC7202") **Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution**, C. Perkins and M. Westerlund, April 2014.
+
+* [perc-double](https://tools.ietf.org/html/draft-ietf-perc-double-10 "perc-double") **SRTP Double Encryption Procedures**, C. Jennings, P. Jones, R. Barnes, and A. Roach, October 17, 2018
 
 
 
@@ -1381,26 +1438,26 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 
 
 ##### A.6.1 Normative references
-  * [RFC3550] for RTP header format
-  * [RFC8285] for generic RTP header extensions
+ 
+ * [RFC2119](https://tools.ietf.org/html/rfc2119 "RFC2119") **Key words for use in RFCs to Indicate Requirement Levels, S. Bradner, March 1997. 
+ 
+  * [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
 
-**TODO:** flesh out list of normative references.
-{:.alert .alert-danger }
-
+   * [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
+  
 
 ##### A.6.2 Informative references
 
-**TODO:** list informative references.
-{:.alert .alert-danger }
+* [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf "AV1 1.0.0 with Errata1") **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
+
+* [RFC3264](https://tools.ietf.org/html/rfc3264 "RFC3264") **An Offer/Answer Model with the Session Description Protocol (SDP)**, J. Rosenberg and H. Schulzrinne, June 2002. 
+
+* [RFC4566](https://tools.ietf.org/html/rfc4566 "RFC4566") **SDP: Session Description Protocol**, M. Handley, V. Jacobson, and C. Perkins, July 2006.
+
+* [RFC4585](https://tools.ietf.org/html/rfc4585 "RFC4585") **Extended RTP Profile for Real-time Transport Control Protocol (RTCP)-Based Feedback (RTP/AVPF)**, J. Ott, S. Wenger, N. Sato, C. Burmeister, and J. Rey, July 2006. 
+
+* [RFC6838](https://tools.ietf.org/html/rfc6838 "RFC6838") **Media Type Specifications and Registration Procedures**, N. Freed, J. Klensin, and T. Hansen, January 2013.
+
+ * [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
 
 
-[AV1]: https://aomedia.org/av1-bitstream-and-decoding-process-specification/
-[RFC2119]: https://tools.ietf.org/html/rfc2119
-[RFC3264]: https://tools.ietf.org/html/rfc3264
-[RFC3550]: https://tools.ietf.org/html/rfc3550
-[RFC4566]: https://tools.ietf.org/html/rfc4566
-[RFC4585]: https://tools.ietf.org/html/rfc4585
-[RFC6838]: https://tools.ietf.org/html/rfc6838
-[RFC7667]: https://tools.ietf.org/html/rfc7667
-[RFC8285]: https://tools.ietf.org/html/rfc8285
-[Selective Forwarding Unit]: https://webrtcglossary.com/sfu/
