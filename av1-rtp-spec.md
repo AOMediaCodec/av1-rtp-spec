@@ -1017,9 +1017,6 @@ described in this section.
     active_decode_targets_bitmask. When set to 1, active_decode_targets_bitmask
     MUST be present, otherwise, active_decode_targets_bitmask MUST NOT be present.
 
-  * **active_decode_targets_bitmask**: A bitmask of size dtis_cnt_minus_one + 1.
-    The bit at index i is set to 1 if Decode Target i is available for decoding, 0 otherwise.
-
   * **active_decode_targets_bitmask**: contains a bitmask that indicates which
     decode targets are available for decoding. Bit i is equal to 1 if
     decode target k is available for decoding, 0 otherwise.
