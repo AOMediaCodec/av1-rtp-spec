@@ -1019,7 +1019,7 @@ described in this section.
 
   * **active_decode_targets_bitmask**: contains a bitmask that indicates which
     decode targets are available for decoding. Bit i is equal to 1 if
-    decode target k is available for decoding, 0 otherwise.
+    decode target i is available for decoding, 0 otherwise.
 
   * **custom_dtis_flag**: indicates the presence of frame_dtis. When set to 1,
     frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
@@ -1166,17 +1166,29 @@ common cases for such '(re)start of Chain' indications.
 An SFU may begin forwarding packets belonging to a new Decode target beginning
 with a decodable Frame containing a Switch indication to that Decode target.
 
-An SFU may only forward certain Decode targets. Similarly, a sender may change
-which Decode targets that are currently being produced. In both cases,
-only some Decode targets may be available for decoding. This change MUST be
-signaled to the receiver by including the active_decode_targets_bitmask.
-This change SHOULD be signaled to the receiver in a reliable way.
+An SFU may change which Decode targets it forwards. Similarly, a sender may
+change the Decode targets that are currently being produced. In both cases, not
+all Decode targets may be available for decoding. Such changes SHOULD be
+signaled to the receiver using the active_decode_targets_bitmask and SHOULD be
+signaled to the receiver in a reliable way.
+
+When not all Decode targets are active, the active_decode_targets_bitmask MUST
+be sent in every packet where the template_dependency_structure_present_flag is
+equal to 1.
+
+**Note:** One way to achieve reliable delivery is to include the
+active_decode_targets_bitmask in every packet until a receiver report
+acknowledges a packet containing the latest active_decode_targets_bitmask.
+Alternately, for many video streams, reliable delivery may be achieved by
+including the active_decode_targets_bitmask on every chain in the first packet
+after a change in active decode targets.
+{:.alert .alert-info }
 
 Chains protecting no active decode targets MUST be ignored.
 
-**Note:** Chains protecting no active decode targets may contain any reference,
-including a reference to an RTP frame that was never produced. As such, there is
-a higher chance of using a predefined template.
+**Note:** To allow higher chance of using a predefined template, chains
+protecting no active decode targets may contain any reference, including a
+reference to an RTP frame that was never produced.
 {:.alert .alert-info }
 
 #### A.5 Examples
