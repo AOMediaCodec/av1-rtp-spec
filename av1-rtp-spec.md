@@ -1186,9 +1186,9 @@ after a change in active decode targets.
 
 Chains protecting no active decode targets MUST be ignored.
 
-**Note:** To allow higher chance of using a predefined template, chains
-protecting no active decode targets may contain any reference, including a
-reference to an RTP frame that was never produced.
+**Note:** To increase the chance of using a predefined template, chains
+protecting no active decode targets may refer to any frame, including an RTP
+frame that was never produced.
 {:.alert .alert-info }
 
 #### A.5 Examples
