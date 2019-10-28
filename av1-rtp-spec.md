@@ -362,7 +362,14 @@ SFUs can operate using end-to-end encryption, i.e., with encrypted payload, usin
 Appendix A. The extension exposes the layer information of a packet so that the SFU can make the appropriate forwarding
 decision.
 
+### 6.1. Simulcast
 
+The [AV1 Bitstream & Decoding Specification][AV1] enables multiple simulcast encodings to be provided within
+a single bitstream. Within the RTP payload defined in this specification, simulcast encodings can be transported
+each on a separate RTP stream [I-D.ietf-avtext-rid] with Session Description Protocol (SDP) signaling as
+described in [I-D.ietf-mmusic-sdp-simulcast][I-D.ietf-mmusic-rid]. Alternatively, simulcast encodings can
+be transported on a single RTP stream, in which case Restriction Identifiers (RIDs) are not used. In either
+case, simulcast transport MUST only be used to convey multiple encodings from the same source.
 
 ## 7. Payload Format Parameters
 
@@ -454,6 +461,80 @@ Answer SDP:
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=0; level-idx=4; tier=1;
 
+In the following example, an offer is made by a conferencing server to receive 3 simulcast streams.  The answerer agrees to send 3 simulcast streams at different resolutions.
+
+Offer SDP:
+*   m=video 49170 UDP/TLS/RTP/SAVPF 98
+*   a=mid:0
+*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+*   a=extmap:3 urn:3gpp:video-orientation
+*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+*   a=sendrecv
+*   a=rtcp-mux
+*   a=rtcp-rsize
+*   a=rtpmap:98 AV1/90000
+*   a=fmtp:98 profile=2; level-idx=8; tier=1;
+*   a=rtcp-fb:98 ccm fir
+*   a=rtcp-fb:98 nack
+*   a=rtcp-fb:98 nack pli
+*   a=rid:f recv
+*   a=rid:h recv
+*   a=rid:q recv
+*   a=simulcast:recv f;h;q
+
+Answer SDP:
+*   m=video 48120 UDP/TLS/RTP/SAVPF 98
+*   a=mid:0
+*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+*   a=extmap:3 urn:3gpp:video-orientation
+*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+*   a=sendrecv
+*   a=rtcp-mux
+*   a=rtcp-rsize
+*   a=rtpmap:98 AV1/90000
+*   a=fmtp:98 profile=2; level-idx=8; tier=1;
+*   a=rtcp-fb:98 ccm fir
+*   a=rtcp-fb:98 nack
+*   a=rtcp-fb:98 nack pli
+*   a=rid:f send
+*   a=rid:h send
+*   a=rid:q send
+*   a=simulcast:send f;h;q
+
+In the following example, an offer is made by a browser to send a single RTP stream to a conferencing server.
+This single stream could include include any AV1 scalability mode, including "S" modes involving simulcast.
+
+Offer SDP:
+*   m=video 49170 UDP/TLS/RTP/SAVPF 98
+*   a=mid:0
+*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+*   a=extmap:3 urn:3gpp:video-orientation
+*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+*   a=sendrecv
+*   a=rtcp-mux
+*   a=rtcp-rsize
+*   a=rtpmap:98 AV1/90000
+*   a=fmtp:98 profile=2; level-idx=8; tier=1;
+*   a=rtcp-fb:98 ccm fir
+*   a=rtcp-fb:98 nack
+*   a=rtcp-fb:98 nack pli
+
+Answer SDP:
+*   m=video 48120 UDP/TLS/RTP/SAVPF 98
+*   a=mid:0
+*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+*   a=extmap:3 urn:3gpp:video-orientation
+*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+*   a=sendrecv
+*   a=rtcp-mux
+*   a=rtcp-rsize
+*   a=rtpmap:98 AV1/90000
+*   a=fmtp:98 profile=2; level-idx=8; tier=1;
+*   a=rtcp-fb:98 ccm fir
+*   a=rtcp-fb:98 nack
+*   a=rtcp-fb:98 nack pli
 
 ## 8. Feedback Messages
 
@@ -571,6 +652,12 @@ Answer SDP:
   * [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
   
  * [I-D.ietf-avtext-lrr](https://tools.ietf.org/html/draft-ietf-avtext-lrr-07 "ietf-avtext-lrr")  **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
+ 
+  * [I-D.ietf-avtext-rid](https://tools.ietf.org/html/draft-ietf-avtext-rid "ietf-avtext-rid")  ** RTP Stream Identifier Source Description (SDES)**, A. Roach, S. Nandakumar and P. Thatcher, October 06, 2016.
+  
+  * [I-D.ietf-mmusic-rid](https://tools.ietf.org/html/draft-ietf-mmusic-rid "ietf-mmusic-rid")  ** RTP Payload Format Restrictions**, A. Roach, May 15, 2018.
+  
+  * [I-D.ietf-mmusic-sdp-simulcast](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast "ietf-mmusic-sdp-simulcast")  ** Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar and M. Zanaty, March 5, 2019.
 
 
 ### 11.2 Informative references
