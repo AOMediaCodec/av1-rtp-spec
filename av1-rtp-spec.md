@@ -853,12 +853,18 @@ mandatory_descriptor_fields() {
 extended_descriptor_fields() {
   <b>frame_dependency_template_id</b> = f(6)
   <b>template_dependency_structure_present_flag</b> = f(1)
+  <b>active_decode_targets_present_flag</b> = f(1)
   <b>custom_dtis_flag</b> = f(1)
   <b>custom_fdiffs_flag</b> = f(1)
   <b>custom_chains_flag</b> = f(1)
 
   if (template_dependency_structure_present_flag) {
     template_dependency_structure()
+    active_decode_targets_bitmask = (1 << DtisCnt) - 1
+  }
+
+  if (active_decode_targets_present_flag) {
+    <b>active_decode_targets_bitmask</b> = f(DtisCnt)
   }
 }
 </code></pre>
@@ -1094,6 +1100,14 @@ described in this section.
     template_dependency_structure MUST be present; otherwise
     template_dependency_structure MUST NOT be present.
 
+  * **active_decode_targets_present_flag**: indicates the presence of
+    active_decode_targets_bitmask. When set to 1, active_decode_targets_bitmask
+    MUST be present, otherwise, active_decode_targets_bitmask MUST NOT be present.
+
+  * **active_decode_targets_bitmask**: contains a bitmask that indicates which
+    decode targets are available for decoding. Bit i is equal to 1 if
+    decode target i is available for decoding, 0 otherwise.
+
   * **custom_dtis_flag**: indicates the presence of frame_dtis. When set to 1,
     frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
 
@@ -1238,6 +1252,31 @@ common cases for such '(re)start of Chain' indications.
 
 An SFU may begin forwarding packets belonging to a new Decode target beginning
 with a decodable Frame containing a Switch indication to that Decode target.
+
+An SFU may change which Decode targets it forwards. Similarly, a sender may
+change the Decode targets that are currently being produced. In both cases, not
+all Decode targets may be available for decoding. Such changes SHOULD be
+signaled to the receiver using the active_decode_targets_bitmask and SHOULD be
+signaled to the receiver in a reliable way.
+
+When not all Decode targets are active, the active_decode_targets_bitmask MUST
+be sent in every packet where the template_dependency_structure_present_flag is
+equal to 1.
+
+**Note:** One way to achieve reliable delivery is to include the
+active_decode_targets_bitmask in every packet until a receiver report
+acknowledges a packet containing the latest active_decode_targets_bitmask.
+Alternately, for many video streams, reliable delivery may be achieved by
+including the active_decode_targets_bitmask on every chain in the first packet
+after a change in active decode targets.
+{:.alert .alert-info }
+
+Chains protecting no active decode targets MUST be ignored.
+
+**Note:** To increase the chance of using a predefined template, chains
+protecting no active decode targets may refer to any frame, including an RTP
+frame that was never produced.
+{:.alert .alert-info }
 
 #### A.5 Examples
 
