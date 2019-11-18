@@ -815,8 +815,7 @@ The syntax for the descriptor is described in pseudo-code form in this section.
 
 | Symbol name               | Value | Description                                         |
 | ------------------------- | ----- | --------------------------------------------------- |
-| EXTENDED_FIELDS_INDICATOR | 63    | Value indicating presence of extended_descriptor_fields
-| MAX_TEMPLATE_ID           | 62    | Maximum value for a frame_dependency_template_id to identify a template
+| MAX_TEMPLATE_ID           | 63    | Maximum value for a frame_dependency_template_id to identify a template
 | MAX_SPATIAL_ID            | 3     | Maximum value for a FrameSpatialId
 | MAX_TEMPORAL_ID           | 7     | Maximum value for a FrameTemporalId
 {:.table .table-sm .table-bordered }
@@ -826,10 +825,9 @@ Table A.1. Syntax constants
 
 
 <pre><code>
-dependency_descriptor() {
+dependency_descriptor( sz ) {
   mandatory_descriptor_fields()
-  if (frame_dependency_template_id_or_extended_fields_indicator ==
-      EXTENDED_FIELDS_INDICATOR) {
+  if (sz > 3) {
     extended_descriptor_fields()
   } else {
     no_extended_descriptor_fields()
@@ -843,7 +841,7 @@ dependency_descriptor() {
 mandatory_descriptor_fields() {
   <b>start_of_frame</b> = f(1)
   <b>end_of_frame</b> = f(1)
-  <b>frame_dependency_template_id_or_extended_fields_indicator</b> = f(6)
+  <b>frame_dependency_template_id</b> = f(6)
   <b>frame_number</b> = f(16)
 }
 </code></pre>
@@ -872,8 +870,6 @@ extended_descriptor_fields() {
 
 <pre><code>
 no_extended_descriptor_fields() {
-  frame_dependency_template_id =
-    frame_dependency_template_id_or_extended_fields_indicator
   custom_dtis_flag = 0
   custom_fdiffs_flag = 0
   custom_chains_flag = 0
@@ -1087,10 +1083,6 @@ described in this section.
     **Note:** values out of the valid range indicate a change of the Frame
     dependency structure.
     {:.alert .alert-info }
-
-  * **frame_dependency_template_id_or_extended_fields_indicator**: when equal to
-    EXTENDED_FIELDS_INDICATOR, extended_descriptor_fields MUST be present.
-    Otherwise, extended_descriptor_fields MUST NOT be present.
 
 **Extended Descriptor Fields**
 
