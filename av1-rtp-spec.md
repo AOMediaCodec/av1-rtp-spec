@@ -1091,6 +1091,8 @@ described in this section.
     template_dependency_structure_present_flag is set to 1,
     template_dependency_structure MUST be present; otherwise
     template_dependency_structure MUST NOT be present.
+    template_dependency_structure_present_flag MUST be set to 1 for the first
+    packet of a coded video sequence, and MUST be set to 0 otherwise.
 
   * **active_decode_targets_present_flag**: indicates the presence of
     active_decode_targets_bitmask. When set to 1, active_decode_targets_bitmask
