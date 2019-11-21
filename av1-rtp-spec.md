@@ -72,6 +72,9 @@ Media-Aware Network Element (MANE
 : A middlebox that relays streams among transmitting and receiving clients
 by selectively forwarding packets and which may have access to the media ([RFC6184]).
 
+OBU element
+: An OBU, or a fragment of an OBU.
+
 Open Bitstream Unit (OBU)
 : The smallest bitstream data framing unit in AV1. All AV1 bitstream structures
   are packetized in OBUs.
@@ -129,9 +132,7 @@ octet order.
 The general RTP payload format follows the RTP header format [RFC3550] and
 generic RTP header extensions [RFC8285], and is shown below.
 
-The dependency descriptor and AV1 aggregation header are described in this document.
-The payload itself is a series of OBUs, each preceded by length information as
-detailed later in this document.
+The dependency descriptor and AV1 aggregation header are described in this document. The payload itself is a series of OBU elements, preceded by length information as detailed later in this document.
 
 <pre><code>
  0                   1                   2                   3
@@ -178,8 +179,8 @@ how this information is communicated.
 
 ### 4.3 AV1 aggregation header
 
-The aggregation header is used to indicate if the first and/or last OBU in the
-payload is fragmented.
+The aggregation header is used to indicate if the first and/or last OBU element in the
+payload is a fragment of an OBU.
 
 The structure is as follows.
 
@@ -190,20 +191,14 @@ The structure is as follows.
 +-+-+-+-+-+-+-+-+
 </code></pre>
 
-Z: set to 1 if the first OBU contained in the packet is a continuation of a
-previous OBU, 0 otherwise
+Z: set to 1 if the first OBU element is an OBU fragment that is a continuation of an OBU fragment from the previous packet, 0 otherwise.
 
-Y: set to 1 if the last OBU contained in the packet will continue in another
-packet, 0 otherwise
+Y: set to 1 if the last OBU element is an OBU fragment that will continue in the next packet, 0 otherwise.
 
-W: two bits, which if set to 0, mean that each OBU (or OBU fragment) MUST
-be preceded by a length field. If either bit is set, the field provides the
-number of OBUs that are packetized; the last OBU (or OBU fragment) MUST NOT be
-preceded by a length field. Instead, the length of the last OBU (or OBU fragment)
-contained in the packet can be calculated as follows:
+W: two bits, which if set to 0, mean that each OBU element MUST be preceded by a length field. If either bit is set, the field provides the number of OBU elements that are packetized; the last OBU element MUST NOT be preceded by a length field. Instead, the length of the last OBU element contained in the packet can be calculated as follows:
 
 <pre><code>
-Length of the last OBU = length of the RTP payload - length of aggregation header - length of previous OBUs including length fields
+Length of the last OBU element = length of the RTP payload - length of aggregation header - length of previous OBU element including length fields
 </code></pre>
 
 ### 4.4 Payload structure
@@ -212,24 +207,14 @@ The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream
 structures are packetized in OBUs. Each OBU has a header, which provides
 identifying information for the contained data (payload).
 
-This specification allows to packetize:
-
-  * a single OBU;
-  * an OBU fragment (initial, middle, or trailing part); or
-  * a set of OBUs.
-
-The design allows combination of aggregation and fragmentation, i.e., allow for
-a set of OBUs in which the first and/or last one is fragmented.
-
-The payload contains a series of one or more OBUs (with the first and/or last
-possibly being fragments).
+The payload contains a series of one or more OBU elements. The design allows for a combination of aggregation and fragmentation, i.e., a set of OBU elements in which the first and/or last one is fragmented.
 
 The length field is encoded using leb128. Leb128 is defined in the AV1
 specification, and provides for a variable-sized, byte-oriented encoding of non-
 negative integers where the first bit of each (little-endian) byte indicates if
 additional bytes are used in the representation (AV1, Section 4.10.5).
 
-Whether or not the first and/or last OBU is fragmented is signaled in the
+Whether or not the first and/or last OBU element is fragmented is signaled in the
 aggregation header. Fragmentation may occur regardless of how the W bits
 are set.
 
@@ -239,18 +224,18 @@ in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD
 be set to zero in all OBUs.
 
 The following figure shows an example payload where the length field is shown as
-taking two bytes for the first and second OBU and one byte for the last (N) OBU.
+taking two bytes for the first and second OBU element and one byte for the last (N) OBU element.
 
 <pre><code>
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      OBU 1 size (leb128)      |                               |
+|  OBU element 1 size (leb128)  |                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
 |                                                               |
 |                  OBU 1 data                                   |
 |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                               |      OBU 2 size (leb128)      |
+|                               |  OBU element 2 size (leb128)  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
 |                                                               |
@@ -258,7 +243,7 @@ taking two bytes for the first and second OBU and one byte for the last (N) OBU.
 :                                                               :
 |                                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   OBU N size  |                                               |
+| element N size|                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+  OBU N data  +-+-+-+-+-+-+-+-+
 |                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -272,7 +257,7 @@ field is set to 2):
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|Z|Y|1 0|-|-|-|-|   OBU 1 size (leb128)         |               |
+|Z|Y|1 0|-|-|-|-|  OBU element 1 size (leb128)  |               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
 |                                                               |
 :                        OBU 1 data                             :
