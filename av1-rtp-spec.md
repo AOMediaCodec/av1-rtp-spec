@@ -186,7 +186,7 @@ The structure is as follows.
 <pre><code>
  0 1 2 3 4 5 6 7
 +-+-+-+-+-+-+-+-+
-|Z|Y| W |-|-|-|-|
+|Z|Y| W |N|-|-|-|
 +-+-+-+-+-+-+-+-+
 </code></pre>
 
@@ -201,6 +201,10 @@ be preceded by a length field. If either bit is set, the field provides the
 number of OBUs that are packetized; the last OBU (or OBU fragment) MUST NOT be
 preceded by a length field. Instead, the length of the last OBU (or OBU fragment)
 contained in the packet can be calculated as follows:
+
+N: set to 1 if the packet is the first packet of a coded video sequence,
+0 otherwise.
+**Note:** if N equals 1 then Z must equal 0.
 
 <pre><code>
 Length of the last OBU = length of the RTP payload - length of aggregation header - length of previous OBUs including length fields
@@ -245,8 +249,8 @@ taking two bytes for the first and second OBU and one byte for the last (N) OBU.
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      OBU 1 size (leb128)      |                               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+|Z|Y| W |N|-|-|-|      OBU 1 size (leb128)      |               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
 |                                                               |
 |                  OBU 1 data                                   |
 |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -272,7 +276,7 @@ field is set to 2):
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|Z|Y|1 0|-|-|-|-|   OBU 1 size (leb128)         |               |
+|Z|Y|1 0|N|-|-|-|   OBU 1 size (leb128)         |               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
 |                                                               |
 :                        OBU 1 data                             :
