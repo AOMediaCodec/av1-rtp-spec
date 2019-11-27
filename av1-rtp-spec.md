@@ -197,13 +197,13 @@ Y: set to 1 if the last OBU element is an OBU fragment that will continue in the
 
 W: two bits, which if set to 0, mean that each OBU element MUST be preceded by a length field. If either bit is set, the field provides the number of OBU elements that are packetized; the last OBU element MUST NOT be preceded by a length field. Instead, the length of the last OBU element contained in the packet can be calculated as follows:
 
-N: set to 1 if the packet is the first packet of a coded video sequence,
-0 otherwise.
-**Note:** if N equals 1 then Z must equal 0.
-
 <pre><code>
 Length of the last OBU element = length of the RTP payload - length of aggregation header - length of previous OBU elements including length fields
 </code></pre>
+
+N: set to 1 if the packet is the first packet of a coded video sequence,
+0 otherwise.
+**Note:** if N equals 1 then Z must equal 0.
 
 ### 4.4 Payload structure
 
