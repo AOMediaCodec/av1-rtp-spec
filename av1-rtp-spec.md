@@ -34,7 +34,7 @@ This document describes an RTP payload specification applicable to the transmiss
 of video streams encoded using the [AV1 video codec][AV1].
 
 In AV1 the smallest individual encoder entity presented for transport is the
-OBU (Open Bitstream Unit). This specification allows both for fragmentation and
+Open Bitstream Unit (OBU). This specification allows both for fragmentation and
 aggregation of OBUs in the same RTP packet, but explicitly disallows doing so
 across frame boundaries.
 
@@ -72,12 +72,12 @@ Media-Aware Network Element (MANE
 : A middlebox that relays streams among transmitting and receiving clients
 by selectively forwarding packets and which may have access to the media ([RFC6184]).
 
-OBU (Open Bitstream Unit)
-: The smallest bitstream data framing unit in AV1. All AV1 bitstream structures
-  are packetized in OBUs.
-
 OBU element
 : An OBU, or a fragment of an OBU contained in an RTP packet.
+
+Open Bitstream Unit (OBU)
+: The smallest bitstream data framing unit in AV1. All AV1 bitstream structures
+  are packetized in OBUs.
 
 Selective Forwarding Unit (SFU)
 : A middlebox that relays streams among transmitting and receiving clients by
