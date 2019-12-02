@@ -254,7 +254,7 @@ taking two bytes for the first and second OBU element and one byte for the last 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
-The following figure shows an example payload containing two OBU elements where the last OBU element omits the length field (and the W field is set to 2). The size of the last OBU element can be calculated given the formula described in the [AV1 aggregation header](#AV1-aggregation-header).
+The following figure shows an example payload containing two OBU elements where the last OBU element omits the length field (and the W field is set to 2). The size of the last OBU element can be calculated given the formula described in the [AV1 aggregation header](#av1-aggregation-header).
 
 <pre><code>
 OBU element example size calculation:
