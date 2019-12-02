@@ -166,9 +166,11 @@ detailed later in this document.
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
+### 4.2  RTP header Marker bit (M)
 
+The RTP header Marker bit MUST be set equal to 0 if the packet is not the last packet in the temporal unit, it SHOULD be set equal to 1 otherwise.
 
-### 4.2  Dependency Descriptor RTP Header Extension
+### 4.3  Dependency Descriptor RTP Header Extension
 
 To facilitate the work of selectively forwarding portions of a scalable video
 bitstream, as is done by a Selective Forwarding Unit (SFU), certain information
@@ -176,7 +178,7 @@ needs to be provided for each packet. The appendix of this specification defines
 how this information is communicated.
 
 
-### 4.3 AV1 aggregation header
+### 4.4 AV1 aggregation header
 
 The aggregation header is used to indicate if the first and/or last OBU in the
 payload is fragmented.
@@ -210,7 +212,7 @@ N: set to 1 if the packet is the first packet of a coded video sequence,
 Length of the last OBU = length of the RTP payload - length of aggregation header - length of previous OBUs including length fields
 </code></pre>
 
-### 4.4 Payload structure
+### 4.5 Payload structure
 
 The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream
 structures are packetized in OBUs. Each OBU has a header, which provides
