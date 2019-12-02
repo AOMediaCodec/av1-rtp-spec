@@ -73,7 +73,7 @@ Media-Aware Network Element (MANE
 by selectively forwarding packets and which may have access to the media ([RFC6184]).
 
 OBU element
-: An OBU, or a fragment of an OBU contained in an RTP packet.
+: An OBU, or a fragment of an OBU, contained in an RTP packet.
 
 Open Bitstream Unit (OBU)
 : The smallest bitstream data framing unit in AV1. All AV1 bitstream structures
@@ -195,7 +195,7 @@ Z: set to 1 if the first OBU element is an OBU fragment that is a continuation o
 
 Y: set to 1 if the last OBU element is an OBU fragment that will continue in the next packet, 0 otherwise.
 
-W: two bits, which if set to 0, mean that each OBU element MUST be preceded by a length field. If either bit is set, the field provides the number of OBU elements that are packetized; the last OBU element MUST NOT be preceded by a length field. Instead, the length of the last OBU element contained in the packet can be calculated as follows:
+W: two bit field that describes the number of OBU elements in the packet. This field MUST be set equal to 0 or equal to the number of OBU elements contained in the packet. If set to 0, each OBU element MUST be preceded by a length field. If not set to 0 the last OBU element MUST NOT be preceded by a length field. Instead, the length of the last OBU element contained in the packet can be calculated as follows:
 
 <pre><code>
 Length of the last OBU element = length of the RTP payload - length of aggregation header - length of previous OBU elements including length fields
@@ -218,7 +218,7 @@ specification, and provides for a variable-sized, byte-oriented encoding of non-
 negative integers where the first bit of each (little-endian) byte indicates if
 additional bytes are used in the representation (AV1, Section 4.10.5).
 
-Whether or not the first and/or last OBU element is a fragment of an OBU is signaled in the aggregation header. Fragmentation may occur regardless of how the W bits are set.
+Whether or not the first and/or last OBU element is a fragment of an OBU is signaled in the aggregation header. Fragmentation may occur regardless of how the W field is set.
 
 The AV1 specification allows OBUs to have an optional size field called 
 obu_size (also leb128 encoded), signaled by the obu_has_size_field flag 
@@ -232,7 +232,7 @@ taking two bytes for the first and second OBU element and one byte for the last 
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|Z|Y| W |N|-|-|-|  OBU element 1 size (leb128)  |               |
+|Z|Y|0 0|N|-|-|-|  OBU element 1 size (leb128)  |               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
 |                                                               |
 |                      OBU element 1 data                       |
@@ -241,26 +241,36 @@ taking two bytes for the first and second OBU element and one byte for the last 
 |                               |  OBU element 2 size (leb128)  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
-|                                                               |
-:                       OBU element 2 data                      :
-:                                                               :
+|                       OBU element 2 data                      |
 |                                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| element N size|                                               |
+:                                                               :
+:                              ...                              :
+:                                                               :
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|OBU e... N size|                                               |
 +-+-+-+-+-+-+-+-+       OBU element N data      +-+-+-+-+-+-+-+-+
 |                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
-The following figure shows an example payload containing two OBU elements where the last OBU element omits the length field (and the W field is set to 2):
+The following figure shows an example payload containing two OBU elements where the last OBU element omits the length field (and the W field is set to 2). The size of the last OBU element can be calculated given the formula described in the [AV1 aggregation header](#AV1-aggregation-header).
 
 <pre><code>
+OBU element example size calculation:
+Total payload size        = 303 bytes
+AV1 aggregation header    = 1 byte
+OBU element 1 size        = 2 bytes
+OBU element 1 data        = 200 bytes
+OBU element 2 data        = 303 - 1 - (200 + 2) = 100 bytes
+
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |Z|Y|1 0|N|-|-|-|  OBU element 1 size (leb128)  |               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
 |                                                               |
+:                                                               :
 :                      OBU element 1 data                       :
 :                                                               :
 |                                                               |
@@ -268,7 +278,7 @@ The following figure shows an example payload containing two OBU elements where 
 |                               |                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
 |                                                               |
-|                                                               |
+:                                                               :
 :                      OBU element 2 data                       :
 :                                                               :
 |                                                               |
