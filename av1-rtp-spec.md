@@ -168,7 +168,9 @@ detailed later in this document.
 
 ### 4.2  RTP header Marker bit (M)
 
-The RTP header Marker bit MUST be set equal to 0 if the packet is not the last packet in the temporal unit, it SHOULD be set equal to 1 otherwise.
+The RTP header Marker bit MUST be set equal to 0 if the packet is not the last packet of the temporal unit, it SHOULD be set equal to 1 otherwise.
+
+**Note:** It is possible for a receiver to receive the last packet of a temporal unit with the marker bit set to 0.
 
 ### 4.3  Dependency Descriptor RTP Header Extension
 
