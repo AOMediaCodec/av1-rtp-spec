@@ -254,15 +254,15 @@ taking two bytes for the first and second OBU element and one byte for the last 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
-The following figure shows an example payload containing two OBU elements where the last OBU element omits the length field (and the W field is set to 2). The size of the last OBU element can be calculated given the formula described in the [AV1 aggregation header](#av1-aggregation-header).
+The following figure shows an example payload containing two OBU elements where the last OBU element omits the length field (and the W field is set to 2). The size of the last OBU element can be calculated given the formula described in section 4.3.
 
 <pre><code>
 OBU element example size calculation:
-Total payload size        = 303 bytes
+Total RTP payload size    = 303 bytes
 AV1 aggregation header    = 1 byte
 OBU element 1 size        = 2 bytes
 OBU element 1 data        = 200 bytes
-OBU element 2 data        = 303 - 1 - (200 + 2) = 100 bytes
+OBU element 2 data        = 303 - 1 - (2 + 200) = 100 bytes
 
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
