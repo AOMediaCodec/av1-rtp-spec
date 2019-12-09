@@ -214,7 +214,7 @@ N: set to 1 if the packet is the first packet of a coded video sequence,
 Length of the last OBU = length of the RTP payload - length of aggregation header - length of previous OBUs including length fields
 </code></pre>
 
-### 4.5 Payload structure
+### 4.4 Payload structure
 
 The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream
 structures are packetized in OBUs. Each OBU has a header, which provides
