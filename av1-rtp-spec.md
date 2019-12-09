@@ -226,7 +226,7 @@ in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD
 be set to zero in all OBUs.
 
 The following figure shows an example payload where the length field is shown as
-taking two bytes for the first and second OBU element and one byte for the last (N) OBU element.
+taking two bytes for the first and second OBU elements and one byte for the last (N) OBU element.
 
 <pre><code>
 0                   1                   2                   3
@@ -234,14 +234,16 @@ taking two bytes for the first and second OBU element and one byte for the last 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |Z|Y|0 0|N|-|-|-|  OBU element 1 size (leb128)  |               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
-|                                                               |
-|                      OBU element 1 data                       |
+:                                                               :
+:                      OBU element 1 data                       :
+:                                                               :
 |                                                               |
 |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                               |  OBU element 2 size (leb128)  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                                                               |
-|                       OBU element 2 data                      |
+:                                                               :
+:                       OBU element 2 data                      :
+:                                                               :
 |                                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 :                                                               :
