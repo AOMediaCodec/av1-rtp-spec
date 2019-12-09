@@ -167,9 +167,13 @@ The dependency descriptor and AV1 aggregation header are described in this docum
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
+### 4.2  RTP header Marker bit (M)
 
+The RTP header Marker bit MUST be set equal to 0 if the packet is not the last packet of the temporal unit, it SHOULD be set equal to 1 otherwise.
 
-### 4.2  Dependency Descriptor RTP Header Extension
+**Note:** It is possible for a receiver to receive the last packet of a temporal unit without the marker bit being set equal to 1, and a receiver should be able to handle this case. The last packet of a temporal unit is also indicated by the next packet, in RTP sequence number order, having an incremented timestamp.
+
+### 4.3  Dependency Descriptor RTP Header Extension
 
 To facilitate the work of selectively forwarding portions of a scalable video
 bitstream, as is done by a Selective Forwarding Unit (SFU), certain information
@@ -177,7 +181,7 @@ needs to be provided for each packet. The appendix of this specification defines
 how this information is communicated.
 
 
-### 4.3 AV1 aggregation header
+### 4.4 AV1 aggregation header
 
 The aggregation header is used to indicate if the first and/or last OBU element in the
 payload is a fragment of an OBU.
