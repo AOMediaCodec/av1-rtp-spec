@@ -211,7 +211,7 @@ The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream
 structures are packetized in OBUs. Each OBU has a header, which provides
 identifying information for the contained data (payload).
 
-The payload contains a series of one or more OBU elements. The design allows for a combination of aggregation and fragmentation, i.e., a set of OBU elements in which the first and/or last element is a fragment of an OBU.
+The payload contains a series of one or more OBU elements. The design allows for a combination of aggregation and fragmentation of OBUs, i.e., a set of OBU elements in which the first and/or last element is a fragment of an OBU.
 
 The length field is encoded using leb128. Leb128 is defined in the AV1
 specification, and provides for a variable-sized, byte-oriented encoding of non-
