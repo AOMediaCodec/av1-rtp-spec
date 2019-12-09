@@ -209,7 +209,7 @@ N: set to 1 if the packet is the first packet of a coded video sequence,
 0 otherwise.
 **Note:** if N equals 1 then Z must equal 0.
 
-### 4.4 Payload structure
+### 4.5 Payload structure
 
 The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream
 structures are packetized in OBUs. Each OBU has a header, which provides
