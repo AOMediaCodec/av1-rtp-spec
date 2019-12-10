@@ -549,6 +549,13 @@ Answer SDP:
 
    Upon reception of FIR, the AV1 sender MUST send a new coded video sequence
    (see section 7.5 of the [AV1] bitstream specification) as soon as possible.
+   
+   **Note** If simulcast is used and simulcast streams are transported using multiple SSRCs,
+   an AV1 sender must send new coded video sequences for every SSRC indicated in the FIR message
+   and might send new coded video sequences for other simulcast streams. If an AV1 bitstream
+   contains several spatial layers without inter-layer dependencies, an AV1 sender must send
+   a new coded video sequence for each independent spatial layer.
+
 
 ## 8.2.  Layer Refresh Request (LRR)
 
