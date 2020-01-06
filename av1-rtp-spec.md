@@ -559,42 +559,31 @@ Answer SDP:
 
    The Layer Refresh Request [I-D.ietf-avtext-lrr] allows a receiver to
    request a single layer of a spatially or temporally encoded stream to
-   be refreshed, without necessarily affecting the stream's other
+   be refreshed, i.e, allow it to be decodable using information currently 
+   available in a decoder, without necessarily affecting the stream's other
    layers.
 
                +---------------+---------------+
                |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
-               +---------------+---------+-----+
-               |   RES   | TID | RES     | SID |
-               +---------------+---------+-----+
+               +---------------+-----------+---+
+               |   RES   | TID |   RES     |SID|
+               +---------------+-----------+---+
 
                                  Figure 4
 
    Figure 4 shows the format of LRR's layer index fields for AV1
    streams.  The two "RES" fields MUST be set to 0 on transmission and
-   ingnored on reception.  See Sections 2, 5.3.3 and 6.2.3 of the AV1 bitstream
-   specification for details on the temporal_id (TID) and
+   ignored on reception.  See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream
+   specification [AV1] for details on the temporal_id (TID) and
    spatial_id (SID) fields.
 
-   Identification of a layer refresh frame can be derived from the
-   reference IDs of each frame by backtracking the dependency chain
-   until reaching a point where only decodable frames are being
-   referenced.  Therefore it's recommended for both the flexible and the
-   non-flexible mode that, when upgrade frames are being encoded in
-   response to a LRR, those packets should contain layer indices and the
-   reference fields so that the decoder or an MCU can make this
-   derivation.
-
-   Example:
-
-   LRR {1,0}, {2,1} is sent by an MCU when it is currently relaying
-   {1,0} to a receiver and which wants to upgrade to {2,1}. In response
-   the encoder should encode the next frames in layers {1,1} and {2,1}
-   by only referring to frames in {1,0}, or {0,0}.
-
-   In the non-flexible mode, periodic upgrade frames can be defined by
-   the layer structure of the SS, thus periodic upgrade frames can be
-   automatically identified by the frame ID.
+   Identification of a layer refresh frame may be performed by examining the 
+   coding dependency structure of the coded video sequence it belongs to. 
+   This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 
+   of [AV1]), either in the form of a pre-defined scalability mode or through a 
+   scalability structurev(Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively, 
+   the Dependency Descriptor RTP header extension that is specified in Appendix 
+   A of this document may be used. 
 
 ## 9. IANA Considerations
 
