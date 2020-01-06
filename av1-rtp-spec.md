@@ -581,7 +581,7 @@ Answer SDP:
    coding dependency structure of the coded video sequence it belongs to. 
    This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 
    of [AV1]), either in the form of a pre-defined scalability mode or through a 
-   scalability structurev(Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively, 
+   scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively, 
    the Dependency Descriptor RTP header extension that is specified in Appendix 
    A of this document may be used. 
 
