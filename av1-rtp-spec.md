@@ -375,8 +375,9 @@ with each spatial layer. Both modes MUST be supported by implementations of this
 
 Simulcast encodings can be transported each on a separate RTP stream [I-D.ietf-avtext-rid] with
 Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast]
-[I-D.ietf-mmusic-rid]. In this mode, the encodings utilize distinct SSRCs and Restriction
-Identifiers (RIDs) and RTCP feedback messages can be provided relating to each simulcast
+[I-D.ietf-mmusic-rid]. In this mode, each simulcast encoding is provided within a distinct
+bitstream and the encodings utilize distinct SSRCs and Restriction Identifiers (RIDs). 
+As a result, RTCP feedback messages can be provided relating to each simulcast
 encoding, utilizing the distinct SSRCs. This mode of simulcast transport MUST be supported
 by SFUs.
 
@@ -385,6 +386,13 @@ it is also possible for simulcast encodings to be transported on a single RTP st
 case RIDs are not used. In this mode, RTCP feedback can only be provided on the aggregate of
 all simulcast encodings, since only a single SSRC is used. This mode of simulcast transport
 MAY be supported by SFUs.
+
+### 6.1.1 Example
+
+Let us assume that it is desired to send three simulcast encodings, each containing three temporal layers.
+When sending simulcast encodings within a single RTP stream, the scalability mode 'S3T3' would
+be used. When each simulcast encoding is sent on a distinct RTP stream, each bitstream would utilize the
+'L1T3' scalability mode.
 
 ## 7. Payload Format Parameters
 
