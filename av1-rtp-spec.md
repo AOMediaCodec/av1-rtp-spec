@@ -371,19 +371,20 @@ decision.
 The RTP payload defined in this specification supports two distinct modes for transport of
 simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple
 encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated
-with each spatial layer.
+with each spatial layer. Both modes MUST be supported by implementations of this specification.
 
 Simulcast encodings can be transported each on a separate RTP stream [I-D.ietf-avtext-rid] with
 Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast]
 [I-D.ietf-mmusic-rid]. In this mode, the encodings utilize distinct SSRCs and Restriction
 Identifiers (RIDs) and RTCP feedback messages can be provided relating to each simulcast
-encoding, utilizing the distinct SSRCs. This mode of simulcast transport MUST be supported.
+encoding, utilizing the distinct SSRCs. This mode of simulcast transport MUST be supported
+by SFUs.
 
 Since the [AV1] enables multiple simulcast encodings to be provided within a single bitstream,
 it is also possible for simulcast encodings to be transported on a single RTP stream, in which
 case RIDs are not used. In this mode, RTCP feedback can only be provided on the aggregate of
 all simulcast encodings, since only a single SSRC is used. This mode of simulcast transport
-SHOULD be supported.
+MAY be supported by SFUs.
 
 ## 7. Payload Format Parameters
 
