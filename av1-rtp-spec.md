@@ -177,7 +177,7 @@ The RTP header Marker bit MUST be set equal to 0 if the packet is not the last p
 
 To facilitate the work of selectively forwarding portions of a scalable video
 bitstream, as is done by a Selective Forwarding Unit (SFU), certain information
-needs to be provided for each packet. The appendix of this specification defines
+needs to be provided for each packet. Appendix A of this specification defines
 how this information is communicated.
 
 
