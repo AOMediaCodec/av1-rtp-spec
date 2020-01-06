@@ -375,17 +375,18 @@ with each spatial layer. Both modes MUST be supported by implementations of this
 
 Simulcast encodings can be transported each on a separate RTP stream [I-D.ietf-avtext-rid] with
 Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast]
-[I-D.ietf-mmusic-rid]. In this mode, each simulcast encoding is provided within a distinct
-bitstream and the encodings utilize distinct SSRCs and Restriction Identifiers (RIDs). 
-As a result, RTCP feedback messages can be provided relating to each simulcast
-encoding, utilizing the distinct SSRCs. This mode of simulcast transport MUST be supported
-by SFUs.
+[I-D.ietf-mmusic-rid]. In this mode, each simulcast encoding utilizes a distinct bitstream
+containing Sequence Header and Scalability Metadata OBUs to convey information relating to
+each bitstream. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs) for
+each encoding and as a result, RTCP feedback can be provided for each simulcast encoding,
+utilizing distinct SSRCs.
 
-Since the [AV1] enables multiple simulcast encodings to be provided within a single bitstream,
+Since [AV1] enables multiple simulcast encodings to be provided within a single bitstream,
 it is also possible for simulcast encodings to be transported on a single RTP stream, in which
-case RIDs are not used. In this mode, RTCP feedback can only be provided on the aggregate of
-all simulcast encodings, since only a single SSRC is used. This mode of simulcast transport
-MAY be supported by SFUs.
+case RIDs are not used. In this mode, Sequence Header and Scalability Metadata OBUs (utilizing
+an 'S' mode) convey information relating to all encodings. However, RTCP feedback cannot be
+provided for each simulcast encoding, only for the aggregate, since only a single SSRC is used.
+This mode of simulcast transport MAY be supported by SFUs.
 
 ### 6.1.1 Example
 
