@@ -390,11 +390,12 @@ This mode of simulcast transport MAY be supported by SFUs.
 
 ### 6.1.1 Example
 
-Let us assume that it is desired to send three simulcast encodings, each containing three
-temporal layers. When sending simulcast encodings within a single RTP stream, the scalability
-mode 'S3T3' would be indicated within the scalability metadata OBU. When each simulcast encoding
-is sent on a distinct RTP stream, each bitstream would indicate the 'L1T3' scalability mode
-within the scalability metadata OBU.
+In this example, it is desired to send three simulcast encodings, each containing three temporal
+layers. When sending encodings within a single RTP stream, the scalability mode 'S3T3' could
+be indicated within the scalability metadata OBU.  When sending each encoding on a distinct
+RTP stream, the scalability mode 'L1T3' would be indicated within the scalability
+metadata OBU of each bitstream, a distinct spatial_id (e.g. 0, 1, 2) would be used for each
+stream, and the dependency descriptor would be the same in each stream.
 
 ## 7. Payload Format Parameters
 
