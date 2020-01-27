@@ -396,7 +396,7 @@ layers. When using transport mode 2, scalability mode 'S3T3' would be indicated 
 scalability metadata OBU.  When using transport mode 1, the scalability mode 'L1T3' would be
 indicated within the scalability metadata OBU of each bitstream, a distinct
 spatial_id (e.g. 0, 1, 2) would be used for each stream, and the dependency descriptor
-would be the same in each stream.
+in each stream describes the dependency structure of all streams.
 
 ## 7. Payload Format Parameters
 
