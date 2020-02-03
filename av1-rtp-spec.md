@@ -389,15 +389,6 @@ an 'S' mode) convey information relating to all encodings. However, RTCP feedbac
 provided for each simulcast encoding, only for the aggregate, since only a single SSRC is used.
 This mode of simulcast transport MAY be supported by SFUs.
 
-### 6.1.1 Example
-
-In this example, it is desired to send three simulcast encodings, each containing three temporal
-layers. When using transport mode 2, scalability mode 'S3T3' would be indicated within the
-scalability metadata OBU.  When using transport mode 1, the scalability mode 'L1T3' would be
-indicated within the scalability metadata OBU of each bitstream, a distinct
-spatial_id (e.g. 0, 1, 2) would be used for each stream, and the dependency descriptor
-in each stream describes the dependency structure of all streams.
-
 ## 7. Payload Format Parameters
 
 This payload format has three optional parameters.
