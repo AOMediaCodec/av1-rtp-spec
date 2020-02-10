@@ -559,7 +559,7 @@ Answer SDP:
 
    The Layer Refresh Request [I-D.ietf-avtext-lrr] allows a receiver to
    request a single layer of a spatially or temporally encoded stream to
-   be refreshed, i.e, allow it to be decodable using information currently 
+   be refreshed, i.e, allow it to be decodable using information currently
    available in a decoder, without necessarily affecting the stream's other
    layers.
 
@@ -571,19 +571,21 @@ Answer SDP:
 
                                  Figure 4
 
-   Figure 4 shows the format of LRR's layer index fields for AV1
-   streams.  The two "RES" fields MUST be set to 0 on transmission and
-   ignored on reception.  See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream
-   specification [AV1] for details on the temporal_id (TID) and
-   spatial_id (SID) fields.
-
+   AV1 streams MUST use the Layer Reefresh Request format defined for VP9 [I-D.ietf-payload-vp9] 
+   (see Section 5.3), with the high order bit of its three-bit SID fieldset to 0. Figure 4 shows the 
+   format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id
+   and TID is associatd with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream
+   specification [AV1] for details on the temporal_id (TID) and spatial_id (SID) fields.
+   
+   Both "RES" fields MUST be set to 0 on transmission and ignored on reception. 
+   
    Identification of a layer refresh frame may be performed by examining the 
-   coding dependency structure of the coded video sequence it belongs to. 
-   This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 
-   of [AV1]), either in the form of a pre-defined scalability mode or through a 
-   scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively, 
-   the Dependency Descriptor RTP header extension that is specified in Appendix 
-   A of this document may be used. 
+   coding dependency structure of the coded video sequence it belongs to.
+   This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5
+   of [AV1]), either in the form of a pre-defined scalability mode or through a
+   scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively,
+   the Dependency Descriptor RTP header extension that is specified in Appendix
+   A of this document may be used.
 
 ## 9. IANA Considerations
 
@@ -1548,8 +1550,9 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
   * [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
 
    * [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
-  
 
+   * [I-D.ietf-payload-vp9](https://tools.ietf.org/html/draft-ietf-payload-vp9 "I-D.ietf-payload-vp9") **RTP Payload Format for VP9 Video**, J. Uberti, S. Holmer, M. Flodman, D. Hong, and J. Lennox, January 2020.
+   
 ##### A.6.2 Informative references
 
 * [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf "AV1 1.0.0 with Errata1") **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
@@ -1563,5 +1566,7 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 * [RFC6838](https://tools.ietf.org/html/rfc6838 "RFC6838") **Media Type Specifications and Registration Procedures**, N. Freed, J. Klensin, and T. Hansen, January 2013.
 
  * [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+ 
+    * [I-D.ietf-avttext-lrr](https://datatracker.ietf.org/doc/draft-ietf-avtext-lrr/ "I-D.ietf-avtext-lrr") **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 2017.
 
 
