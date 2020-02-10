@@ -376,11 +376,14 @@ case, simulcast transport MUST only be used to convey multiple encodings from th
 ### 6.1.1 Example
 
 In this example, it is desired to send three simulcast encodings, each containing three temporal
-layers. When using transport mode 2, scalability mode 'S3T3' would be indicated within the
-scalability metadata OBU.  When using transport mode 1, the scalability mode 'L1T3' would be
-indicated within the scalability metadata OBU of each bitstream, a distinct
-spatial_id (e.g. 0, 1, 2) would be used for each stream, and the dependency descriptor
-in each stream describes the dependency structure of all streams.
+layers. When sending all encodings on a single SSRC, scalability mode 'S3T3' would be indicated
+within the scalability metadata OBU, and the dependency descriptor describes the dependency structure
+of all encodings.
+
+When sending each simulcast encoding on a distinct SSRC, the scalability mode 'L1T3' would be indicated
+within the scalability metadata OBU of each bitstream, a distinct spatial_id (e.g. 0, 1, 2) would be used
+for each stream, and the dependency descriptor in each stream describes only the dependency structure for
+that individual encoding.
 
 ## 7. Payload Format Parameters
 
