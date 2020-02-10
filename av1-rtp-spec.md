@@ -557,9 +557,9 @@ Answer SDP:
 
 ## 8.2.  Layer Refresh Request (LRR)
 
-   The Layer Refresh Request [I-D.ietf-avtext-lrr] allows a receiver to
+  The Layer Refresh Request [I-D.ietf-avtext-lrr] allows a receiver to
    request a single layer of a spatially or temporally encoded stream to
-   be refreshed, i.e, allow it to be decodable using information currently 
+   be refreshed, i.e, allow it to be decodable using information currently
    available in a decoder, without necessarily affecting the stream's other
    layers.
 
@@ -571,19 +571,21 @@ Answer SDP:
 
                                  Figure 4
 
-   Figure 4 shows the format of LRR's layer index fields for AV1
-   streams.  The two "RES" fields MUST be set to 0 on transmission and
-   ignored on reception.  See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream
-   specification [AV1] for details on the temporal_id (TID) and
-   spatial_id (SID) fields.
-
+   AV1 streams MUST use the Layer Reefresh Request format defined for VP9 [I-D.ietf-payload-vp9] 
+   (see Section 5.3), with the high order bit of its three-bit SID fieldset to 0. Figure 4 shows the 
+   format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id
+   and TID is associatd with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream
+   specification [AV1] for details on the temporal_id (TID) and spatial_id (SID) fields.
+   
+   Both "RES" fields MUST be set to 0 on transmission and ignored on reception. 
+   
    Identification of a layer refresh frame may be performed by examining the 
-   coding dependency structure of the coded video sequence it belongs to. 
-   This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 
-   of [AV1]), either in the form of a pre-defined scalability mode or through a 
-   scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively, 
-   the Dependency Descriptor RTP header extension that is specified in Appendix 
-   A of this document may be used. 
+   coding dependency structure of the coded video sequence it belongs to.
+   This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5
+   of [AV1]), either in the form of a pre-defined scalability mode or through a
+   scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively,
+   the Dependency Descriptor RTP header extension that is specified in Appendix
+   A of this document may be used.
 
 ## 9. IANA Considerations
 
@@ -656,6 +658,7 @@ Answer SDP:
   
   * [I-D.ietf-mmusic-sdp-simulcast](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast "ietf-mmusic-sdp-simulcast")  ** Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar and M. Zanaty, March 5, 2019.
 
+ * [I-D.ietf-payload-vp9](https://tools.ietf.org/html/draft-ietf-payload-vp9 "I-D.ietf-payload-vp9") **RTP Payload Format for VP9 Video**, J. Uberti, S. Holmer, M. Flodman, D. Hong, and J. Lennox, January 2020.
 
 ### 11.2 Informative references
 
