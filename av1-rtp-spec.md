@@ -571,11 +571,11 @@ Answer SDP:
 
                                  Figure 4
 
-   AV1 streams MUST use the Layer Reefresh Request format defined for VP9 [I-D.ietf-payload-vp9] 
-   (see Section 5.3), with the high order bit of its three-bit SID fieldset to 0. Figure 4 shows the 
+   AV1 streams MUST use the Layer Refresh Request format defined for VP9 [I-D.ietf-payload-vp9] 
+   (see Section 5.3), with the high order bit of its three-bit SID field set to 0. Figure 4 shows the 
    format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id
-   and TID is associatd with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream
-   specification [AV1] for details on the temporal_id (TID) and spatial_id (SID) fields.
+   and TID is associated with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream
+   specification [AV1] for details on the temporal_id and spatial_id fields.
    
    Both "RES" fields MUST be set to 0 on transmission and ignored on reception. 
    
