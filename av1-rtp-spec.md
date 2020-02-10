@@ -563,21 +563,22 @@ Answer SDP:
    available in a decoder, without necessarily affecting the stream's other
    layers.
 
+   This mechanism may be used to request a different AV1 decode target from a sender.
+
                +---------------+---------------+
                |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
                +---------------+-----------+---+
-               |   RES   | TID |   RES     |SID|
+               |   RES   | TID |   RES   |0|SID|
                +---------------+-----------+---+
 
                                  Figure 4
 
+
    AV1 streams MUST use the Layer Refresh Request format defined for VP9 [I-D.ietf-payload-vp9] 
    (see Section 5.3), with the high order bit of its three-bit SID field set to 0. Figure 4 shows the 
    format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id
-   and TID is associated with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream
-   specification [AV1] for details on the temporal_id and spatial_id fields.
-   
-   Both "RES" fields MUST be set to 0 on transmission and ignored on reception. 
+   and TID is associatd with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream
+   specification [AV1] for details on the temporal_id and spatial_id fields.   
    
    Identification of a layer refresh frame may be performed by examining the 
    coding dependency structure of the coded video sequence it belongs to.
