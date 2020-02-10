@@ -366,12 +366,25 @@ decision.
 
 ### 6.1. Simulcast
 
-The [AV1 Bitstream & Decoding Specification][AV1] enables multiple simulcast encodings to be provided within
-a single bitstream. Within the RTP payload defined in this specification, simulcast encodings can be transported
-each on a separate RTP stream [I-D.ietf-avtext-rid] with Session Description Protocol (SDP) signaling as
-described in [I-D.ietf-mmusic-sdp-simulcast][I-D.ietf-mmusic-rid]. Alternatively, simulcast encodings can
-be transported on a single RTP stream, in which case Restriction Identifiers (RIDs) are not used. In either
-case, simulcast transport MUST only be used to convey multiple encodings from the same source.
+The RTP payload defined in this specification supports two distinct modes for transport of
+simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple
+encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated
+with each spatial layer. Both modes MUST be supported by implementations of this specification.
+
+Where simulcast encodings are transported each on a separate RTP stream, each simulcast encoding
+utilizes a distinct bitstream containing Sequence Header and Scalability Metadata OBUs to
+convey information relating to each bitstream. This mode utilizes distinct SSRCs and Restriction
+Identifiers (RIDs)  for each encoding [I-D.ietf-avtext-rid] and as a result, RTCP feedback can be
+provided for each simulcast encoding, utilizing distinct SSRCs. This mode of simulcast transport,
+which MUST be supported by SFUs, utilizes Session Description Protocol (SDP) signaling as described
+in [I-D.ietf-mmusic-sdp-simulcast] [I-D.ietf-mmusic-rid]. 
+
+Where simulcast encodings are transported on a single RTP stream, RIDs are not used and Sequence
+Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all
+encodings. This simulcast transport mode is possible since [AV1] enables multiple simulcast encodings
+to be provided within a single bitstream.  However, in this mode, RTCP feedback cannot be provided
+for each simulcast encoding, only for the aggregate, since only a single SSRC is used.
+This mode of simulcast transport MAY be supported by SFUs.
 
 ## 7. Payload Format Parameters
 
