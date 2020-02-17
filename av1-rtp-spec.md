@@ -807,6 +807,7 @@ A frame for which all Referred frames are decodable MUST itself be decodable.
 **Note:** dependencies are not limited to motion compensated prediction, other
 relevant information such as entropy decoder state also constitute dependencies.
 
+
 #### A.4 Dependency Descriptor format
 
 To facilitate the work of selectively forwarding portions of a scalable video
