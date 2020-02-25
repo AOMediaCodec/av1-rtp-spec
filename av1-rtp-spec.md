@@ -381,9 +381,10 @@ within the scalability metadata OBU, and the dependency descriptor describes the
 of all encodings.
 
 When sending each simulcast encoding on a distinct SSRC, the scalability mode 'L1T3' would be indicated
-within the scalability metadata OBU of each bitstream, a distinct spatial_id (e.g. 0, 1, 2) would be used
-for each stream, and the dependency descriptor in each stream describes only the dependency structure for
-that individual encoding.
+within the scalability metadata OBU of each bitstream, and the dependency descriptor in each stream
+describes only the dependency structure for that individual encoding.  A distinct spatial_id (e.g. 0, 1, 2)
+could be used for each stream (if a single encoder is used to produce the three simulcast encodings),
+but if distinct encoders are used, the spatial_id values may not be distinct.
 
 ## 7. Payload Format Parameters
 
