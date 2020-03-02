@@ -1293,7 +1293,12 @@ protecting no active decode targets may refer to any frame, including an RTP
 frame that was never produced.
 {:.alert .alert-info }
 
-#### A.5 Examples
+#### A.5 Signaling (Setup) Information
+
+The URI for declaring this header extension in an extmap attribute is
+"https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension".
+
+#### A.6 Examples
 
 Each example in this section contains a prediction structure figure and a table
 describing the associated Frame dependency structure. The Frame dependency
@@ -1320,7 +1325,7 @@ Table A.4. DTI values
 {: .caption }
 
 
-##### A.5.1 L1T3 Single spatial layer with 3 temporal layers
+##### A.6.1 L1T3 Single spatial layer with 3 temporal layers
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L1T3.svg" class="figure-img img-fluid">
@@ -1360,7 +1365,7 @@ equal to 0.
 {:.alert .alert-info }
 
 
-##### A.5.2 L2T1 Full SVC with occasional switch
+##### A.6.2 L2T1 Full SVC with occasional switch
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L2T1.svg" class="figure-img img-fluid">
@@ -1400,7 +1405,7 @@ equal to 0. Chain 1 includes all Frames.
 {:.alert .alert-info }
 
 
-##### A.5.3 L3T3 Full SVC
+##### A.6.3 L3T3 Full SVC
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/L3T3.svg" class="figure-img img-fluid">
@@ -1472,7 +1477,7 @@ temporal ID equal to 0.
 {:.alert .alert-info }
 
 
-##### A.5.4 S3T3 K-SVC with temporal shift
+##### A.6.4 S3T3 K-SVC with temporal shift
 
 <figure class="figure center-block" style="display: table; margin: 1.5em auto;">
   <img alt="" src="assets/images/S3T3.svg" class="figure-img img-fluid">
@@ -1562,10 +1567,10 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
 {:.alert .alert-info }
 
 
-#### A.6 References
+#### A.7 References
 
 
-##### A.6.1 Normative references
+##### A.7.1 Normative references
  
  * [RFC2119](https://tools.ietf.org/html/rfc2119 "RFC2119") **Key words for use in RFCs to Indicate Requirement Levels, S. Bradner, March 1997. 
  
@@ -1574,7 +1579,7 @@ with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames
    * [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
   
 
-##### A.6.2 Informative references
+##### A.7.2 Informative references
 
 * [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf "AV1 1.0.0 with Errata1") **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
