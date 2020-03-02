@@ -563,8 +563,6 @@ Answer SDP:
    available in a decoder, without necessarily affecting the stream's other
    layers.
 
-   This mechanism may be used to request a different AV1 decode target from a sender.
-
                +---------------+---------------+
                |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
                +---------------+-----------+---+
