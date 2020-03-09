@@ -557,17 +557,17 @@ Answer SDP:
 
 ## 8.2.  Layer Refresh Request (LRR)
 
-  The Layer Refresh Request [I-D.ietf-avtext-lrr] allows a receiver to
-   request a single layer of a spatially or temporally encoded stream to
-   be refreshed, i.e, allow it to be decodable using information currently
-   available in a decoder, without necessarily affecting the stream's other
-   layers.
+  The Layer Refresh Request [I-D.ietf-avtext-lrr] is designed to allow a receiver of a 
+  layered media stream to request that one or more of its substreams be refreshed, 
+  such that it can then be decoded by an endpoint which previously was not receiving 
+  those layers, without requiring that the entire stream be refreshed (as it would be 
+  if the receiver sent a Full Intra Request (FIR) [RFC5104][RFC8082]).
 
                +---------------+---------------+
                |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
-               +---------------+-----------+---+
+               +---------------+---------+-+---+
                |   RES   | TID |   RES   |0|SID|
-               +---------------+-----------+---+
+               +---------------+---------+-+---+
 
                                  Figure 4
 
@@ -663,7 +663,13 @@ Answer SDP:
 
 * [RFC3711](https://tools.ietf.org/html/rfc3711 "RFC3711") **The Secure Real-time Transport Protocol (SRTP)**, M. Baugher, D. McGrew, M. Naslund, E. Carrara, and K. Norrman, March 2004.
 
+* [RFC5104](https://tools.ietf.org/html/rfc5104 "RFC5104") **Codec Control Messages in the RTP Audio-Visual Profile 
+with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008.
+
 * [RFC7202](https://tools.ietf.org/html/rfc7202 "RFC7202") **Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution**, C. Perkins and M. Westerlund, April 2014.
+
+* [RFC8082](https://tools.ietf.org/html/rfc8082 "RFC8082") **Using Codec Control Messages in the RTP Audio-Visual Profile 
+with Feedback with Layered Codecs**, S. Wenger, J. Lennox, B. Burman, and M. Westerlund, March 2017. 
 
 * [perc-double](https://tools.ietf.org/html/draft-ietf-perc-double-10 "perc-double") **SRTP Double Encryption Procedures**, C. Jennings, P. Jones, R. Barnes, and A. Roach, October 17, 2018
 
@@ -767,7 +773,7 @@ Required indication
   indication.
 
 **Note:** A Frame belonging to more than one Decode target may be required
-for one Decode target and not required (i.e, either discardable or switch)
+for one Decode target and not required (either discardable or switch)
 for another.
 {:.alert .alert-info }
 
