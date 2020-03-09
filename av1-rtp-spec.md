@@ -386,6 +386,19 @@ to be provided within a single bitstream.  However, in this mode, RTCP feedback 
 for each simulcast encoding, only for the aggregate, since only a single SSRC is used.
 This mode of simulcast transport MAY be supported by SFUs.
 
+### 6.1.1 Example
+
+In this example, it is desired to send three simulcast encodings, each containing three temporal
+layers. When sending all encodings on a single SSRC, scalability mode 'S3T3' would be indicated
+within the scalability metadata OBU, and the dependency descriptor describes the dependency structure
+of all encodings.
+
+When sending each simulcast encoding on a distinct SSRC, the scalability mode 'L1T3' would be indicated
+within the scalability metadata OBU of each bitstream, and the dependency descriptor in each stream
+describes only the dependency structure for that individual encoding.  A distinct spatial_id (e.g. 0, 1, 2)
+could be used for each stream (if a single encoder is used to produce the three simulcast encodings),
+but if distinct encoders are used, the spatial_id values may not be distinct.
+
 ## 7. Payload Format Parameters
 
 This payload format has three optional parameters.
