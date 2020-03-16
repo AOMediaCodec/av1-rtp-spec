@@ -583,44 +583,34 @@ Answer SDP:
 
 ## 8.2.  Layer Refresh Request (LRR)
 
-   The Layer Refresh Request [I-D.ietf-avtext-lrr] allows a receiver to
-   request a single layer of a spatially or temporally encoded stream to
-   be refreshed, without necessarily affecting the stream's other
-   layers.
+  The Layer Refresh Request [I-D.ietf-avtext-lrr] is designed to allow a receiver of a 
+  layered media stream to request that one or more of its substreams be refreshed, 
+  such that it can then be decoded by an endpoint which previously was not receiving 
+  those layers, without requiring that the entire stream be refreshed (as it would be 
+  if the receiver sent a Full Intra Request (FIR) [RFC5104][RFC8082]).
 
                +---------------+---------------+
                |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
-               +---------------+---------+-----+
-               |   RES   | TID | RES     | SID |
-               +---------------+---------+-----+
+               +---------------+---------+-+---+
+               |   RES   | TID |   RES   |0|SID|
+               +---------------+---------+-+---+
 
                                  Figure 4
 
-   Figure 4 shows the format of LRR's layer index fields for AV1
-   streams.  The two "RES" fields MUST be set to 0 on transmission and
-   ingnored on reception.  See Sections 2, 5.3.3 and 6.2.3 of the AV1 bitstream
-   specification for details on the temporal_id (TID) and
-   spatial_id (SID) fields.
 
-   Identification of a layer refresh frame can be derived from the
-   reference IDs of each frame by backtracking the dependency chain
-   until reaching a point where only decodable frames are being
-   referenced.  Therefore it's recommended for both the flexible and the
-   non-flexible mode that, when upgrade frames are being encoded in
-   response to a LRR, those packets should contain layer indices and the
-   reference fields so that the decoder or an MCU can make this
-   derivation.
-
-   Example:
-
-   LRR {1,0}, {2,1} is sent by an MCU when it is currently relaying
-   {1,0} to a receiver and which wants to upgrade to {2,1}. In response
-   the encoder should encode the next frames in layers {1,1} and {2,1}
-   by only referring to frames in {1,0}, or {0,0}.
-
-   In the non-flexible mode, periodic upgrade frames can be defined by
-   the layer structure of the SS, thus periodic upgrade frames can be
-   automatically identified by the frame ID.
+   AV1 streams MUST use the Layer Refresh Request format defined for VP9 [I-D.ietf-payload-vp9] 
+   (see Section 5.3), with the high order bit of its three-bit SID field set to 0. Figure 4 shows the 
+   format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id
+   and TID is associatd with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream
+   specification [AV1] for details on the temporal_id and spatial_id fields.   
+   
+   Identification of a layer refresh frame may be performed by examining the 
+   coding dependency structure of the coded video sequence it belongs to.
+   This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5
+   of [AV1]), either in the form of a pre-defined scalability mode or through a
+   scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively,
+   the Dependency Descriptor RTP header extension that is specified in Appendix
+   A of this document may be used.
 
 ## 9. IANA Considerations
 
@@ -693,12 +683,19 @@ Answer SDP:
   
   * [I-D.ietf-mmusic-sdp-simulcast](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast "ietf-mmusic-sdp-simulcast")  ** Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar and M. Zanaty, March 5, 2019.
 
+ * [I-D.ietf-payload-vp9](https://tools.ietf.org/html/draft-ietf-payload-vp9 "I-D.ietf-payload-vp9") **RTP Payload Format for VP9 Video**, J. Uberti, S. Holmer, M. Flodman, D. Hong, and J. Lennox, January 2020.
 
 ### 11.2 Informative references
 
 * [RFC3711](https://tools.ietf.org/html/rfc3711 "RFC3711") **The Secure Real-time Transport Protocol (SRTP)**, M. Baugher, D. McGrew, M. Naslund, E. Carrara, and K. Norrman, March 2004.
 
+* [RFC5104](https://tools.ietf.org/html/rfc5104 "RFC5104") **Codec Control Messages in the RTP Audio-Visual Profile 
+with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008.
+
 * [RFC7202](https://tools.ietf.org/html/rfc7202 "RFC7202") **Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution**, C. Perkins and M. Westerlund, April 2014.
+
+* [RFC8082](https://tools.ietf.org/html/rfc8082 "RFC8082") **Using Codec Control Messages in the RTP Audio-Visual Profile 
+with Feedback with Layered Codecs**, S. Wenger, J. Lennox, B. Burman, and M. Westerlund, March 2017. 
 
 * [perc-double](https://tools.ietf.org/html/draft-ietf-perc-double-10 "perc-double") **SRTP Double Encryption Procedures**, C. Jennings, P. Jones, R. Barnes, and A. Roach, October 17, 2018
 
@@ -802,7 +799,7 @@ Required indication
   indication.
 
 **Note:** A Frame belonging to more than one Decode target may be required
-for one Decode target and not required (i.e, either discardable or switch)
+for one Decode target and not required (either discardable or switch)
 for another.
 {:.alert .alert-info }
 
