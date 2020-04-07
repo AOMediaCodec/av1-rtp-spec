@@ -323,7 +323,7 @@ This payload format has three optional parameters.
 ### 7.1. Media Type Definition
 
 * Type name:
-   * **video**
+  * **video**
 * Subtype name:
   * **AV1**
 * Required parameters:
@@ -353,7 +353,7 @@ This payload format has three optional parameters.
 * Intended usage:
   * COMMON
 * Restrictions on usage:
-  *  This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].
+  * This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].
 * Author:
   * TODO
 * Change controller:
@@ -376,17 +376,17 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 #### 7.2.2  Usage with the SDP Offer/Answer Model
 
 When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for negotiation for unicast usage, the following limitations and rules apply:
-  *  The media format configuration is identified by **level-idx**, **profile** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and answerer COULD declare its own media configuration if answerer capabilities are different to offerer.
-     *  The  profile to use in the offerer-to-answerer direction MUST be lesser or equal to the profile the answerer supports for receiving, and the profile to use in the answerer-to-offerer direction MUST be lesser or equal to the profile the offerer supports for receiving.
-     *  The level to use in the offerer-to-answerer direction MUST be lesser or equal to the level the answerer supports for receiving, and the level to use in the answerer-to-offerer direction MUST be lesser or equal to the level the offerer supports for receiving.
-     *  The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be lesser or equal to the tier the offerer supports for receiving.
+* The media format configuration is identified by **level-idx**, **profile** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and answerer COULD declare its own media configuration if answerer capabilities are different to offerer.
+  * The profile to use in the offerer-to-answerer direction MUST be lesser or equal to the profile the answerer supports for receiving, and the profile to use in the answerer-to-offerer direction MUST be lesser or equal to the profile the offerer supports for receiving.
+  * The level to use in the offerer-to-answerer direction MUST be lesser or equal to the level the answerer supports for receiving, and the level to use in the answerer-to-offerer direction MUST be lesser or equal to the level the offerer supports for receiving.
+  * The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be lesser or equal to the tier the offerer supports for receiving.
 
 
 #### 7.2.3  Usage in Declarative Session Descriptions
 
- When AV1 over RTP is offered with SDP in a declarative style, as in Real Time Streaming Protocol (RTSP) [RFC2326] or Session Announcement Protocol (SAP) [RFC2974], the following considerations apply.
- * All parameters capable of indicating both stream properties and receiver capabilities are used to indicate only stream properties. In this case, the parameters **profile**, **level-idx** and **tier** declare only the values used by the stream, not the capabilities for receiving streams.  
- * A receiver of the SDP is required to support all parameters and values of the parameters provided; otherwise, the receiver MUST reject (RTSP) or not participate in (SAP) the session. It falls on the creator of the session to use values that are expected to be supported by the receiving application.
+When AV1 over RTP is offered with SDP in a declarative style, as in Real Time Streaming Protocol (RTSP) [RFC2326] or Session Announcement Protocol (SAP) [RFC2974], the following considerations apply.
+* All parameters capable of indicating both stream properties and receiver capabilities are used to indicate only stream properties. In this case, the parameters **profile**, **level-idx** and **tier** declare only the values used by the stream, not the capabilities for receiving streams.  
+* A receiver of the SDP is required to support all parameters and values of the parameters provided; otherwise, the receiver MUST reject (RTSP) or not participate in (SAP) the session. It falls on the creator of the session to use values that are expected to be supported by the receiving application.
 
 
 ### 7.3 Example
@@ -411,76 +411,76 @@ Answer SDP:
 In the following example, an offer is made by a conferencing server to receive 3 simulcast streams.  The answerer agrees to send 3 simulcast streams at different resolutions.
 
 Offer SDP:
-*   m=video 49170 UDP/TLS/RTP/SAVPF 98
-*   a=mid:0
-*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
-*   a=extmap:3 urn:3gpp:video-orientation
-*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-*   a=sendrecv
-*   a=rtcp-mux
-*   a=rtcp-rsize
-*   a=rtpmap:98 AV1/90000
-*   a=fmtp:98 profile=2; level-idx=8; tier=1;
-*   a=rtcp-fb:98 ccm fir
-*   a=rtcp-fb:98 nack
-*   a=rtcp-fb:98 nack pli
-*   a=rid:f recv
-*   a=rid:h recv
-*   a=rid:q recv
-*   a=simulcast:recv f;h;q
+* m=video 49170 UDP/TLS/RTP/SAVPF 98
+* a=mid:0
+* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+* a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+* a=extmap:3 urn:3gpp:video-orientation
+* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+* a=sendrecv
+* a=rtcp-mux
+* a=rtcp-rsize
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=2; level-idx=8; tier=1;
+* a=rtcp-fb:98 ccm fir
+* a=rtcp-fb:98 nack
+* a=rtcp-fb:98 nack pli
+* a=rid:f recv
+* a=rid:h recv
+* a=rid:q recv
+* a=simulcast:recv f;h;q
 
 Answer SDP:
-*   m=video 48120 UDP/TLS/RTP/SAVPF 98
-*   a=mid:0
-*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-*   a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
-*   a=extmap:3 urn:3gpp:video-orientation
-*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-*   a=sendrecv
-*   a=rtcp-mux
-*   a=rtcp-rsize
-*   a=rtpmap:98 AV1/90000
-*   a=fmtp:98 profile=2; level-idx=8; tier=1;
-*   a=rtcp-fb:98 ccm fir
-*   a=rtcp-fb:98 nack
-*   a=rtcp-fb:98 nack pli
-*   a=rid:f send
-*   a=rid:h send
-*   a=rid:q send
-*   a=simulcast:send f;h;q
+* m=video 48120 UDP/TLS/RTP/SAVPF 98
+* a=mid:0
+* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+* a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+* a=extmap:3 urn:3gpp:video-orientation
+* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+* a=sendrecv
+* a=rtcp-mux
+* a=rtcp-rsize
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=2; level-idx=8; tier=1;
+* a=rtcp-fb:98 ccm fir
+* a=rtcp-fb:98 nack
+* a=rtcp-fb:98 nack pli
+* a=rid:f send
+* a=rid:h send
+* a=rid:q send
+* a=simulcast:send f;h;q
 
 In the following example, an offer is made by a browser to send a single RTP stream to a conferencing server. This single stream could include include any AV1 scalability mode, including "S" modes involving simulcast.
 
 Offer SDP:
-*   m=video 49170 UDP/TLS/RTP/SAVPF 98
-*   a=mid:0
-*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-*   a=extmap:3 urn:3gpp:video-orientation
-*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-*   a=sendrecv
-*   a=rtcp-mux
-*   a=rtcp-rsize
-*   a=rtpmap:98 AV1/90000
-*   a=fmtp:98 profile=2; level-idx=8; tier=1;
-*   a=rtcp-fb:98 ccm fir
-*   a=rtcp-fb:98 nack
-*   a=rtcp-fb:98 nack pli
+* m=video 49170 UDP/TLS/RTP/SAVPF 98
+* a=mid:0
+* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+* a=extmap:3 urn:3gpp:video-orientation
+* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+* a=sendrecv
+* a=rtcp-mux
+* a=rtcp-rsize
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=2; level-idx=8; tier=1;
+* a=rtcp-fb:98 ccm fir
+* a=rtcp-fb:98 nack
+* a=rtcp-fb:98 nack pli
 
 Answer SDP:
-*   m=video 48120 UDP/TLS/RTP/SAVPF 98
-*   a=mid:0
-*   a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-*   a=extmap:3 urn:3gpp:video-orientation
-*   a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-*   a=sendrecv
-*   a=rtcp-mux
-*   a=rtcp-rsize
-*   a=rtpmap:98 AV1/90000
-*   a=fmtp:98 profile=2; level-idx=8; tier=1;
-*   a=rtcp-fb:98 ccm fir
-*   a=rtcp-fb:98 nack
-*   a=rtcp-fb:98 nack pli
+* m=video 48120 UDP/TLS/RTP/SAVPF 98
+* a=mid:0
+* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+* a=extmap:3 urn:3gpp:video-orientation
+* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+* a=sendrecv
+* a=rtcp-mux
+* a=rtcp-rsize
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=2; level-idx=8; tier=1;
+* a=rtcp-fb:98 ccm fir
+* a=rtcp-fb:98 nack
+* a=rtcp-fb:98 nack pli
 
 
 ## 8. Feedback Messages
@@ -488,46 +488,46 @@ Answer SDP:
 
 ## 8.1.  Full Intra Request (FIR)
 
-   The Full Intra Request (FIR) [RFC5104] RTCP feedback message allows a receiver to request a Decoder Refresh Point of an encoded stream.
+The Full Intra Request (FIR) [RFC5104] RTCP feedback message allows a receiver to request a Decoder Refresh Point of an encoded stream.
 
-   Upon reception of FIR, the AV1 sender MUST send a new coded video sequence (see Section 7.5 of the [AV1] bitstream specification) as soon as possible.
-   
-   **Note** If simulcast is used and simulcast streams are transported using multiple SSRCs, an AV1 sender must send new coded video sequences for every SSRC indicated in the FIR message and might send new coded video sequences for other simulcast streams. If an AV1 bitstream contains several spatial layers without inter-layer dependencies, an AV1 sender must send a new coded video sequence for each independent spatial layer.
+Upon reception of FIR, the AV1 sender MUST send a new coded video sequence (see Section 7.5 of the [AV1] bitstream specification) as soon as possible.
+
+**Note** If simulcast is used and simulcast streams are transported using multiple SSRCs, an AV1 sender must send new coded video sequences for every SSRC indicated in the FIR message and might send new coded video sequences for other simulcast streams. If an AV1 bitstream contains several spatial layers without inter-layer dependencies, an AV1 sender must send a new coded video sequence for each independent spatial layer.
 
 
 ## 8.2.  Layer Refresh Request (LRR)
 
-  The Layer Refresh Request [I-D.ietf-avtext-lrr] is designed to allow a receiver of a layered media stream to request that one or more of its substreams be refreshed, such that it can then be decoded by an endpoint which previously was not receiving those layers, without requiring that the entire stream be refreshed (as it would be if the receiver sent a Full Intra Request (FIR) [RFC5104][RFC8082]).
+The Layer Refresh Request [I-D.ietf-avtext-lrr] is designed to allow a receiver of a layered media stream to request that one or more of its substreams be refreshed, such that it can then be decoded by an endpoint which previously was not receiving those layers, without requiring that the entire stream be refreshed (as it would be if the receiver sent a Full Intra Request (FIR) [RFC5104][RFC8082]).
 
-               +---------------+---------------+
-               |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
-               +---------------+---------+-+---+
-               |   RES   | TID |   RES   |0|SID|
-               +---------------+---------+-+---+
+           +---------------+---------------+
+           |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
+           +---------------+---------+-+---+
+           |   RES   | TID |   RES   |0|SID|
+           +---------------+---------+-+---+
 
-                                 Figure 4
+                             Figure 4
 
-   AV1 streams MUST use the Layer Refresh Request format defined for VP9 [I-D.ietf-payload-vp9] (see Section 5.3), with the high order bit of its three-bit SID field set to 0. Figure 4 shows the format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id and TID is associatd with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream specification [AV1] for details on the temporal_id and spatial_id fields.
-   
-   Identification of a layer refresh frame may be performed by examining the coding dependency structure of the coded video sequence it belongs to. This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 of [AV1]), either in the form of a pre-defined scalability mode or through a scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively, the Dependency Descriptor RTP header extension that is specified in Appendix A of this document may be used.
+AV1 streams MUST use the Layer Refresh Request format defined for VP9 [I-D.ietf-payload-vp9] (see Section 5.3), with the high order bit of its three-bit SID field set to 0. Figure 4 shows the format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id and TID is associatd with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream specification [AV1] for details on the temporal_id and spatial_id fields.
+
+Identification of a layer refresh frame may be performed by examining the coding dependency structure of the coded video sequence it belongs to. This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 of [AV1]), either in the form of a pre-defined scalability mode or through a scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively, the Dependency Descriptor RTP header extension that is specified in Appendix A of this document may be used.
 
 
 ## 9. IANA Considerations
 
-   Upon publication, a new media type, as specified in Section 7.1 of this document, will be registered with IANA.
+Upon publication, a new media type, as specified in Section 7.1 of this document, will be registered with IANA.
 
 
 ## 10. Security Considerations
 
-   RTP packets using the payload format defined in this document are subject to the security considerations discussed in the RTP specification [RFC3550] and in any appropriate RTP profile. This implies that confidentiality of the media streams is achieved by encryption, for example, through the application of SRTP [RFC3711]. A potential denial-of-service threat exists for data encodings using compression techniques that have non-uniform receiver-end computational load.  The attacker can inject pathological datagrams into the stream that are complex to decode and that cause the receiver to be overloaded. Therefore, the usage of data origin authentication and data integrity protection of at least the RTP packet is RECOMMENDED, for example, with SRTP [RFC3711]. End-to-end encryption helps mitigate these attacks [perc-double].
+RTP packets using the payload format defined in this document are subject to the security considerations discussed in the RTP specification [RFC3550] and in any appropriate RTP profile. This implies that confidentiality of the media streams is achieved by encryption, for example, through the application of SRTP [RFC3711]. A potential denial-of-service threat exists for data encodings using compression techniques that have non-uniform receiver-end computational load.  The attacker can inject pathological datagrams into the stream that are complex to decode and that cause the receiver to be overloaded. Therefore, the usage of data origin authentication and data integrity protection of at least the RTP packet is RECOMMENDED, for example, with SRTP [RFC3711]. End-to-end encryption helps mitigate these attacks [perc-double].
 
-   Note that the appropriate mechanism to ensure confidentiality and integrity of RTP packets and their payloads is very dependent on the application and on the transport and signaling protocols employed. Thus, although SRTP is given as an example above, other possible choices exist [RFC7202].
+Note that the appropriate mechanism to ensure confidentiality and integrity of RTP packets and their payloads is very dependent on the application and on the transport and signaling protocols employed. Thus, although SRTP is given as an example above, other possible choices exist [RFC7202].
 
-   Decoders MUST exercise caution with respect to the handling of reserved OBU types and reserved metadata OBU types, particularly if they contain active elements, and MUST restrict their domain of applicability to the presentation containing the stream. The safest way is to simply discard these OBUs.
+Decoders MUST exercise caution with respect to the handling of reserved OBU types and reserved metadata OBU types, particularly if they contain active elements, and MUST restrict their domain of applicability to the presentation containing the stream. The safest way is to simply discard these OBUs.
 
-   When integrity protection is applied to a stream, care MUST be taken that the stream being transported may be scalable; hence a receiver may be able to access only part of the entire stream.
+When integrity protection is applied to a stream, care MUST be taken that the stream being transported may be scalable; hence a receiver may be able to access only part of the entire stream.
 
-   End-to-end security with either authentication, integrity, or confidentiality protection will prevent a MANE from performing media- aware operations other than discarding complete packets. The use of the Dependency Descriptor RTP extension described in Appendix A allows discarding of packets in a media-aware way even when confidentiality protection is used. Repacketization by a MANE requires access to the media payload.
+End-to-end security with either authentication, integrity, or confidentiality protection will prevent a MANE from performing media- aware operations other than discarding complete packets. The use of the Dependency Descriptor RTP extension described in Appendix A allows discarding of packets in a media-aware way even when confidentiality protection is used. Repacketization by a MANE requires access to the media payload.
 
 
 ## 11. References
@@ -535,28 +535,28 @@ Answer SDP:
 
 ### 11.1 Normative References
 
- 
-  * [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf) **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
-  * [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
-  
-  * [RFC5104](https://tools.ietf.org/html/rfc5104 "RFC5104") **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008. 
+* [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf) **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
-  * [RFC6184](https://tools.ietf.org/html/rfc6184 "RFC6184") **RTP Payload Format for H.264 Video**, Y.-K. Wang, R. Even, T. Kristensen, and R. Jesup, May 2011.
+* [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
 
-  * [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
-  
-  * [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
-  
- * [I-D.ietf-avtext-lrr](https://tools.ietf.org/html/draft-ietf-avtext-lrr-07 "ietf-avtext-lrr")  **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
- 
-  * [I-D.ietf-avtext-rid](https://tools.ietf.org/html/draft-ietf-avtext-rid "ietf-avtext-rid")  ** RTP Stream Identifier Source Description (SDES)**, A. Roach, S. Nandakumar and P. Thatcher, October 06, 2016.
-  
-  * [I-D.ietf-mmusic-rid](https://tools.ietf.org/html/draft-ietf-mmusic-rid "ietf-mmusic-rid")  ** RTP Payload Format Restrictions**, A. Roach, May 15, 2018.
-  
-  * [I-D.ietf-mmusic-sdp-simulcast](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast "ietf-mmusic-sdp-simulcast")  ** Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar and M. Zanaty, March 5, 2019.
+* [RFC5104](https://tools.ietf.org/html/rfc5104 "RFC5104") **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008. 
 
- * [I-D.ietf-payload-vp9](https://tools.ietf.org/html/draft-ietf-payload-vp9 "I-D.ietf-payload-vp9") **RTP Payload Format for VP9 Video**, J. Uberti, S. Holmer, M. Flodman, D. Hong, and J. Lennox, January 2020.
+* [RFC6184](https://tools.ietf.org/html/rfc6184 "RFC6184") **RTP Payload Format for H.264 Video**, Y.-K. Wang, R. Even, T. Kristensen, and R. Jesup, May 2011.
+
+* [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
+
+* [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+
+* [I-D.ietf-avtext-lrr](https://tools.ietf.org/html/draft-ietf-avtext-lrr-07 "ietf-avtext-lrr")  **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
+
+* [I-D.ietf-avtext-rid](https://tools.ietf.org/html/draft-ietf-avtext-rid "ietf-avtext-rid")  ** RTP Stream Identifier Source Description (SDES)**, A. Roach, S. Nandakumar and P. Thatcher, October 06, 2016.
+
+* [I-D.ietf-mmusic-rid](https://tools.ietf.org/html/draft-ietf-mmusic-rid "ietf-mmusic-rid")  ** RTP Payload Format Restrictions**, A. Roach, May 15, 2018.
+
+* [I-D.ietf-mmusic-sdp-simulcast](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast "ietf-mmusic-sdp-simulcast")  ** Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar and M. Zanaty, March 5, 2019.
+
+* [I-D.ietf-payload-vp9](https://tools.ietf.org/html/draft-ietf-payload-vp9 "I-D.ietf-payload-vp9") **RTP Payload Format for VP9 Video**, J. Uberti, S. Holmer, M. Flodman, D. Hong, and J. Lennox, January 2020.
 
 
 ### 11.2 Informative References
@@ -649,21 +649,21 @@ A frame for which all Referred frames are decodable MUST itself be decodable.
 
 To facilitate the work of selectively forwarding portions of a scalable video bitstream, as is done by a selective forwarding unit (SFU), for each packet, the following information is made available (even though not all elements are present in every packet).
 
-  * spatial ID
-  * temporal ID
-  * DTIs
-  * Frame number of the current frame
-  * Frame numbers of the Referred frames
-  * Frame numbers of last frame in each Chain
+* spatial ID
+* temporal ID
+* DTIs
+* Frame number of the current frame
+* Frame numbers of the Referred frames
+* Frame numbers of last frame in each Chain
 
 
 ##### A.4.1 Syntax
 
 The syntax for the descriptor is described in pseudo-code form in this section.
 
-  * **f(n)** - unsigned n-bit number appearing directly in the bitstream.
-  * **ns(n)** - unsigned encoded integer with maximum number of values n (i.e.
-    output in range 0..n-1).
+* **f(n)** - unsigned n-bit number appearing directly in the bitstream.
+* **ns(n)** - unsigned encoded integer with maximum number of values n (i.e.
+  output in range 0..n-1).
 
 [f(n) and ns(n) need to be defined. A definition may be found in the AV1 specification Section 4.]
 
@@ -897,59 +897,59 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 **Mandatory Descriptor Fields**
 
-  * **start_of_frame**: MUST be set to 1 if the first payload octet of the RTP packet is the beginning of a new Frame, and MUST be set to 0 otherwise. Note that this frame might not be the first frame of a temporal unit.
+* **start_of_frame**: MUST be set to 1 if the first payload octet of the RTP packet is the beginning of a new Frame, and MUST be set to 0 otherwise. Note that this frame might not be the first frame of a temporal unit.
 
-  * **end_of_frame**: MUST be set to 1 for the final RTP packet of a Frame, and MUST be set to 0 otherwise. Note that, if spatial scalability is in use, more frames from the same temporal unit may follow.
+* **end_of_frame**: MUST be set to 1 for the final RTP packet of a Frame, and MUST be set to 0 otherwise. Note that, if spatial scalability is in use, more frames from the same temporal unit may follow.
 
-  * **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same Frame MUST have the same frame_number value.
+* **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same Frame MUST have the same frame_number value.
 
-    **Note:** Frame number is not the same as Frame ID in [AV1 specification].
-    {:.alert .alert-info }
+**Note:** Frame number is not the same as Frame ID in [AV1 specification].
+{:.alert .alert-info }
 
-  * **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same Frame.
+* **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same Frame.
 
-    **Note:** values out of the valid range indicate a change of the Frame dependency structure.
-    {:.alert .alert-info }
+**Note:** values out of the valid range indicate a change of the Frame dependency structure.
+{:.alert .alert-info }
 
 **Extended Descriptor Fields**
 
-  * **template_dependency_structure_present_flag**: indicates the presence the template_dependency_structure. When the template_dependency_structure_present_flag is set to 1, template_dependency_structure MUST be present; otherwise template_dependency_structure MUST NOT be present. template_dependency_structure_present_flag MUST be set to 1 for the first packet of a coded video sequence, and MUST be set to 0 otherwise.
+* **template_dependency_structure_present_flag**: indicates the presence the template_dependency_structure. When the template_dependency_structure_present_flag is set to 1, template_dependency_structure MUST be present; otherwise template_dependency_structure MUST NOT be present. template_dependency_structure_present_flag MUST be set to 1 for the first packet of a coded video sequence, and MUST be set to 0 otherwise.
 
-  * **active_decode_targets_present_flag**: indicates the presence of active_decode_targets_bitmask. When set to 1, active_decode_targets_bitmask MUST be present, otherwise, active_decode_targets_bitmask MUST NOT be present.
+* **active_decode_targets_present_flag**: indicates the presence of active_decode_targets_bitmask. When set to 1, active_decode_targets_bitmask MUST be present, otherwise, active_decode_targets_bitmask MUST NOT be present.
 
-  * **active_decode_targets_bitmask**: contains a bitmask that indicates which decode targets are available for decoding. Bit i is equal to 1 if decode target i is available for decoding, 0 otherwise.
+* **active_decode_targets_bitmask**: contains a bitmask that indicates which decode targets are available for decoding. Bit i is equal to 1 if decode target i is available for decoding, 0 otherwise.
 
-  * **custom_dtis_flag**: indicates the presence of frame_dtis. When set to 1, frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
+* **custom_dtis_flag**: indicates the presence of frame_dtis. When set to 1, frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
 
-  * **custom_fdiffs_flag**: indicates the presence of frame_fdiffs. When set to 1, frame_fdiffs MUST be present. Otherwise, frame_fdiffs MUST NOT be present.
+* **custom_fdiffs_flag**: indicates the presence of frame_fdiffs. When set to 1, frame_fdiffs MUST be present. Otherwise, frame_fdiffs MUST NOT be present.
 
-  * **custom_chains_flag**: indicates the presence of frame_chain_fdiff. When set to 1, frame_chain_fdiff MUST be present. Otherwise, frame_chain_fdiff MUST NOT be present.
+* **custom_chains_flag**: indicates the presence of frame_chain_fdiff. When set to 1, frame_chain_fdiff MUST be present. Otherwise, frame_chain_fdiff MUST NOT be present.
 
 **Template dependency structure**
 
-  * **template_id_offset**: indicates the value of the frame_dependency_template_id having templateIndex=0. The value of template_id_offset SHOULD be chosen so that the valid frame_dependency_template_id range, template_id_offset to template_id_offset + TemplatesCnt - 1, inclusive, of a new template_dependency_structure, does not overlap the valid frame_dependency_template_id range for the existing template_dependency_structure. When template_id_offset of a new template_dependency_structure is the same as in the existing template_dependency_structure, all fields in both template_dependency_structures MUST have identical values.
+* **template_id_offset**: indicates the value of the frame_dependency_template_id having templateIndex=0. The value of template_id_offset SHOULD be chosen so that the valid frame_dependency_template_id range, template_id_offset to template_id_offset + TemplatesCnt - 1, inclusive, of a new template_dependency_structure, does not overlap the valid frame_dependency_template_id range for the existing template_dependency_structure. When template_id_offset of a new template_dependency_structure is the same as in the existing template_dependency_structure, all fields in both template_dependency_structures MUST have identical values.
 
-  * **dtis_cnt_minus_one**: dtis_cnt_minus_one + 1 indicates the number of Decode targets present in the coded video sequence.
+* **dtis_cnt_minus_one**: dtis_cnt_minus_one + 1 indicates the number of Decode targets present in the coded video sequence.
 
-  * **resolutions_present_flag**: indicates the presence of render_resolutions. When the resolutions_present_flag is set to 1, render_resolutions MUST be present; otherwise render_resolutions MUST NOT be present.
+* **resolutions_present_flag**: indicates the presence of render_resolutions. When the resolutions_present_flag is set to 1, render_resolutions MUST be present; otherwise render_resolutions MUST NOT be present.
 
-  * **next_layer_idc**: used to determine spatial ID and temporal ID for the next Frame dependency template. Table A.3 describes how the spatial ID and temporal ID values are determined. A next_layer_idc equal to 3 indicates that no more Frame dependency templates are present in the Frame dependency structure.
+* **next_layer_idc**: used to determine spatial ID and temporal ID for the next Frame dependency template. Table A.3 describes how the spatial ID and temporal ID values are determined. A next_layer_idc equal to 3 indicates that no more Frame dependency templates are present in the Frame dependency structure.
 
-  * **max_render_width_minus_1[spatial_id]**: indicates the maximum render width minus 1 for frames with spatial ID equal to spatial_id.
+* **max_render_width_minus_1[spatial_id]**: indicates the maximum render width minus 1 for frames with spatial ID equal to spatial_id.
 
-  * **max_render_height_minus_1[spatial_id]**: indicates the maximum render height minus 1 for frames with spatial ID equal to spatial_id.
+* **max_render_height_minus_1[spatial_id]**: indicates the maximum render height minus 1 for frames with spatial ID equal to spatial_id.
 
-  * **chains_cnt**: indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
+* **chains_cnt**: indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
 
-  * **decode_target_protected_by[dtIndex]**: the index of the Chain that protects the Decode target, dtIndex. A value of decode_target_protected_by[dtIndex] equal to chains_cnt  indicates that Decode target dtIndex is not protected by a Chain. Each Decode target MAY be protected by at most one Chain.
+* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects the Decode target, dtIndex. A value of decode_target_protected_by[dtIndex] equal to chains_cnt  indicates that Decode target dtIndex is not protected by a Chain. Each Decode target MAY be protected by at most one Chain.
 
-  * **template_dti[templateIndex][]**: an array of size dtis_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.2 contains a description of the Decode Target Indication values.
+* **template_dti[templateIndex][]**: an array of size dtis_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.2 contains a description of the Decode Target Indication values.
 
-  * **template_chain_fdiff[templateIndex][]**: an array of size chains_cnt containing chain-FDIFF values for the Frame dependency template having index value equal to templateIndex. In a template, the values of chain-FDIFF can be in the range 0 to 15, inclusive.
+* **template_chain_fdiff[templateIndex][]**: an array of size chains_cnt containing chain-FDIFF values for the Frame dependency template having index value equal to templateIndex. In a template, the values of chain-FDIFF can be in the range 0 to 15, inclusive.
 
-  * **fdiff_follows_flag**: indicates the presence of a frame difference value. When the fdiff_follows_flag is set to 1, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present for the current Frame dependency template.
+* **fdiff_follows_flag**: indicates the presence of a frame difference value. When the fdiff_follows_flag is set to 1, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present for the current Frame dependency template.
 
-  * **fdiff_minus_one**: the difference between Frame number and the Frame number of the Referred frame minus one.
+* **fdiff_minus_one**: the difference between Frame number and the Frame number of the Referred frame minus one.
 
 | DTI                    | Value |                                                        |
 | ---------------------- | ----- | ------------------------------------------------------ |
@@ -964,11 +964,11 @@ Table A.2. DTI values.
 
 **Frame dependency defintion**
 
-  * **next_fdiff_size**: indicates the size of following fdiff_minus_one syntax elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present.
+* **next_fdiff_size**: indicates the size of following fdiff_minus_one syntax elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present.
 
-  * **frame_dti[dtiIndex]**: Decode Target Indication describing the relationship between the current frame and the Decode target having index equal to dtiIndex. Table A.2 contains a description of the Decode Target Indication values.
+* **frame_dti[dtiIndex]**: Decode Target Indication describing the relationship between the current frame and the Decode target having index equal to dtiIndex. Table A.2 contains a description of the Decode Target Indication values.
 
-  * **frame_chain_fdiff[chainIdx]**: indicates the difference between the Frame number and the Frame number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and Frame number=112 the previous frame in the Chain with index equal to chainIdx has Frame number=109. The calculation is done modulo the size of the frame_number field.
+* **frame_chain_fdiff[chainIdx]**: indicates the difference between the Frame number and the Frame number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and Frame number=112 the previous frame in the Chain with index equal to chainIdx has Frame number=109. The calculation is done modulo the size of the frame_number field.
 
 | next_layer_idc | Next Spatial ID And Temporal ID Values                   |
 | -------------- | -------------------------------------------------------- |
@@ -1271,11 +1271,11 @@ Table A.4. DTI values
 
 ##### A.7.1 Normative References
  
- * [RFC2119](https://tools.ietf.org/html/rfc2119 "RFC2119") **Key words for use in RFCs to Indicate Requirement Levels, S. Bradner, March 1997. 
- 
-  * [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
+* [RFC2119](https://tools.ietf.org/html/rfc2119 "RFC2119") **Key words for use in RFCs to Indicate Requirement Levels, S. Bradner, March 1997. 
 
-   * [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
+* [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
+
+* [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
   
 
 
@@ -1291,5 +1291,5 @@ Table A.4. DTI values
 
 * [RFC6838](https://tools.ietf.org/html/rfc6838 "RFC6838") **Media Type Specifications and Registration Procedures**, N. Freed, J. Klensin, and T. Hansen, January 2013.
 
- * [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+* [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
 
