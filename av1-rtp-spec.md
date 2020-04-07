@@ -298,6 +298,8 @@ Each RTP packet MUST contain OBUs that belong to a single temporal unit.
 The temporal delimiter OBU, if present, SHOULD be removed when transmitting, and
 MUST be ignored by receivers.
 
+Tile list OBUs are not supported. They SHOULD be removed when transmitted, and MUST be ignored by receivers.
+
 If a sequence header OBU is present in an RTP packet and operating_points_cnt_minus_1 > 0 then for any number i where 0 <= i < operating_points_cnt_minus_1 the following MUST be true: (operating_point_idc[i] & operating_point_idc[i+1]) == operating_point_idc[i+1].
 
 A sender MAY produce a sequence header with operating_points_cnt_minus_1 = 0 and operating_point_idc[0] = 0xFFF and seq_level_idx[0] = 0. In such case, seq_level_idx[0] does not reflect the level of the operating point.
@@ -313,10 +315,11 @@ in the packet. OBUs that are not associated with a particular layer (and thus do
 an OBU extension header) SHOULD be in the beginning of a packet, following the
 sequence header OBU if present.
 
-A sequence header OBU SHOULD be included in the base layer when scalable encoding is used,
-and it SHOULD be aggregated with each spatial layer in the case of simulcast.
-
-Tile list OBUs are not supported. They SHOULD be removed when transmitted, and MUST be ignored by receivers.
+A sequence header OBU SHOULD be included in the base layer when scalable encoding is used. 
+When simulcast encodings are transported on the same SSRC (an "S" mode), a sequence
+header OBU SHOULD be aggregated with each spatial layer.  This is to ensure that
+if an intermediary removes simulcast encodings from the bitstream before forwarding, the
+resulting bitstream will still be decodable.
 
 ### 5.1 Examples
 
