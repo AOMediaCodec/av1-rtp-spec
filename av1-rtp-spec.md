@@ -570,16 +570,19 @@ Answer SDP:
 
    The Full Intra Request (FIR) [RFC5104] RTCP feedback message allows a
    receiver to request a Decoder Refresh Point of an encoded stream.
+   [RFC8082] updates the definition of the Decoder Refresh Point.
 
-   Upon reception of FIR, the AV1 sender MUST send a new coded video sequence
-   (see section 7.5 of the [AV1] bitstream specification) as soon as possible.
+   Upon reception of an FIR, the AV1 sender MUST as soon as possible send a
+   new coded video sequence for every SSRC indicted in the FIR message
+   (see section 7.5 of the [AV1] bitstream specification). If an AV1 bitstream
+   contains several spatial layers without inter-layer dependencies (an "S" mode),
+   an AV1 sender MUST send a new coded video sequence for each independent
+   spatial layer.
    
-   **Note** If simulcast is used and simulcast streams are transported using multiple SSRCs,
-   an AV1 sender must send new coded video sequences for every SSRC indicated in the FIR message
-   and might send new coded video sequences for other simulcast streams. If an AV1 bitstream
-   contains several spatial layers without inter-layer dependencies, an AV1 sender must send
-   a new coded video sequence for each independent spatial layer.
-
+   If simulcast is used, with each simulcast encoding sent on a distinct SSRC,
+   then in addition to sending a new coded video sequence for each encoding
+   identified by an SSRC in the FIR message, the AV1 sender MAY also send new
+   coded video sequences for other encodings from the same source(s).
 
 ## 8.2.  Layer Refresh Request (LRR)
 
