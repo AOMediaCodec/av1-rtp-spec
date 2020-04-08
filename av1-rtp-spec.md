@@ -317,9 +317,9 @@ sequence header OBU if present.
 
 A sequence header OBU SHOULD be included in the base layer when scalable encoding is used. 
 When simulcast encodings are transported on the same SSRC (an "S" mode), a sequence
-header OBU SHOULD be aggregated with each spatial layer.  This is to ensure that
-if an intermediary removes simulcast encodings from the bitstream before forwarding, the
-resulting bitstream will still be decodable.
+header OBU SHOULD be aggregated with each spatial layer. This ensures that if an
+intermediary removes simulcast encodings from the bitstream before forwarding, the
+modified bitstream will still be decodable.
 
 ### 5.1 Examples
 
