@@ -579,10 +579,10 @@ Answer SDP:
    an AV1 sender MUST send a new coded video sequence for each independent
    spatial layer.
    
-   If simulcast is used, with each simulcast encoding sent on a distinct SSRC,
+   If simulcast encodings of the same source are transported on distinct SSRCs,
    then in addition to sending a new coded video sequence for each encoding
-   identified by an SSRC in the FIR message, the AV1 sender MAY also send new
-   coded video sequences for other encodings from the same source(s).
+   corresponding to an SSRC in the FIR message, the AV1 sender MAY also send
+   new coded video sequences for other encodings from the same source(s).
 
 ## 8.2.  Layer Refresh Request (LRR)
 
