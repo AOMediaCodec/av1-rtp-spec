@@ -574,10 +574,7 @@ Answer SDP:
 
    Upon reception of an FIR, the AV1 sender MUST as soon as possible send a
    new coded video sequence for every SSRC indicted in the FIR message
-   (see section 7.5 of the [AV1] bitstream specification). If an AV1 bitstream
-   contains several spatial layers without inter-layer dependencies (an "S" mode),
-   an AV1 sender MUST send a new coded video sequence for each independent
-   spatial layer.
+   (see section 7.5 of the [AV1] bitstream specification).
    
    If simulcast encodings of the same source are transported on distinct SSRCs,
    then in addition to sending a new coded video sequence for each encoding
