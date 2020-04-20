@@ -572,9 +572,10 @@ Answer SDP:
    receiver to request a Decoder Refresh Point of an encoded stream.
    [RFC8082] updates the definition of the Decoder Refresh Point.
 
-   Upon reception of an FIR, the AV1 sender MUST as soon as possible send a
-   new coded video sequence for every SSRC indicted in the FIR message
-   (see section 7.5 of the [AV1] bitstream specification).
+   Upon reception of an FIR, for every SSRC indicated in the FIR message,
+   the AV1 sender MUST send a new coded video sequence as soon as possible.
+   See section 7.5 of the [AV1] bitstream specification for the definition
+   of a new coded video sequence.
    
    If simulcast encodings of the same source are transported on distinct SSRCs,
    then in addition to sending a new coded video sequence for each encoding
