@@ -570,7 +570,8 @@ Answer SDP:
 
    The Full Intra Request (FIR) [RFC5104] RTCP feedback message allows a
    receiver to request a Decoder Refresh Point of an encoded stream.
-   [RFC8082] updates the definition of the Decoder Refresh Point.
+   Section 3 of [RFC8082] updates the definition of the Decoder Refresh
+   Point.
 
    Upon reception of an FIR, for every SSRC indicated in the FIR message,
    the AV1 sender MUST send a new coded video sequence as soon as possible.
