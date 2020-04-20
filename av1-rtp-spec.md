@@ -887,7 +887,6 @@ mandatory_descriptor_fields() {
 
 <pre><code>
 extended_descriptor_fields() {
-  <b>frame_dependency_template_id</b> = f(6)
   <b>template_dependency_structure_present_flag</b> = f(1)
   <b>active_decode_targets_present_flag</b> = f(1)
   <b>custom_dtis_flag</b> = f(1)
@@ -991,7 +990,7 @@ template_layers() {
       spatialId++
     }
   } while (next_layer_idc != 3)
-  MaxSpatialId = spatialId[c]
+  MaxSpatialId = spatialId
 }
 </code></pre>
 
@@ -1030,8 +1029,7 @@ frame_dtis() {
 
 <pre><code>
 template_fdiffs() {
-  templateIndex = 0
-  while (templateIndex < TemplatesCnt) {
+  for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
     fdiffsCnt = 0
     <b>fdiff_follows_flag</b> = f(1)
     while (fdiff_follows_flag) {
