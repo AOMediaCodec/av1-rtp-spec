@@ -243,8 +243,7 @@ OBU element 2 data        = 303 - 1 - (2 + 200) = 100 bytes
 
 Each RTP packet MUST contain OBUs that belong to a single temporal unit.
 
-The temporal delimiter OBU, if present, SHOULD be removed when transmitting, and MUST be ignored by receivers.
-Tile list OBUs are not supported. They SHOULD be removed when transmitted, and MUST be ignored by receivers.
+The temporal delimiter OBU, if present, SHOULD be removed when transmitting, and MUST be ignored by receivers. Tile list OBUs are not supported. They SHOULD be removed when transmitted, and MUST be ignored by receivers.
 
 If a sequence header OBU is present in an RTP packet and operating_points_cnt_minus_1 > 0 then for any number i where 0 <= i < operating_points_cnt_minus_1 the following MUST be true: (operating_point_idc[i] & operating_point_idc[i+1]) == operating_point_idc[i+1].
 
