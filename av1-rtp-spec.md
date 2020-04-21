@@ -526,7 +526,7 @@ Upon publication, a new media type, as specified in Section 7.1 of this document
 
 ## 10. Security Considerations
 
-RTP packets using the payload format defined in this document are subject to the security considerations discussed in the RTP specification [RFC3550] and in any appropriate RTP profile. This implies that confidentiality of the media streams is achieved by encryption, for example, through the application of SRTP [RFC3711]. A potential denial-of-service threat exists for data encodings using compression techniques that have non-uniform receiver-end computational load.  The attacker can inject pathological datagrams into the stream that are complex to decode and that cause the receiver to be overloaded. Therefore, the usage of data origin authentication and data integrity protection of at least the RTP packet is RECOMMENDED, for example, with SRTP [RFC3711]. End-to-end encryption helps mitigate these attacks [perc-double].
+RTP packets using the payload format defined in this document are subject to the security considerations discussed in the RTP specification [RFC3550] and in any appropriate RTP profile. This implies that confidentiality of the media streams is achieved by encryption, for example, through the application of SRTP [RFC3711]. A potential denial-of-service threat exists for data encodings using compression techniques that have non-uniform receiver-end computational load. The attacker can inject pathological datagrams into the stream that are complex to decode and that cause the receiver to be overloaded. Therefore, the usage of data origin authentication and data integrity protection of at least the RTP packet is RECOMMENDED, for example, with SRTP [RFC3711].
 
 Note that the appropriate mechanism to ensure confidentiality and integrity of RTP packets and their payloads is very dependent on the application and on the transport and signaling protocols employed. Thus, although SRTP is given as an example above, other possible choices exist [RFC7202].
 
@@ -534,7 +534,11 @@ Decoders MUST exercise caution with respect to the handling of reserved OBU type
 
 When integrity protection is applied to a stream, care MUST be taken that the stream being transported may be scalable; hence a receiver may be able to access only part of the entire stream.
 
-End-to-end security with either authentication, integrity, or confidentiality protection will prevent a MANE from performing media- aware operations other than discarding complete packets. The use of the Dependency Descriptor RTP extension described in Appendix A allows discarding of packets in a media-aware way even when confidentiality protection is used. Repacketization by a MANE requires access to the media payload.
+End-to-end security services such as authentication, integrity, or confidentiality protection will prevent a MANE from performing media-aware operations other than discarding complete packets. For example, repacketization requires that the MANE have access to the cleartext media payload as well as the ability to provide end-to-end integrity protection and authentication services.
+
+The Dependency Descriptor RTP extension described in Appendix A was allows discarding of packets in a media-aware way even when confidentiality protection is used. 
+
+End-to-end encryption helps mitigate these attacks [perc-double].
 
 
 ## 11. References
