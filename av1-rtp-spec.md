@@ -536,7 +536,7 @@ When integrity protection is applied to a stream, care MUST be taken that the st
 
 End-to-end security services such as authentication, integrity, or confidentiality protection will prevent a MANE from performing media-aware operations other than discarding complete packets. For example, repacketization requires that the MANE have access to the cleartext media payload as well as the ability to provide end-to-end integrity protection and authentication services.
 
-The Dependency Descriptor RTP extension described in Appendix A was allows discarding of packets in a media-aware way even when confidentiality protection is used.
+The Dependency Descriptor RTP extension described in Appendix A allows discarding of packets in a media-aware way even when confidentiality protection is used.
 
 
 ## 11. References
