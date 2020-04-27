@@ -252,7 +252,7 @@ A sender MAY produce a sequence header with operating_points_cnt_minus_1 = 0 and
 **Note:** The intent is to disable OBU dropping in the decoder. To ensure a decoder’s capabilities are not exceeded, OBU filtering should instead be implemented at the system level (e.g., SFU).
 {:.alert .alert-info }
 
-If more than one OBU contained in an RTP packet has an OBU extension header then the values of the temporal_id and spatial_id MUST be the same in all such OBUs in the RTP packet.
+If more than one OBU contained in an RTP packet has an OBU extension header, then the values of the temporal_id and spatial_id MUST be the same in all such OBUs in the RTP packet.
 
 If a sequence header OBU is present in an RTP packet, then it	SHOULD be the first OBU in the packet. OBUs that are not associated with a particular layer (and thus do not have an OBU extension header) SHOULD be in the beginning of a packet, following the sequence header OBU if present.
 
