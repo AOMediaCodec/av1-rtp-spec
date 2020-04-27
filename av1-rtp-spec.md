@@ -68,7 +68,7 @@ Temporal unit
 
 ## 3. Media Format Description
 
-AV1 has similarities to other video codecs, but introduces a number of key design changes as well. The AV1 codec can maintain up to eight reference frames, of which up to seven can be referenced by any new frame. AV1 also allows a frame to use another frame of a different spatial resolution as a reference frame. Specifically, a frame may use any references whose width and height are between 1/2 that of the current frame and twice that of the current frame, inclusive. This allows internal resolution changes without requiring the use of key frames. These features together enable an encoder to implement various forms of coarse- grained scalability, including temporal, spatial, and quality scalability modes, as well as combinations of these, without the need for explicit scalable coding tools.
+AV1 has similarities to other video codecs, but introduces a number of key design changes as well. The AV1 codec can maintain up to eight reference frames, of which up to seven can be referenced by any new frame. AV1 also allows a frame to use another frame of a different spatial resolution as a reference frame. Specifically, a frame may use any references whose width and height are between 1/2 that of the current frame and twice that of the current frame, inclusive. This allows internal resolution changes without requiring the use of key frames. These features together enable an encoder to implement various forms of coarse-grained scalability, including temporal, spatial, and quality scalability modes, as well as combinations of these, without the need for explicit scalable coding tools.
 
 Spatial and quality layers define different and possibly dependent representations of a single input frame. For a given spatial layer, temporal layers define different frame rates of video. Spatial layers allow a frame to be encoded at different spatial resolutions, whereas quality layers allow a frame to be encoded at the same spatial resolution but at different qualities (and thus with different amounts of coding error). AV1 supports quality layers as spatial layers without any resolution changes; hereinafter, the term "spatial layer" is used to represent both spatial and quality layers.
 
@@ -171,7 +171,7 @@ The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream structu
 
 The payload contains a series of one or more OBU elements. The design allows for a combination of aggregation and fragmentation of OBUs, i.e., a set of OBU elements in which the first and/or last element is a fragment of an OBU.
 
-The length field is encoded using leb128. Leb128 is defined in the AV1 specification, and provides for a variable-sized, byte-oriented encoding of non- negative integers where the first bit of each (little-endian) byte indicates whether or not additional bytes are used in the representation (AV1, Section 4.10.5).
+The length field is encoded using leb128. Leb128 is defined in the AV1 specification, and provides for a variable-sized, byte-oriented encoding of non-negative integers where the first bit of each (little-endian) byte indicates whether or not additional bytes are used in the representation (AV1, Section 4.10.5).
 
 Whether or not the first and/or last OBU element is a fragment of an OBU is signaled in the aggregation header. Fragmentation may occur regardless of how the W field is set.
 
@@ -534,7 +534,7 @@ Decoders MUST exercise caution with respect to the handling of reserved OBU type
 
 When integrity protection is applied to a stream, care MUST be taken that the stream being transported may be scalable; hence a receiver may be able to access only part of the entire stream.
 
-End-to-end security with either authentication, integrity, or confidentiality protection will prevent a MANE from performing media- aware operations other than discarding complete packets. The use of the Dependency Descriptor RTP extension described in Appendix A allows discarding of packets in a media-aware way even when confidentiality protection is used. Repacketization by a MANE requires access to the media payload.
+End-to-end security with either authentication, integrity, or confidentiality protection will prevent a MANE from performing media-aware operations other than discarding complete packets. The use of the Dependency Descriptor RTP extension described in Appendix A allows discarding of packets in a media-aware way even when confidentiality protection is used. Repacketization by a MANE requires access to the media payload.
 
 
 ## 11. References
