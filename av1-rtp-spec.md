@@ -668,11 +668,40 @@ To facilitate the work of selectively forwarding portions of a scalable video bi
 
 The syntax for the descriptor is described in pseudo-code form in this section.
 
-* **f(n)** - unsigned n-bit number appearing directly in the bitstream.
-* **ns(n)** - unsigned encoded integer with maximum number of values n (i.e.
-  output in range 0..n-1).
+**f(n)** - unsigned n-bit number appearing directly in the bitstream.
+<pre><code>
+f(n) {
+  x = 0
+  for ( i = 0; i < n; i++ ) {
+    x = 2 * x + read_bit()
+  }
+  return x
+}
+</code></pre>
 
-[f(n) and ns(n) need to be defined. A definition may be found in the AV1 specification Section 4.]
+<pre><code>
+read_bit() {
+  // Returns the next bit from the bitstream and advances the bitstream position indicator by 1.
+}
+</code></pre>
+
+**ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e. output in range 0..n-1).
+<pre><code>
+ns(n) {
+  w = 0
+  x = n
+  while (x != 0) {
+    x = x >> 1
+    w++
+  }
+  m = (1 << w) - n
+  <b>v</b> = f(w - 1)
+  if (v < m)
+    return v
+  <b>extra_bit</b> = f(1)
+  return (v << 1) - m + extra_bit
+}
+</code></pre>
 
 | Symbol name               | Value | Description                                         |
 | ------------------------- | ----- | --------------------------------------------------- |
