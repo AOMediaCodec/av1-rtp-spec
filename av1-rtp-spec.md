@@ -534,9 +534,7 @@ Decoders MUST exercise caution with respect to the handling of reserved OBU type
 
 When integrity protection is applied to a stream, care MUST be taken that the stream being transported may be scalable; hence a receiver may be able to access only part of the entire stream.
 
-End-to-end security services such as authentication, integrity, or confidentiality protection will prevent a MANE from performing media-aware operations other than discarding complete packets. For example, repacketization requires that the MANE have access to the cleartext media payload as well as the ability to provide end-to-end integrity protection and authentication services.
-
-The Dependency Descriptor RTP extension described in Appendix A allows discarding of packets in a media-aware way even when confidentiality protection is used.
+End-to-end security services such as authentication, integrity, or confidentiality protection will prevent a MANE from performing media-aware operations other than discarding complete packets. For example, repacketization requires that the MANE have access to the cleartext media payload. The Dependency Descriptor RTP extension described in Appendix A allows discarding of packets in a media-aware way even when confidentiality protection is used.
 
 
 ## 11. References
