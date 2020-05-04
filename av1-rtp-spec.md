@@ -301,9 +301,9 @@ SFUs can operate using end-to-end encryption, i.e., with encrypted payload, usin
 
 The RTP payload defined in this specification supports two distinct modes for transport of simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated with each spatial layer. Both modes MUST be supported by implementations of this specification.
 
-When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing Sequence Header and Scalability Metadata OBUs to convey information relating to each bitstream. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs)  for each encoding [I-D.ietf-avtext-rid] and as a result, RTCP feedback can be provided for each simulcast encoding, utilizing distinct SSRCs. This mode of simulcast transport, which MUST be supported by SFUs, utilizes Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast] [I-D.ietf-mmusic-rid].
+When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs)  for each encoding [I-D.ietf-avtext-rid] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFUs, utilizes Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast] [I-D.ietf-mmusic-rid].
 
-When simulcast encodings are transported on a single RTP stream, RIDs are not used and Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since [AV1] enables multiple simulcast encodings to be provided within a single bitstream.  However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFUs.
+When simulcast encodings are transported on a single RTP stream, RIDs are not used and Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since [AV1] enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFUs.
 
 
 ### 6.1.1 Example
@@ -328,9 +328,9 @@ This payload format has three optional parameters.
   * None.
 * Optional parameters:
   * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level-idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
-    * **profile**: The value of **profile** is an integer indicating highest AV1 profile supported by the receiver. The range of possible values is identical to **seq_profile** syntax element specified in [AV1]
-    * **level-idx**: The value of **level-idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to **seq_level_idx** syntax element specified in [AV1]
-    * **tier**: The value of **tier** is an integer indicating tier of the indicated level.  The range of possible values is identical to **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
+    * **profile**: The value of **profile** is an integer indicating the highest AV1 profile supported by the receiver. The range of possible values is identical to the **seq_profile** syntax element specified in [AV1]
+    * **level-idx**: The value of **level-idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to the **seq_level_idx** syntax element specified in [AV1]
+    * **tier**: The value of **tier** is an integer indicating tier of the indicated level.  The range of possible values is identical to the **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
 
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
@@ -359,7 +359,7 @@ This payload format has three optional parameters.
 
 
 ### 7.2 SDP Parameters
-The receiver MUST ignore any fmtp parameter unspecified in this document.
+The receiver MUST ignore any fmtp parameter not specified in this document.
 
 
 #### 7.2.1 Mapping of Media Subtype Parameters to SDP
@@ -368,13 +368,13 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
 * The clock rate in the "a=rtpmap" line MUST be 90000.
 * The parameters "**profile**", and "**level-idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
-* Parameter "**tier**" COULD be included alongside "**profile**" and "**level-idx** parameters in "a=fmtp" line if indicated level supports tier different to 0.
+* Parameter "**tier**" COULD be included alongside "**profile**" and "**level-idx** parameters in "a=fmtp" line if the indicated level supports tier different to 0.
 
 
 #### 7.2.2  Usage with the SDP Offer/Answer Model
 
 When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for negotiation for unicast usage, the following limitations and rules apply:
-* The media format configuration is identified by **level-idx**, **profile** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and answerer COULD declare its own media configuration if answerer capabilities are different to offerer.
+* The media format configuration is identified by **level-idx**, **profile** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and the answerer COULD declare its own media configuration if the answerer capabilities are different from the offerer.
   * The profile to use in the offerer-to-answerer direction MUST be lesser or equal to the profile the answerer supports for receiving, and the profile to use in the answerer-to-offerer direction MUST be lesser or equal to the profile the offerer supports for receiving.
   * The level to use in the offerer-to-answerer direction MUST be lesser or equal to the level the answerer supports for receiving, and the level to use in the answerer-to-offerer direction MUST be lesser or equal to the level the offerer supports for receiving.
   * The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be lesser or equal to the tier the offerer supports for receiving.
@@ -387,26 +387,26 @@ When AV1 over RTP is offered with SDP in a declarative style, as in Real Time St
 * A receiver of the SDP is required to support all parameters and values of the parameters provided; otherwise, the receiver MUST reject (RTSP) or not participate in (SAP) the session. It falls on the creator of the session to use values that are expected to be supported by the receiving application.
 
 
-### 7.3 Example
+### 7.3 Examples
 An example of media representation in SDP is as follows:
 
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=2; level-idx=8; tier=1;
 
-In the following example, the offer is accepted with level upgrading. The level to use in the offerer-to-answerer direction is Level 2.0, and the level to use in the answerer-to-offerer direction is Level 3.0/Tier 1.  The answerer is allowed to send at any level up to and including Level 2.0, and the offerer is allowed to send at any level up to and including Level 3.0/Tier 1:
+In the following example the offer is accepted with level upgrading. The level to use in the offerer-to-answerer direction is Level 2.0, and the level to use in the answerer-to-offerer direction is Level 3.0/Tier 1.  The answerer is allowed to send at any level up to and including Level 2.0, and the offerer is allowed to send at any level up to and including Level 3.0/Tier 1:
 
 Offer SDP:
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=0; level-idx=0;
-*
+
 Answer SDP:
 * m=video 49170 RTP/AVPF 98
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=0; level-idx=4; tier=1;
 
-In the following example, an offer is made by a conferencing server to receive 3 simulcast streams.  The answerer agrees to send 3 simulcast streams at different resolutions.
+In the following example an offer is made by a conferencing server to receive 3 simulcast streams.  The answerer agrees to send 3 simulcast streams at different resolutions.
 
 Offer SDP:
 * m=video 49170 UDP/TLS/RTP/SAVPF 98
@@ -448,7 +448,7 @@ Answer SDP:
 * a=rid:q send
 * a=simulcast:send f;h;q
 
-In the following example, an offer is made by a browser to send a single RTP stream to a conferencing server. This single stream could include include any AV1 scalability mode, including "S" modes involving simulcast.
+In the following example an offer is made by a browser to send a single RTP stream to a conferencing server. This single stream could include include any AV1 scalability mode, including "S" modes involving simulcast.
 
 Offer SDP:
 * m=video 49170 UDP/TLS/RTP/SAVPF 98
