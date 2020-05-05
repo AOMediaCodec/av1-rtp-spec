@@ -292,7 +292,9 @@ The following packetization grouping would not be allowed, since it combines dat
 
 If a packet contains an OBU with an OBU extension header then the entire packet is considered associated with the layer identified by the temporal_id and spatial_id combination that are indicated in the extension header. If a packet does not contain any OBU with an OBU extension header, then it is considered to be associated with all operating points.
 
-The general function of a MANE or SFU is to selectively forward packets to receivers. To make forwarding decisions a MANE inspects the media payload. An SFU uses the Dependency Descriptor described in Appendix A to garner the information relevant for selective forwarding, without parsing the AV1 bitstream. Unlike a MANE, an SFU can operate when the payload is encrypted. Aside from enabling bitstream-independent forwarding and support for end-to-end encryption, the Dependency Descriptor also enables forwarding where the metadata OBU provided in the AV1 bitstream is not sufficient to express the structure of the stream.
+The general function of a MANE or SFU is to selectively forward packets to receivers. To make forwarding decisions a MANE inspects the media payload. Unlike a MANE, an SFU does not parse the AV1 bitstream and therefore requires alternative means to garner the information relevant for selective forwarding. The Dependency Descriptor described in Appendix A is designed to provide the required information to enable bitstream-independent forwarding in the presence of end-to-end encryption. The Dependency Descriptor also enables forwarding where the metadata OBU provided in the AV1 bitstream is not sufficient to express the structure of the stream.
+
+While SFU implementations that support both the Dependency Descriptor and the framemarking RTP header extension [framemarking] MAY advertise support for both header extensions in an Offer, an implementation of this specification that supports the Dependency Descriptor MUST only indicate support for the Dependency Descriptor in an Answer. Implementations of this specification that support the framemarking RTP header extension but lack support for the Dependency Descriptor MAY indicate support for the framemarking RTP header extension [framemarking] in an Offer or Answer. When the framemarking RTP header extension is negotiated along with the AV1 RTP payload format, the format described in [VP9] Section 5.4 is used. In this situation only the hierarchical scalability modes defined in [AV1] Section 6.7.5 can be supported (e.g. no support for "S", KEY or KEY_SHIFT modes). 
 
 
 ### 6.1. Simulcast
@@ -574,7 +576,7 @@ End-to-end security with either authentication, integrity, or confidentiality pr
 
 * [RFC8082](https://tools.ietf.org/html/rfc8082 "RFC8082") **Using Codec Control Messages in the RTP Audio-Visual Profile with Feedback with Layered Codecs**, S. Wenger, J. Lennox, B. Burman, and M. Westerlund, March 2017.
 
-* [perc-double](https://tools.ietf.org/html/draft-ietf-perc-double-10 "perc-double") **SRTP Double Encryption Procedures**, C. Jennings, P. Jones, R. Barnes, and A. Roach, October 17, 2018
+* [framemarking](https://tools.ietf.org/html/draft-ietf-avtext-framemarking "framemarking") **Frame Marking RTP Header Extension**, M. Zanaty, E. Berger, S. Nandakumar, November 21, 2019
 
 
 ## Appendix
