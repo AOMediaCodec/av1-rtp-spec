@@ -292,7 +292,7 @@ The following packetization grouping would not be allowed, since it combines dat
 
 If a packet contains an OBU with an OBU extension header then the entire packet is considered associated with the layer identified by the temporal_id and spatial_id combination that are indicated in the extension header. If a packet does not contain any OBU with an OBU extension header, then it is considered to be associated with all operating points.
 
-The general function of a MANE middlebox or SFU middlebox is to selectivly forward packets to receivers. To make forwarding decisions a MANE may inspect the media payload, but in case of end-to-end encryption the Dependency Descriptor described in Appendix A may be used to expose relevant information. The Dependency Descriptor can also be used in cases where the meta information provided in the AV1 bitstream is not sufficient to express the structure of the stream.
+The general function of a MANE or SFU is to selectively forward packets to receivers. To make forwarding decisions a MANE inspects the media payload. An SFU uses the Dependency Descriptor described in Appendix A to garner the information relevant for selective forwarding, without parsing the AV1 bitstream. Unlike a MANE, an SFU can operate when the payload is encrypted. Aside from enabling bitstream-independent forwarding and support for end-to-end encryption, the Dependency Descriptor also enables forwarding where the metadata OBU provided in the AV1 bitstream is not sufficient to express the structure of the stream.
 
 
 ### 6.1. Simulcast
