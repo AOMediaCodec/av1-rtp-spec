@@ -294,10 +294,6 @@ If a packet contains an OBU with an OBU extension header then the entire packet 
 
 The general function of a MANE or SFU is to selectively forward packets to receivers. To make forwarding decisions a MANE inspects the media payload, so that it needs to be able to parse the AV1 bitstream and cannot function when end-to-end encryption is enabled. An SFU does not parse the AV1 bitstream and therefore needs to obtain the information relevant to selective forwarding by other means, such as the Dependency Descriptor described in Appendix A. In addition to enabling bitstream-independent forwarding and support for end-to-end encryption, the Dependency Descriptor also enables forwarding where the metadata OBU provided in the AV1 bitstream is not sufficient to express the structure of the stream.
 
-While SFU implementations that support both the Dependency Descriptor and the framemarking RTP header extension [framemarking] MAY advertise support for both header extensions in an Offer, an implementation of this specification that supports the Dependency Descriptor SHOULD only indicate support for the Dependency Descriptor in an Answer. In situations where support for both the Dependency Descriptor and the framemarking RTP header extension are indicated in both the Offer and Answer, implementations of this specification MUST only send packets including the Dependency Descriptor. 
-
-Implementations of this specification that support the framemarking RTP header extension but lack support for the Dependency Descriptor SHOULD indicate support for the framemarking RTP header extension in an Offer or Answer. When the AV1 RTP payload format is negotiated along with the framemarking RTP header extension, the framemarking format described in [VP9] Section 5.4 is used. Where only the framemarking RTP header extension is negotiated, non-hierarchical scalability modes SHOULD NOT be used (e.g. no support for the "S", KEY or KEY_SHIFT modes defined in [AV1] Section 6.7.5).
-
 
 ### 6.1. Simulcast
 
