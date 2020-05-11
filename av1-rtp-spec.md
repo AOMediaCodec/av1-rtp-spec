@@ -339,7 +339,7 @@ This payload format has three optional parameters.
 * Interoperability considerations:
   * None.
 * Published specification:
-  * AV1 bitstream format [AV1]
+  * [AV1 bitstream format][AV1]
 * Applications which use this media type:
   * Video over IP, video conferencing.
 * Fragment identifier considerations:
