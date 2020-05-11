@@ -292,9 +292,7 @@ The following packetization grouping would not be allowed, since it combines dat
 
 If a packet contains an OBU with an OBU extension header then the entire packet is considered associated with the layer identified by the temporal_id and spatial_id combination that are indicated in the extension header. If a packet does not contain any OBU with an OBU extension header, then it is considered to be associated with all operating points.
 
-A MANE or SFU performs its function based on a target operating point. A packet MUST be forwarded if it is associated with the target operating point, or with all operating points. A packet SHOULD NOT be forwarded if it is associated with an operating point different than the target operating point.
-
-SFUs can operate using end-to-end encryption, i.e., with encrypted payload, using the RTP header extension defined in Appendix A. The extension exposes the layer information of a packet so that the SFU can make the appropriate forwarding decision.
+The general function of a MANE or SFU is to selectively forward packets to receivers. To make forwarding decisions a MANE may inspect the media payload, so that it may need to be able to parse the AV1 bitstream and if so, cannot function when end-to-end encryption is enabled. An SFU does not parse the AV1 bitstream and therefore needs to obtain the information relevant to selective forwarding by other means, such as the Dependency Descriptor described in Appendix A. In addition to enabling bitstream-independent forwarding and support for end-to-end encryption, the Dependency Descriptor also enables forwarding where the metadata OBU provided in the AV1 bitstream is not sufficient to express the structure of the stream.
 
 
 ### 6.1. Simulcast
@@ -575,8 +573,6 @@ End-to-end security services such as authentication, integrity, or confidentiali
 * [RFC7202](https://tools.ietf.org/html/rfc7202 "RFC7202") **Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution**, C. Perkins and M. Westerlund, April 2014.
 
 * [RFC8082](https://tools.ietf.org/html/rfc8082 "RFC8082") **Using Codec Control Messages in the RTP Audio-Visual Profile with Feedback with Layered Codecs**, S. Wenger, J. Lennox, B. Burman, and M. Westerlund, March 2017.
-
-* [perc-double](https://tools.ietf.org/html/draft-ietf-perc-double-10 "perc-double") **SRTP Double Encryption Procedures**, C. Jennings, P. Jones, R. Barnes, and A. Roach, October 17, 2018
 
 
 ## Appendix
