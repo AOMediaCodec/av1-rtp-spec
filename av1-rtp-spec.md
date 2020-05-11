@@ -1,4 +1,3 @@
-﻿
 RTP Payload Format For AV1 (v0.3)
 ===================================
 {:.no_toc }
@@ -1335,4 +1334,3 @@ Table A.4. DTI values
 [RFC7667]: https://tools.ietf.org/html/rfc7667
 [RFC8082]: https://tools.ietf.org/html/rfc8082
 [RFC8285]: https://tools.ietf.org/html/rfc8285
-
