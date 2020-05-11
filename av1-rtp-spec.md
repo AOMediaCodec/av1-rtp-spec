@@ -296,6 +296,10 @@ A MANE or SFU performs its function based on a target operating point. A packet 
 
 SFUs can operate using end-to-end encryption, i.e., with encrypted payload, using the RTP header extension defined in Appendix A. The extension exposes the layer information of a packet so that the SFU can make the appropriate forwarding decision.
 
+While SFU implementations that support both the Dependency Descriptor and the framemarking RTP header extension [framemarking] MAY advertise support for both header extensions in an Offer, an implementation of this specification that supports the Dependency Descriptor SHOULD only indicate support for the Dependency Descriptor in an Answer. In situations where support for both the Dependency Descriptor and the framemarking RTP header extension are indicated in both the Offer and Answer, implementations of this specification MUST only send packets including the Dependency Descriptor. 
+
+Implementations of this specification that support the framemarking RTP header extension but lack support for the Dependency Descriptor SHOULD indicate support for the framemarking RTP header extension in an Offer or Answer. When the AV1 RTP payload format is negotiated along with the framemarking RTP header extension, the framemarking format described in [VP9] Section 5.4 is used. Where only the framemarking RTP header extension is negotiated, non-hierarchical scalability modes SHOULD NOT be used (e.g. no support for the "S", KEY or KEY_SHIFT modes defined in [AV1] Section 6.7.5).
+
 
 ### 6.1. Simulcast
 
