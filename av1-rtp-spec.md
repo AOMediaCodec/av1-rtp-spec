@@ -1312,7 +1312,7 @@ Table A.4. DTI values
 
 ##### A.7.2 Informative References
 
-* [AV1] **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
+* [AV1] **AV1 Bitstream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
 * [RFC3264] **An Offer/Answer Model with the Session Description Protocol (SDP)**, J. Rosenberg and H. Schulzrinne, June 2002. 
 
