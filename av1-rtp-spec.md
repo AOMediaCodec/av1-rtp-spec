@@ -1302,7 +1302,7 @@ Table A.4. DTI values
 
 ##### A.7.1 Normative References
  
-* [RFC2119] **Key words for use in RFCs to Indicate Requirement Levels, S. Bradner, March 1997. 
+* [RFC2119] **Key words for use in RFCs to Indicate Requirement Levels**, S. Bradner, March 1997. 
 
 * [RFC3550] **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
 
