@@ -381,7 +381,7 @@ When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for ne
 #### 7.2.3  Usage in Declarative Session Descriptions
 
 When AV1 over RTP is offered with SDP in a declarative style, as in Real Time Streaming Protocol (RTSP) [RFC2326] or Session Announcement Protocol (SAP) [RFC2974], the following considerations apply.
-* All parameters capable of indicating both stream properties and receiver capabilities are used to indicate only stream properties. In this case, the parameters **profile**, **level-idx** and **tier** declare only the values used by the stream, not the capabilities for receiving streams.  
+* All parameters capable of indicating both stream properties and receiver capabilities are used to indicate only stream properties. In this case, the parameters **profile**, **level-idx** and **tier** declare only the values used by the stream, not the capabilities for receiving streams.
 * A receiver of the SDP is required to support all parameters and values of the parameters provided; otherwise, the receiver MUST reject (RTSP) or not participate in (SAP) the session. It falls on the creator of the session to use values that are expected to be supported by the receiving application.
 
 
@@ -493,7 +493,7 @@ Upon reception of an FIR, for every SSRC indicated in the FIR message,
 the AV1 sender MUST send a new coded video sequence as soon as possible.
 See section 7.5 of the [AV1] bitstream specification for the definition
 of a new coded video sequence.
-   
+
 If simulcast encodings of the same source are transported on distinct SSRCs,
 then in addition to sending a new coded video sequence for each encoding
 corresponding to an SSRC in the FIR message, the AV1 sender MAY also send
@@ -545,7 +545,7 @@ End-to-end security services such as authentication, integrity, or confidentiali
 
 * [RFC3550] **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
 
-* [RFC5104] **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008. 
+* [RFC5104] **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008.
 
 * [RFC6184] **RTP Payload Format for H.264 Video**, Y.-K. Wang, R. Even, T. Kristensen, and R. Jesup, May 2011.
 
@@ -1291,24 +1291,24 @@ Table A.4. DTI values
 
 
 ##### A.7.1 Normative References
- 
-* [RFC2119] **Key words for use in RFCs to Indicate Requirement Levels**, S. Bradner, March 1997. 
+
+* [RFC2119] **Key words for use in RFCs to Indicate Requirement Levels**, S. Bradner, March 1997.
 
 * [RFC3550] **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
 
 * [RFC8285] **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
-  
+
 
 
 ##### A.7.2 Informative References
 
 * [AV1] **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
-* [RFC3264] **An Offer/Answer Model with the Session Description Protocol (SDP)**, J. Rosenberg and H. Schulzrinne, June 2002. 
+* [RFC3264] **An Offer/Answer Model with the Session Description Protocol (SDP)**, J. Rosenberg and H. Schulzrinne, June 2002.
 
 * [RFC4566] **SDP: Session Description Protocol**, M. Handley, V. Jacobson, and C. Perkins, July 2006.
 
-* [RFC4585] **Extended RTP Profile for Real-time Transport Control Protocol (RTCP)-Based Feedback (RTP/AVPF)**, J. Ott, S. Wenger, N. Sato, C. Burmeister, and J. Rey, July 2006. 
+* [RFC4585] **Extended RTP Profile for Real-time Transport Control Protocol (RTCP)-Based Feedback (RTP/AVPF)**, J. Ott, S. Wenger, N. Sato, C. Burmeister, and J. Rey, July 2006.
 
 * [RFC6838] **Media Type Specifications and Registration Procedures**, N. Freed, J. Klensin, and T. Hansen, January 2013.
 
@@ -1335,4 +1335,5 @@ Table A.4. DTI values
 [RFC7667]: https://tools.ietf.org/html/rfc7667
 [RFC8082]: https://tools.ietf.org/html/rfc8082
 [RFC8285]: https://tools.ietf.org/html/rfc8285
+
 
