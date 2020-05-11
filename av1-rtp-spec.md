@@ -574,8 +574,6 @@ End-to-end security with either authentication, integrity, or confidentiality pr
 
 * [RFC8082](https://tools.ietf.org/html/rfc8082 "RFC8082") **Using Codec Control Messages in the RTP Audio-Visual Profile with Feedback with Layered Codecs**, S. Wenger, J. Lennox, B. Burman, and M. Westerlund, March 2017.
 
-* [framemarking](https://tools.ietf.org/html/draft-ietf-avtext-framemarking "framemarking") **Frame Marking RTP Header Extension**, M. Zanaty, E. Berger, S. Nandakumar, November 21, 2019
-
 
 ## Appendix
 
