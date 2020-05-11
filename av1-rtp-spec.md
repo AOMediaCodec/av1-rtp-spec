@@ -1072,9 +1072,7 @@ Table A.4. DTI values
 
 ##### A.6.1 L1T3 Single Spatial Layer with 3 Temporal Layers
 
-<figure class="figure center-block" style="display: table; margin: 1.5em auto;">
-  <img alt="" src="assets/images/L1T3.svg" class="figure-img img-fluid">
-</figure>
+![L1T3](assets/images/L1T3.svg)
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
@@ -1109,9 +1107,7 @@ Table A.4. DTI values
 
 ##### A.6.2 L2T1 Full SVC with Occasional Switch
 
-<figure class="figure center-block" style="display: table; margin: 1.5em auto;">
-  <img alt="" src="assets/images/L2T1.svg" class="figure-img img-fluid">
-</figure>
+![L2T1](assets/images/L2T1.svg)
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
@@ -1146,9 +1142,7 @@ Table A.4. DTI values
 
 ##### A.6.3 L3T3 Full SVC
 
-<figure class="figure center-block" style="display: table; margin: 1.5em auto;">
-  <img alt="" src="assets/images/L3T3.svg" class="figure-img img-fluid">
-</figure>
+![L3T3](assets/images/L3T3.svg)
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
@@ -1213,9 +1207,7 @@ Table A.4. DTI values
 
 ##### A.6.4 S3T3 K-SVC with Temporal Shift
 
-<figure class="figure center-block" style="display: table; margin: 1.5em auto;">
-  <img alt="" src="assets/images/S3T3.svg" class="figure-img img-fluid">
-</figure>
+![S3T3](assets/images/S3T3.svg)
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
