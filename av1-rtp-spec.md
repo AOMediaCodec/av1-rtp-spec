@@ -504,7 +504,7 @@ new coded video sequences for other encodings from the same source(s).
 
 ## 8.2.  Layer Refresh Request (LRR)
 
-The Layer Refresh Request [I-D.ietf-avtext-lrr] is designed to allow a receiver of a layered media stream to request that one or more of its substreams be refreshed, such that it can then be decoded by an endpoint which previously was not receiving those layers, without requiring that the entire stream be refreshed (as it would be if the receiver sent a Full Intra Request (FIR) [RFC5104][RFC8082]).
+The Layer Refresh Request [I-D.ietf-avtext-lrr] is designed to allow a receiver of a layered media stream to request that one or more of its substreams be refreshed, such that it can then be decoded by an endpoint which previously was not receiving those layers, without requiring that the entire stream be refreshed (as it would be if the receiver sent a Full Intra Request (FIR) [RFC5104] [RFC8082]).
 
            +---------------+---------------+
            |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
@@ -543,41 +543,38 @@ End-to-end security services such as authentication, integrity, or confidentiali
 ### 11.1 Normative References
 
 
-* [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf) **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
+* [AV1] **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
-* [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
+* [RFC3550] **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
 
-* [RFC5104](https://tools.ietf.org/html/rfc5104 "RFC5104") **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008. 
+* [RFC5104] **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008. 
 
-* [RFC6184](https://tools.ietf.org/html/rfc6184 "RFC6184") **RTP Payload Format for H.264 Video**, Y.-K. Wang, R. Even, T. Kristensen, and R. Jesup, May 2011.
+* [RFC6184] **RTP Payload Format for H.264 Video**, Y.-K. Wang, R. Even, T. Kristensen, and R. Jesup, May 2011.
 
-* [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
+* [RFC8285] **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
 
-* [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+* [RFC7667] **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
 
-* [I-D.ietf-avtext-lrr](https://tools.ietf.org/html/draft-ietf-avtext-lrr-07 "ietf-avtext-lrr")  **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
+* [I-D.ietf-avtext-lrr] **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
 
-* [I-D.ietf-avtext-rid](https://tools.ietf.org/html/draft-ietf-avtext-rid "ietf-avtext-rid")  ** RTP Stream Identifier Source Description (SDES)**, A. Roach, S. Nandakumar and P. Thatcher, October 06, 2016.
+* [I-D.ietf-avtext-rid] **RTP Stream Identifier Source Description (SDES)**, A. Roach, S. Nandakumar and P. Thatcher, October 06, 2016.
 
-* [I-D.ietf-mmusic-rid](https://tools.ietf.org/html/draft-ietf-mmusic-rid "ietf-mmusic-rid")  ** RTP Payload Format Restrictions**, A. Roach, May 15, 2018.
+* [I-D.ietf-mmusic-rid] **RTP Payload Format Restrictions**, A. Roach, May 15, 2018.
 
-* [I-D.ietf-mmusic-sdp-simulcast](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast "ietf-mmusic-sdp-simulcast")  ** Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar and M. Zanaty, March 5, 2019.
+* [I-D.ietf-mmusic-sdp-simulcast] **Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar and M. Zanaty, March 5, 2019.
 
-* [I-D.ietf-payload-vp9](https://tools.ietf.org/html/draft-ietf-payload-vp9 "I-D.ietf-payload-vp9") **RTP Payload Format for VP9 Video**, J. Uberti, S. Holmer, M. Flodman, D. Hong, and J. Lennox, January 2020.
+* [I-D.ietf-payload-vp9] **RTP Payload Format for VP9 Video**, J. Uberti, S. Holmer, M. Flodman, D. Hong, and J. Lennox, January 2020.
 
 
 ### 11.2 Informative References
 
-* [RFC3711](https://tools.ietf.org/html/rfc3711 "RFC3711") **The Secure Real-time Transport Protocol (SRTP)**, M. Baugher, D. McGrew, M. Naslund, E. Carrara, and K. Norrman, March 2004.
+* [RFC3711] **The Secure Real-time Transport Protocol (SRTP)**, M. Baugher, D. McGrew, M. Naslund, E. Carrara, and K. Norrman, March 2004.
 
-* [RFC5104](https://tools.ietf.org/html/rfc5104 "RFC5104") **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008.
+* [RFC5104] **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008.
 
-* [RFC7202](https://tools.ietf.org/html/rfc7202 "RFC7202") **Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution**, C. Perkins and M. Westerlund, April 2014.
+* [RFC7202] **Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution**, C. Perkins and M. Westerlund, April 2014.
 
-* [RFC8082](https://tools.ietf.org/html/rfc8082 "RFC8082") **Using Codec Control Messages in the RTP Audio-Visual Profile with Feedback with Layered Codecs**, S. Wenger, J. Lennox, B. Burman, and M. Westerlund, March 2017.
-
-* [perc-double](https://tools.ietf.org/html/draft-ietf-perc-double-10 "perc-double") **SRTP Double Encryption Procedures**, C. Jennings, P. Jones, R. Barnes, and A. Roach, October 17, 2018
-
+* [RFC8082] **Using Codec Control Messages in the RTP Audio-Visual Profile with Feedback with Layered Codecs**, S. Wenger, J. Lennox, B. Burman, and M. Westerlund, March 2017.
 
 ## Appendix
 
@@ -937,7 +934,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same Frame MUST have the same frame_number value.
 
-**Note:** Frame number is not the same as Frame ID in [AV1 specification].
+**Note:** Frame number is not the same as Frame ID in [AV1 specification][AV1].
 {:.alert .alert-info }
 
 * **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same Frame.
@@ -1305,25 +1302,47 @@ Table A.4. DTI values
 
 ##### A.7.1 Normative References
  
-* [RFC2119](https://tools.ietf.org/html/rfc2119 "RFC2119") **Key words for use in RFCs to Indicate Requirement Levels, S. Bradner, March 1997. 
+* [RFC2119] **Key words for use in RFCs to Indicate Requirement Levels, S. Bradner, March 1997. 
 
-* [RFC3550](https://tools.ietf.org/html/rfc3550 "RFC3550") **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
+* [RFC3550] **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
 
-* [RFC8285](https://tools.ietf.org/html/rfc8285 "RFC8285") **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
+* [RFC8285] **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
   
 
 
 ##### A.7.2 Informative References
 
-* [AV1](https://aomediacodec.github.io/av1-spec/av1-spec.pdf) **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
+* [AV1] **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
-* [RFC3264](https://tools.ietf.org/html/rfc3264 "RFC3264") **An Offer/Answer Model with the Session Description Protocol (SDP)**, J. Rosenberg and H. Schulzrinne, June 2002. 
+* [RFC3264] **An Offer/Answer Model with the Session Description Protocol (SDP)**, J. Rosenberg and H. Schulzrinne, June 2002. 
 
-* [RFC4566](https://tools.ietf.org/html/rfc4566 "RFC4566") **SDP: Session Description Protocol**, M. Handley, V. Jacobson, and C. Perkins, July 2006.
+* [RFC4566] **SDP: Session Description Protocol**, M. Handley, V. Jacobson, and C. Perkins, July 2006.
 
-* [RFC4585](https://tools.ietf.org/html/rfc4585 "RFC4585") **Extended RTP Profile for Real-time Transport Control Protocol (RTCP)-Based Feedback (RTP/AVPF)**, J. Ott, S. Wenger, N. Sato, C. Burmeister, and J. Rey, July 2006. 
+* [RFC4585] **Extended RTP Profile for Real-time Transport Control Protocol (RTCP)-Based Feedback (RTP/AVPF)**, J. Ott, S. Wenger, N. Sato, C. Burmeister, and J. Rey, July 2006. 
 
-* [RFC6838](https://tools.ietf.org/html/rfc6838 "RFC6838") **Media Type Specifications and Registration Procedures**, N. Freed, J. Klensin, and T. Hansen, January 2013.
+* [RFC6838] **Media Type Specifications and Registration Procedures**, N. Freed, J. Klensin, and T. Hansen, January 2013.
 
-* [RFC7667](https://tools.ietf.org/html/rfc7667 "RFC7667") **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+* [RFC7667] **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+
+[AV1]: https://aomediacodec.github.io/av1-spec/av1-spec.pdf
+[I-D.ietf-avtext-lrr]: https://tools.ietf.org/html/draft-ietf-avtext-lrr-07
+[I-D.ietf-avtext-rid]: https://tools.ietf.org/html/draft-ietf-avtext-rid
+[I-D.ietf-mmusic-rid]: https://tools.ietf.org/html/draft-ietf-mmusic-rid
+[I-D.ietf-mmusic-sdp-simulcast]: https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast
+[I-D.ietf-payload-vp9]: https://tools.ietf.org/html/draft-ietf-payload-vp9
+[RFC2119]: https://tools.ietf.org/html/rfc2119
+[RFC2326]: https://tools.ietf.org/html/rfc2326
+[RFC2974]: https://tools.ietf.org/html/rfc2974
+[RFC3264]: https://tools.ietf.org/html/rfc3264
+[RFC3550]: https://tools.ietf.org/html/rfc3550
+[RFC3711]: https://tools.ietf.org/html/rfc3711
+[RFC4566]: https://tools.ietf.org/html/rfc4566
+[RFC4585]: https://tools.ietf.org/html/rfc4585
+[RFC5104]: https://tools.ietf.org/html/rfc5104
+[RFC6184]: https://tools.ietf.org/html/rfc6184
+[RFC6838]: https://tools.ietf.org/html/rfc6838
+[RFC7202]: https://tools.ietf.org/html/rfc7202
+[RFC7667]: https://tools.ietf.org/html/rfc7667
+[RFC8082]: https://tools.ietf.org/html/rfc8082
+[RFC8285]: https://tools.ietf.org/html/rfc8285
 
