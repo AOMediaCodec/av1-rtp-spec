@@ -661,8 +661,7 @@ To facilitate the work of selectively forwarding portions of a scalable video bi
 
 ##### A.4.1 Syntax
 
-The syntax for the descriptor is described in pseudo-code form in this section.
-Parameters read directly from the bitstream appear in bold.
+The syntax for the descriptor is described in pseudo-code form in this section. Parameters read directly from the bitstream appear in bold.
 
 **f(n)** - unsigned n-bit number appearing directly in the bitstream.
 <pre><code>
