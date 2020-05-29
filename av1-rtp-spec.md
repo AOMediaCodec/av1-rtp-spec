@@ -670,6 +670,7 @@ f(n) {
   for ( i = 0; i < n; i++ ) {
     x = 2 * x + read_bit()
   }
+  TotalConsumedBits += n
   return x
 }
 </code></pre>
@@ -710,6 +711,7 @@ Table A.1. Syntax constants
 
 <pre><code>
 dependency_descriptor( sz ) {
+  TotalConsumedBits = 0
   mandatory_descriptor_fields()
   if (sz > 3) {
     extended_descriptor_fields()
@@ -717,6 +719,7 @@ dependency_descriptor( sz ) {
     no_extended_descriptor_fields()
   }
   frame_dependency_definition()
+  <b>zero_padding</b> = f(sz * 8 - TotalConsumedBits)
 }
 </code></pre>
 
@@ -931,6 +934,8 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 * **end_of_frame**: MUST be set to 1 for the final RTP packet of a Frame, and MUST be set to 0 otherwise. Note that, if spatial scalability is in use, more frames from the same temporal unit may follow.
 
 * **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same Frame MUST have the same frame_number value.
+
+* **zero_padding**: MUST be set to 0 and be ignored by receivers.
 
 **Note:** Frame number is not the same as Frame ID in [AV1 specification][AV1].
 {:.alert .alert-info }
