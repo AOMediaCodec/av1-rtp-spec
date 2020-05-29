@@ -935,8 +935,6 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same Frame MUST have the same frame_number value.
 
-* **zero_padding**: MUST be set to 0 and be ignored by receivers.
-
 **Note:** Frame number is not the same as Frame ID in [AV1 specification][AV1].
 {:.alert .alert-info }
 
@@ -944,6 +942,8 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 **Note:** values out of the valid range indicate a change of the Frame dependency structure.
 {:.alert .alert-info }
+
+* **zero_padding**: MUST be set to 0 and be ignored by receivers.
 
 **Extended Descriptor Fields**
 
