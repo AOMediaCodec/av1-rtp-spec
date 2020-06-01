@@ -27,9 +27,9 @@ This document is a working draft of the Real-Time Communications Subgroup.
 
 ## 1. Introduction
 
-This document describes an RTP payload specification applicable to the transmission of video streams encoded using the [AV1 video codec][AV1].
+This document describes an RTP payload specification applicable to the transmission of video streams encoded using the [AV1 video codec][AV1]. In AV1, the smallest individual encoder entity presented for transport is the Open Bitstream Unit (OBU). This specification allows both for fragmentation and aggregation of OBUs in the same RTP packet, but explicitly disallows doing so across frame boundaries.
 
-In AV1, the smallest individual encoder entity presented for transport is the Open Bitstream Unit (OBU). This specification allows both for fragmentation and aggregation of OBUs in the same RTP packet, but explicitly disallows doing so across frame boundaries.
+Appendix A of this document describes the Dependency Descriptor (DD) RTP Header extension, which conveys information about individual video frames and the dependencies between them. This allows forwarding of video frames in situations where an intermediary does not wish to examine the RTP payload or does not have access to it, such as when the RTP payload is encrypted end-to-end. While the DD RTP Header extension was designed for use with AV1, it may prove useful for other codecs as well.
 
 This specification also provides several mechanisms through which scalability structures are described. AV1 uses the concept of predefined scalability structures. These are a set of commonly used picture prediction structures that can be referenced simply via an indicator value (scalability_mode_idc, residing in the sequence header). For cases that do not fall in any of the predefined cases, there is a mechanism for describing the scalability structure. These bitstream parameters greatly simplify the organization of the corresponding data at the RTP payload format level.
 
@@ -88,7 +88,7 @@ This section describes how the encoded AV1 bitstream is encapsulated in RTP. All
 
 The general RTP payload format follows the RTP header format [RFC3550] and generic RTP header extensions [RFC8285], and is shown below.
 
-The Dependency Descriptor and AV1 aggregation header are described in this document. The payload itself is a series of OBU elements, preceded by length information as detailed later in this document.
+The Dependency Descriptor and AV1 aggregation header are described in this document. The payload itself is a series of OBU elements, preceded by length information as detailed later in this document. An OBU element is either an entire OBU or an OBU fragment.
 
 <pre><code>
  0                   1                   2                   3
@@ -662,7 +662,7 @@ To facilitate the work of selectively forwarding portions of a scalable video bi
 
 ##### A.4.1 Syntax
 
-The syntax for the descriptor is described in pseudo-code form in this section.
+The syntax for the descriptor is described in pseudo-code form in this section. Parameters read directly from the bitstream appear in bold.
 
 **f(n)** - unsigned n-bit number appearing directly in the bitstream.
 <pre><code>
