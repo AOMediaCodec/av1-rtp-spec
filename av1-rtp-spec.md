@@ -153,7 +153,7 @@ Z: MUST be set to 1 if the first OBU element is an OBU fragment that is a contin
 
 Y: MUST be set to 1 if the last OBU element is an OBU fragment that will continue in the next packet, and MUST be set to 0 otherwise.
 
-W: two bit field that describes the number of OBU elements in the packet. This field MUST be set equal to 0 or equal to the number of OBU elements contained in the packet. If set to 0, each OBU element MUST be preceded by a length field. If not set to 0 the last OBU element MUST NOT be preceded by a length field. Instead, the length of the last OBU element contained in the packet can be calculated as follows:
+W: two bit field that describes the number of OBU elements in the packet. This field MUST be set equal to 0 or equal to the number of OBU elements contained in the packet. If set to 0, each OBU element MUST be preceded by a length field. If not set to 0 (i.e., W = 1, 2 or 3) the last OBU element MUST NOT be preceded by a length field. Instead, the length of the last OBU element contained in the packet can be calculated as follows:
 
 <pre><code>
 Length of the last OBU element = length of the RTP payload - length of aggregation header - length of previous OBU elements including length fields
@@ -178,6 +178,7 @@ Whether or not the first and/or last OBU element is a fragment of an OBU is sign
 The AV1 specification allows OBUs to have an optional size field called obu_size (also leb128 encoded), signaled by the obu_has_size_field flag in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD be set to zero in all OBUs.
 
 The following figure shows an example payload where the length field is shown as taking two bytes for the first and second OBU elements and one byte for the last (N) OBU element.
+
 
 <pre><code>
 0                   1                   2                   3
@@ -681,7 +682,7 @@ read_bit() {
 }
 </code></pre>
 
-**ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e. output in range 0..n-1).
+**ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e., output in range 0..n-1).
 <pre><code>
 ns(n) {
   w = 0
