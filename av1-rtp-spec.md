@@ -177,7 +177,8 @@ Whether or not the first and/or last OBU element is a fragment of an OBU is sign
 
 The AV1 specification allows OBUs to have an optional size field called obu_size (also leb128 encoded), signaled by the obu_has_size_field flag in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD be set to zero in all OBUs.
 
-The following figure shows an example payload where the length field is shown as taking two bytes for the first and second OBU elements and one byte for the last (N) OBU element. Note that while the leb128 element is two bytes in this example, this is not always the case.
+The following figure shows an example payload where the length field is shown as taking two bytes for the first and second OBU elements and one byte for the last (N) OBU element.
+
 
 <pre><code>
 0                   1                   2                   3
