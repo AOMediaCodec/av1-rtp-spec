@@ -670,6 +670,7 @@ f(n) {
   for ( i = 0; i < n; i++ ) {
     x = 2 * x + read_bit()
   }
+  TotalConsumedBits += n
   return x
 }
 </code></pre>
@@ -710,6 +711,7 @@ Table A.1. Syntax constants
 
 <pre><code>
 dependency_descriptor( sz ) {
+  TotalConsumedBits = 0
   mandatory_descriptor_fields()
   if (sz > 3) {
     extended_descriptor_fields()
@@ -717,6 +719,7 @@ dependency_descriptor( sz ) {
     no_extended_descriptor_fields()
   }
   frame_dependency_definition()
+  <b>zero_padding</b> = f(sz * 8 - TotalConsumedBits)
 }
 </code></pre>
 
@@ -939,6 +942,8 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 **Note:** values out of the valid range indicate a change of the Frame dependency structure.
 {:.alert .alert-info }
+
+* **zero_padding**: MUST be set to 0 and be ignored by receivers.
 
 **Extended Descriptor Fields**
 
