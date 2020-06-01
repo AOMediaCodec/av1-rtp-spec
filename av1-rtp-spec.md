@@ -88,7 +88,7 @@ This section describes how the encoded AV1 bitstream is encapsulated in RTP. All
 
 The general RTP payload format follows the RTP header format [RFC3550] and generic RTP header extensions [RFC8285], and is shown below.
 
-The Dependency Descriptor and AV1 aggregation header are described in this document. The payload itself is a series of OBU elements, preceded by length information as detailed later in this document. An OBU element is defined in this specification to be either an entire OBU or an OBU fragment.
+The Dependency Descriptor and AV1 aggregation header are described in this document. The payload itself is a series of OBU elements, preceded by length information as detailed later in this document. An OBU element is either an entire OBU or an OBU fragment.
 
 <pre><code>
  0                   1                   2                   3
