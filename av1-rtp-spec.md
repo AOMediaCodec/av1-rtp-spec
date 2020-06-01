@@ -680,7 +680,7 @@ read_bit() {
 }
 </code></pre>
 
-**ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e. output in range 0..n-1).
+**ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e., output in range 0..n-1).
 <pre><code>
 ns(n) {
   w = 0
