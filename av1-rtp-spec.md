@@ -1204,9 +1204,9 @@ Table A.4. DTI values
 {:.alert .alert-info }
 
 
-##### A.6.4 S3T3 K-SVC with Temporal Shift
+##### A.6.4 L3T3 K-SVC with Temporal Shift
 
-![S3T3](assets/images/S3T3.svg)
+![L3T3_KEY_SHIFT](assets/images/L3T3_KEY_SHIFT.svg)
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
