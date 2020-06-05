@@ -1104,7 +1104,7 @@ This example uses one Chain, which includes Frames with temporal ID equal to 0.
 
 ##### A.6.2 L2T1 Full SVC with Occasional Switch
 
-This example uses one Chain, which includes Frames with temporal ID equal to 0.
+This example uses two Chains. Chain 0 includes Frames with spatial ID equal to 0. Chain 1 includes all Frames.
 
 ![L2T1](assets/images/L2T1.svg)
 
@@ -1200,7 +1200,7 @@ This example uses three Chains. Chain 0 includes Frames with spatial ID equal to
 
 ##### A.6.4 S3T3 K-SVC with Temporal Shift
 
-This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all Frames with temporal ID equal to 0.
+This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
 
 ![S3T3](assets/images/S3T3.svg)
 
