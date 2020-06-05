@@ -1071,6 +1071,8 @@ Table A.4. DTI values
 
 ##### A.6.1 L1T3 Single Spatial Layer with 3 Temporal Layers
 
+This example uses one Chain, which includes Frames with temporal ID equal to 0.
+
 ![L1T3](assets/images/L1T3.svg)
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
@@ -1100,11 +1102,9 @@ Table A.4. DTI values
 </tr>
 </tbody></table>
 
-**Note:** This example uses one Chain, which includes Frames with temporal ID equal to 0.
-{:.alert .alert-info }
-
-
 ##### A.6.2 L2T1 Full SVC with Occasional Switch
+
+This example uses one Chain, which includes Frames with temporal ID equal to 0.
 
 ![L2T1](assets/images/L2T1.svg)
 
@@ -1135,11 +1135,9 @@ Table A.4. DTI values
 </tr>
 </tbody></table>
 
-**Note:** This example uses two Chains. Chain 0 includes Frames with spatial ID equal to 0. Chain 1 includes all Frames.
-{:.alert .alert-info }
-
-
 ##### A.6.3 L3T3 Full SVC
+
+This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all Frames with temporal ID equal to 0.
 
 ![L3T3](assets/images/L3T3.svg)
 
@@ -1200,11 +1198,9 @@ Table A.4. DTI values
 </tr>
 </tbody></table>
 
-**Note:** This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all Frames with temporal ID equal to 0.
-{:.alert .alert-info }
-
-
 ##### A.6.4 S3T3 K-SVC with Temporal Shift
+
+This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all Frames with temporal ID equal to 0.
 
 ![S3T3](assets/images/S3T3.svg)
 
@@ -1282,10 +1278,6 @@ Table A.4. DTI values
 <td colspan='7' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td>
 </tr>
 </tbody></table>
-
-**Note:** This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
-{:.alert .alert-info }
-
 
 #### A.7 References
 
