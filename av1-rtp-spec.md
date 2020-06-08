@@ -27,9 +27,9 @@ This document is a working draft of the Real-Time Communications Subgroup.
 
 ## 1. Introduction
 
-This document describes an RTP payload specification applicable to the transmission of video streams encoded using the [AV1 video codec][AV1].
+This document describes an RTP payload specification applicable to the transmission of video streams encoded using the [AV1 video codec][AV1]. In AV1, the smallest individual encoder entity presented for transport is the Open Bitstream Unit (OBU). This specification allows both for fragmentation and aggregation of OBUs in the same RTP packet, but explicitly disallows doing so across frame boundaries.
 
-In AV1, the smallest individual encoder entity presented for transport is the Open Bitstream Unit (OBU). This specification allows both for fragmentation and aggregation of OBUs in the same RTP packet, but explicitly disallows doing so across frame boundaries.
+Appendix A of this document describes the Dependency Descriptor (DD) RTP Header extension, which conveys information about individual video frames and the dependencies between them. This allows forwarding of video frames in situations where an intermediary does not wish to examine the RTP payload or does not have access to it, such as when the RTP payload is encrypted end-to-end. While the DD RTP Header extension was designed for use with AV1, it may prove useful for other codecs as well.
 
 This specification also provides several mechanisms through which scalability structures are described. AV1 uses the concept of predefined scalability structures. These are a set of commonly used picture prediction structures that can be referenced simply via an indicator value (scalability_mode_idc, residing in the sequence header). For cases that do not fall in any of the predefined cases, there is a mechanism for describing the scalability structure. These bitstream parameters greatly simplify the organization of the corresponding data at the RTP payload format level.
 
@@ -88,7 +88,7 @@ This section describes how the encoded AV1 bitstream is encapsulated in RTP. All
 
 The general RTP payload format follows the RTP header format [RFC3550] and generic RTP header extensions [RFC8285], and is shown below.
 
-The Dependency Descriptor and AV1 aggregation header are described in this document. The payload itself is a series of OBU elements, preceded by length information as detailed later in this document.
+The Dependency Descriptor and AV1 aggregation header are described in this document. The payload itself is a series of OBU elements, preceded by length information as detailed later in this document. An OBU element is either an entire OBU or an OBU fragment.
 
 <pre><code>
  0                   1                   2                   3
@@ -153,10 +153,13 @@ Z: MUST be set to 1 if the first OBU element is an OBU fragment that is a contin
 
 Y: MUST be set to 1 if the last OBU element is an OBU fragment that will continue in the next packet, and MUST be set to 0 otherwise.
 
-W: two bit field that describes the number of OBU elements in the packet. This field MUST be set equal to 0 or equal to the number of OBU elements contained in the packet. If set to 0, each OBU element MUST be preceded by a length field. If not set to 0 the last OBU element MUST NOT be preceded by a length field. Instead, the length of the last OBU element contained in the packet can be calculated as follows:
+W: two bit field that describes the number of OBU elements in the packet. This field MUST be set equal to 0 or equal to the number of OBU elements contained in the packet. If set to 0, each OBU element MUST be preceded by a length field. If not set to 0 (i.e., W = 1, 2 or 3) the last OBU element MUST NOT be preceded by a length field. Instead, the length of the last OBU element contained in the packet can be calculated as follows:
 
 <pre><code>
-Length of the last OBU element = length of the RTP payload - length of aggregation header - length of previous OBU elements including length fields
+Length of the last OBU element = 
+   length of the RTP payload
+ - length of aggregation header
+ - length of previous OBU elements including length fields
 </code></pre>
 
 N: MUST be set to 1 if the packet is the first packet of a coded video sequence, and MUST be set to 0 otherwise.
@@ -178,6 +181,7 @@ Whether or not the first and/or last OBU element is a fragment of an OBU is sign
 The AV1 specification allows OBUs to have an optional size field called obu_size (also leb128 encoded), signaled by the obu_has_size_field flag in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD be set to zero in all OBUs.
 
 The following figure shows an example payload where the length field is shown as taking two bytes for the first and second OBU elements and one byte for the last (N) OBU element.
+
 
 <pre><code>
 0                   1                   2                   3
@@ -661,7 +665,7 @@ To facilitate the work of selectively forwarding portions of a scalable video bi
 
 ##### A.4.1 Syntax
 
-The syntax for the descriptor is described in pseudo-code form in this section.
+The syntax for the descriptor is described in pseudo-code form in this section. Parameters read directly from the bitstream appear in bold.
 
 **f(n)** - unsigned n-bit number appearing directly in the bitstream.
 <pre><code>
@@ -670,6 +674,7 @@ f(n) {
   for ( i = 0; i < n; i++ ) {
     x = 2 * x + read_bit()
   }
+  TotalConsumedBits += n
   return x
 }
 </code></pre>
@@ -680,7 +685,7 @@ read_bit() {
 }
 </code></pre>
 
-**ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e. output in range 0..n-1).
+**ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e., output in range 0..n-1).
 <pre><code>
 ns(n) {
   w = 0
@@ -710,6 +715,7 @@ Table A.1. Syntax constants
 
 <pre><code>
 dependency_descriptor( sz ) {
+  TotalConsumedBits = 0
   mandatory_descriptor_fields()
   if (sz > 3) {
     extended_descriptor_fields()
@@ -717,6 +723,7 @@ dependency_descriptor( sz ) {
     no_extended_descriptor_fields()
   }
   frame_dependency_definition()
+  <b>zero_padding</b> = f(sz * 8 - TotalConsumedBits)
 }
 </code></pre>
 
@@ -940,6 +947,8 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 **Note:** values out of the valid range indicate a change of the Frame dependency structure.
 {:.alert .alert-info }
 
+* **zero_padding**: MUST be set to 0 and be ignored by receivers.
+
 **Extended Descriptor Fields**
 
 * **template_dependency_structure_present_flag**: indicates the presence the template_dependency_structure. When the template_dependency_structure_present_flag is set to 1, template_dependency_structure MUST be present; otherwise template_dependency_structure MUST NOT be present. template_dependency_structure_present_flag MUST be set to 1 for the first packet of a coded video sequence, and MUST be set to 0 otherwise.
@@ -1071,6 +1080,8 @@ Table A.4. DTI values
 
 ##### A.6.1 L1T3 Single Spatial Layer with 3 Temporal Layers
 
+This example uses one Chain, which includes Frames with temporal ID equal to 0.
+
 ![L1T3](assets/images/L1T3.svg)
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
@@ -1100,11 +1111,9 @@ Table A.4. DTI values
 </tr>
 </tbody></table>
 
-**Note:** This example uses one Chain, which includes Frames with temporal ID equal to 0.
-{:.alert .alert-info }
-
-
 ##### A.6.2 L2T1 Full SVC with Occasional Switch
+
+This example uses two Chains. Chain 0 includes Frames with spatial ID equal to 0. Chain 1 includes all Frames.
 
 ![L2T1](assets/images/L2T1.svg)
 
@@ -1135,11 +1144,9 @@ Table A.4. DTI values
 </tr>
 </tbody></table>
 
-**Note:** This example uses two Chains. Chain 0 includes Frames with spatial ID equal to 0. Chain 1 includes all Frames.
-{:.alert .alert-info }
-
-
 ##### A.6.3 L3T3 Full SVC
+
+This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all Frames with temporal ID equal to 0.
 
 ![L3T3](assets/images/L3T3.svg)
 
@@ -1200,13 +1207,11 @@ Table A.4. DTI values
 </tr>
 </tbody></table>
 
-**Note:** This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all Frames with temporal ID equal to 0.
-{:.alert .alert-info }
-
-
 ##### A.6.4 L3T3 K-SVC with Temporal Shift
 
 ![L3T3_KEY_SHIFT](assets/images/L3T3_KEY_SHIFT.svg)
+
+This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
@@ -1282,10 +1287,6 @@ Table A.4. DTI values
 <td colspan='7' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td>
 </tr>
 </tbody></table>
-
-**Note:** This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
-{:.alert .alert-info }
-
 
 #### A.7 References
 
