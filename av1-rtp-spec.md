@@ -1209,9 +1209,9 @@ This example uses three Chains. Chain 0 includes Frames with spatial ID equal to
 
 ##### A.6.4 L3T3 K-SVC with Temporal Shift
 
-![L3T3_KEY_SHIFT](assets/images/L3T3_KEY_SHIFT.svg)
-
 This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
+
+![L3T3_KEY_SHIFT](assets/images/L3T3_KEY_SHIFT.svg)
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
