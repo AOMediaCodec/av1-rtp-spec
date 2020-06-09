@@ -932,7 +932,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same Frame MUST have the same frame_number value.
 
-**Note:** Frame number is not the same as Frame ID in [AV1 specification][AV1].
+**Note:** frame_number is not the same as Frame ID in [AV1 specification][AV1].
 {:.alert .alert-info }
 
 * **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same Frame.
@@ -978,7 +978,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **fdiff_follows_flag**: indicates the presence of a frame difference value. When the fdiff_follows_flag is set to 1, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present for the current Frame dependency template.
 
-* **fdiff_minus_one**: the difference between Frame number and the Frame number of the Referred frame minus one.
+* **fdiff_minus_one**: the difference between frame_number and the frame_number of the Referred frame minus one. The calculation is done modulo the size of the frame_number field.
 
 | DTI                    | Value |                                                        |
 | ---------------------- | ----- | ------------------------------------------------------ |
@@ -997,7 +997,7 @@ Table A.2. DTI values.
 
 * **frame_dti[dtiIndex]**: Decode Target Indication describing the relationship between the current frame and the Decode target having index equal to dtiIndex. Table A.2 contains a description of the Decode Target Indication values.
 
-* **frame_chain_fdiff[chainIdx]**: indicates the difference between the Frame number and the Frame number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and Frame number=112 the previous frame in the Chain with index equal to chainIdx has Frame number=109. The calculation is done modulo the size of the frame_number field.
+* **frame_chain_fdiff[chainIdx]**: indicates the difference between the frame_number and the frame_number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and frame_number=112 the previous frame in the Chain with index equal to chainIdx has frame_number=109. The calculation is done modulo the size of the frame_number field.
 
 | next_layer_idc | Next Spatial ID And Temporal ID Values                   |
 | -------------- | -------------------------------------------------------- |
