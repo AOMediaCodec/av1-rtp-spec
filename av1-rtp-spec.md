@@ -616,9 +616,6 @@ Frame dependency structure
 Frame dependency template
 : Contains frame description information that many frames have in common. Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and Chain information.
 
-Frame number
-: Frame number increases strictly monotonically in decode order.
-
 Instantaneous Decidability of Decodability (IDD)
 : The ability to decide, immediately upon receiving the very first packet after packet loss, if the lost packet(s) contained a packet that is needed to decode the information present in that first and following packets.
 
@@ -654,9 +651,9 @@ To facilitate the work of selectively forwarding portions of a scalable video bi
 * spatial ID
 * temporal ID
 * DTIs
-* Frame number of the current frame
-* Frame numbers of the Referred frames
-* Frame numbers of last frame in each Chain
+* frame_number of the current frame
+* frame_numbers of the Referred frames
+* frame_numbers of last frame in each Chain
 
 
 ##### A.4.1 Syntax
@@ -1016,9 +1013,9 @@ Table A.3. Derivation Of Next Spatial ID And Temporal ID Values.
 
 ##### A.4.3 Implementing IDD with Chains
 
-The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFU the ability to know the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Every packet includes, for every Chain, the Frame number for the previous Frame in that Chain. An SFU can instantaneously detect a broken Chain by checking whether or not the previous Frame in that Chain has been received. Due to the fact that Chain information for all Chains is present in all packets, an SFU can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain.
+The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFU the ability to know the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Every packet includes, for every Chain, the frame_number for the previous Frame in that Chain. An SFU can instantaneously detect a broken Chain by checking whether or not the previous Frame in that Chain has been received. Due to the fact that Chain information for all Chains is present in all packets, an SFU can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain.
 
-In order to start/restart Chains, a packet may reference its own Frame number as an indication that no previous Frames are needed for the Chain. Key frames are common cases for such '(re)start of Chain' indications.
+In order to start/restart Chains, a packet may reference its own frame_number as an indication that no previous Frames are needed for the Chain. Key frames are common cases for such '(re)start of Chain' indications.
 
 **Note:** Chains may be used for more than just realizing the IDD property.
 {:.alert .alert-info }
