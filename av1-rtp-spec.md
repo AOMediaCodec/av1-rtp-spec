@@ -937,7 +937,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same Frame.
 
-**Note:** values out of the valid range indicate a change of the Frame dependency structure.
+**Note:** values out of the valid range may indicate frame is from a different coded video sequence, e.g. packet with the new template dependency structure was lost or delayed.
 {:.alert .alert-info }
 
 **Extended Descriptor Fields**
