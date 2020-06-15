@@ -941,7 +941,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same Frame.
 
-**Note:** values out of the valid range indicate a change of the Frame dependency structure.
+**Note:** values outside of the valid range may be caused by a change of the template dependency structure, that is a packet with the new template dependency structure was lost or delayed.
 {:.alert .alert-info }
 
 * **zero_padding**: MUST be set to 0 and be ignored by receivers.
