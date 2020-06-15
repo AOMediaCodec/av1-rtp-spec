@@ -305,10 +305,21 @@ The RTP payload defined in this specification supports two distinct modes for tr
 
 When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs)  for each encoding [I-D.ietf-avtext-rid] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFUs, utilizes Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast] [I-D.ietf-mmusic-rid].
 
-When simulcast encodings are transported on a single RTP stream, RIDs are not used and Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since [AV1] enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFUs.
+When simulcast encodings are transported on a single RTP stream, **depend** restriction from [I-D.ietf-avtext-rid] could be used to signal dependencies between scalable layers. This simulcast transport mode is possible since [AV1] enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFUs.
 
+### 6.1.1 RID restrictions mapping for AV1
 
-### 6.1.1 Example
+RID specification declares the set of codec-agnostic restrictions for media streams. All the restrictions are optional and are subject to negotiation based on the SDP Offer/Answer rules described in Section 6 if [I-D.ietf-mmusic-rid]. When restrictions applied to AV1 codec, they must have following interpretation:
+* **max-width**, maximum width of the frame in units of samples. The meaning of the restriction is the same as variable **MaxHSize** of the levels table from Section A.3 of [AV1].
+* **max-height**, maximum height of the frame in units of samples. The meaning of the restriction is the same as variable **MaxVSize** of the levels table from Section A.3 of [AV1].
+* **max-fps**, maximum number of temporal units per second.
+* **max-fs**, maximum size of the frame in units of samples. The meaning of the restriction is the same as variable **MaxPicSize** of the levels table from Section A.3 of [AV1].
+* **max-br**, maximum bit rate in units bits per second. The meaning of the restriction is the same as variable **MaxBitrate** defined in Section A.3 of [AV1]. 
+* **max-pps**, maximum decode rate in units of samples per second. The meaning of the restriction is the same as variable **MaxDecodeRate** of the levels table from Section A.3 of [AV1].
+  
+If during SDP negotiation process both parties acknowledge restrictions, then transported media stream must have at least one operational point with negotiated restrictions.
+
+### 6.1.2 Example
 
 In this example, it is desired to send three simulcast encodings, each containing three temporal layers. When sending all encodings on a single SSRC, scalability mode 'S3T3' would be indicated within the scalability metadata OBU, and the Dependency Descriptor describes the dependency structure of all encodings.
 
@@ -391,97 +402,162 @@ When AV1 over RTP is offered with SDP in a declarative style, as in Real Time St
 
 ### 7.3 Examples
 An example of media representation in SDP is as follows:
-
-* m=video 49170 RTP/AVPF 98
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level-idx=8; tier=1;
-
+```
+m=video 49170 RTP/AVPF 98
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+```
 In the following example the offer is accepted with level upgrading. The level to use in the offerer-to-answerer direction is Level 2.0, and the level to use in the answerer-to-offerer direction is Level 3.0/Tier 1.  The answerer is allowed to send at any level up to and including Level 2.0, and the offerer is allowed to send at any level up to and including Level 3.0/Tier 1:
 
 Offer SDP:
-* m=video 49170 RTP/AVPF 98
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=0; level-idx=0;
-
+```
+m=video 49170 RTP/AVPF 98
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=0; level-idx=0;
+```
 Answer SDP:
-* m=video 49170 RTP/AVPF 98
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=0; level-idx=4; tier=1;
+```
+m=video 49170 RTP/AVPF 98
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=0; level-idx=4; tier=1;
+```
 
 In the following example an offer is made by a conferencing server to receive 3 simulcast streams.  The answerer agrees to send 3 simulcast streams at different resolutions.
 
 Offer SDP:
-* m=video 49170 UDP/TLS/RTP/SAVPF 98
-* a=mid:0
-* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-* a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
-* a=extmap:3 urn:3gpp:video-orientation
-* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-* a=sendrecv
-* a=rtcp-mux
-* a=rtcp-rsize
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level-idx=8; tier=1;
-* a=rtcp-fb:98 ccm fir
-* a=rtcp-fb:98 nack
-* a=rtcp-fb:98 nack pli
-* a=rid:f recv
-* a=rid:h recv
-* a=rid:q recv
-* a=simulcast:recv f;h;q
-
+```
+m=video 49170 UDP/TLS/RTP/SAVPF 98
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:3gpp:video-orientation
+a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:98 AV1/90000
+a=rtpmap:99 AV1/90000
+a=rtpmap:100 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+a=fmtp:99 profile=2; level-idx=8; tier=1;
+a=fmtp:100 profile=2; level-idx=8; tier=1;
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack
+a=rtcp-fb:98 nack pli
+a=rid:f recv pt=98;max-width=640;max-height=480
+a=rid:h recv pt=99;max-width=1280;max-height=720
+a=rid:q recv pt=100;max-width=1920;max-height=1080
+a=simulcast:recv f;h;q
+```
 Answer SDP:
-* m=video 48120 UDP/TLS/RTP/SAVPF 98
-* a=mid:0
-* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-* a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
-* a=extmap:3 urn:3gpp:video-orientation
-* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-* a=sendrecv
-* a=rtcp-mux
-* a=rtcp-rsize
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level-idx=8; tier=1;
-* a=rtcp-fb:98 ccm fir
-* a=rtcp-fb:98 nack
-* a=rtcp-fb:98 nack pli
-* a=rid:f send
-* a=rid:h send
-* a=rid:q send
-* a=simulcast:send f;h;q
+```
+m=video 48120 UDP/TLS/RTP/SAVPF 98
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:3gpp:video-orientation
+a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+a=fmtp:99 profile=2; level-idx=8; tier=1;
+a=fmtp:100 profile=2; level-idx=8; tier=1;
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack
+a=rtcp-fb:98 nack pli
+a=rid:f send pt=98;max-width=640;max-height=480
+a=rid:h send pt=99;max-width=1280;max-height=720
+a=rid:q send pt=100;max-width=1920;max-height=1080
+a=simulcast:send f;h;q
+```
 
-In the following example an offer is made by a browser to send a single RTP stream to a conferencing server. This single stream could include include any AV1 scalability mode, including "S" modes involving simulcast.
+In the following example an offer is made by a browser to send a single RTP stream to a conferencing server. This single stream will include at least 3 operational points at different resolutions with any AV1 scalability mode, including "S" modes.
 
 Offer SDP:
-* m=video 49170 UDP/TLS/RTP/SAVPF 98
-* a=mid:0
-* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-* a=extmap:3 urn:3gpp:video-orientation
-* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-* a=sendrecv
-* a=rtcp-mux
-* a=rtcp-rsize
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level-idx=8; tier=1;
-* a=rtcp-fb:98 ccm fir
-* a=rtcp-fb:98 nack
-* a=rtcp-fb:98 nack pli
+```
+m=video 49170 UDP/TLS/RTP/SAVPF 98
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:3 urn:3gpp:video-orientation
+a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack
+a=rtcp-fb:98 nack pli
+a=rid:f send max-width=640;max-height=480
+a=rid:h send max-width=1280;max-height=720
+a=rid:q send max-width=1920;max-height=1080
+a=simulcast:send f;h;q
+```
 
 Answer SDP:
-* m=video 48120 UDP/TLS/RTP/SAVPF 98
-* a=mid:0
-* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-* a=extmap:3 urn:3gpp:video-orientation
-* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-* a=sendrecv
-* a=rtcp-mux
-* a=rtcp-rsize
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level-idx=8; tier=1;
-* a=rtcp-fb:98 ccm fir
-* a=rtcp-fb:98 nack
-* a=rtcp-fb:98 nack pli
+```
+m=video 48120 UDP/TLS/RTP/SAVPF 98
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:3 urn:3gpp:video-orientation
+a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack
+a=rtcp-fb:98 nack pli
+a=rid:f recv max-width=640;max-height=480
+a=rid:h recv max-width=1280;max-height=720
+a=rid:q recv max-width=1920;max-height=1080
+a=simulcast:send f;h;q
+```
 
+In the following example an offer is made by a browser to send a single RTP stream to a conferencing server. This single stream will include at least 2 operational points at different temporal resolutions with 30fps layer depending on 15 fps layer with any AV1 scalability mode, including "S" modes.
+
+Offer SDP:
+```
+m=video 49170 UDP/TLS/RTP/SAVPF 98
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:3 urn:3gpp:video-orientation
+a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack
+a=rtcp-fb:98 nack pli
+a=rid:f send max-fps=15
+a=rid:h send max-fps=30;depend=f
+a=simulcast:send f;h;
+```
+
+Answer SDP:
+```
+m=video 48120 UDP/TLS/RTP/SAVPF 98
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:3 urn:3gpp:video-orientation
+a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack
+a=rtcp-fb:98 nack pli
+a=rid:f recv max-fps=15
+a=rid:h recv max-fps=30;depend=f
+a=simulcast:recv f;h;
+```
 
 ## 8. Feedback Messages
 
