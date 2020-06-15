@@ -619,9 +619,6 @@ Frame dependency template
 Frame number
 : Frame number increases strictly monotonically in decode order.
 
-Instantaneous Decidability of Decodability (IDD)
-: The ability to decide, immediately upon receiving the very first packet after packet loss, if the lost packet(s) contained a packet that is needed to decode the information present in that first and following packets.
-
 Not present indication
 : An indication for a frame, that it is not associated with a given Decode target.
 
