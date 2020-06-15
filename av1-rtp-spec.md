@@ -620,9 +620,6 @@ Frame dependency structure
 Frame dependency template
 : Contains frame description information that many frames have in common. Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and Chain information.
 
-Frame number
-: Frame number increases strictly monotonically in decode order.
-
 Not present indication
 : An indication for a frame, that it is not associated with a given Decode target.
 
@@ -655,9 +652,9 @@ To facilitate the work of selectively forwarding portions of a scalable video bi
 * spatial ID
 * temporal ID
 * DTIs
-* Frame number of the current frame
-* Frame numbers of the Referred frames
-* Frame numbers of last frame in each Chain
+* frame_number of the current frame
+* frame_number of each of the Referred frames
+* frame_number of last frame in each Chain
 
 
 ##### A.4.1 Syntax
@@ -936,7 +933,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same Frame MUST have the same frame_number value.
 
-**Note:** Frame number is not the same as Frame ID in [AV1 specification][AV1].
+**Note:** frame_number is not the same as Frame ID in [AV1 specification][AV1].
 {:.alert .alert-info }
 
 * **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same Frame.
@@ -984,7 +981,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **fdiff_follows_flag**: indicates the presence of a frame difference value. When the fdiff_follows_flag is set to 1, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present for the current Frame dependency template.
 
-* **fdiff_minus_one**: the difference between Frame number and the Frame number of the Referred frame minus one.
+* **fdiff_minus_one**: the difference between frame_number and the frame_number of the Referred frame minus one. The calculation is done modulo the size of the frame_number field.
 
 | DTI                    | Value |                                                        |
 | ---------------------- | ----- | ------------------------------------------------------ |
@@ -1003,7 +1000,7 @@ Table A.2. DTI values.
 
 * **frame_dti[dtiIndex]**: Decode Target Indication describing the relationship between the current frame and the Decode target having index equal to dtiIndex. Table A.2 contains a description of the Decode Target Indication values.
 
-* **frame_chain_fdiff[chainIdx]**: indicates the difference between the Frame number and the Frame number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and Frame number=112 the previous frame in the Chain with index equal to chainIdx has Frame number=109. The calculation is done modulo the size of the frame_number field.
+* **frame_chain_fdiff[chainIdx]**: indicates the difference between the frame_number and the frame_number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and frame_number=112 the previous frame in the Chain with index equal to chainIdx has frame_number=109. The calculation is done modulo the size of the frame_number field.
 
 | next_layer_idc | Next Spatial ID And Temporal ID Values                   |
 | -------------- | -------------------------------------------------------- |
@@ -1024,9 +1021,9 @@ Table A.3. Derivation Of Next Spatial ID And Temporal ID Values.
 
 Chains provide Instantaneous Decidability of Decodability (IDD). That is, the ability to decide, immediately upon receiving the very first packet after packet loss, if the lost packet(s) contained a packet that is needed to decode the information present in that first and following packets.
 
-The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFU the ability to know the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Every packet includes, for every Chain, the Frame number for the previous Frame in that Chain. An SFU can instantaneously detect a broken Chain by checking whether or not the previous Frame in that Chain has been received. Due to the fact that Chain information for all Chains is present in all packets, an SFU can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain.
+The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFU the ability to know the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Every packet includes, for every Chain, the frame_number for the previous Frame in that Chain. An SFU can instantaneously detect a broken Chain by checking whether or not the previous Frame in that Chain has been received. Due to the fact that Chain information for all Chains is present in all packets, an SFU can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain.
 
-In order to start/restart Chains, a packet may reference its own Frame number as an indication that no previous Frames are needed for the Chain. Key frames are common cases for such '(re)start of Chain' indications.
+In order to start/restart Chains, a packet may reference its own frame_number as an indication that no previous Frames are needed for the Chain. Key frames are common cases for such '(re)start of Chain' indications.
 
 ##### A.4.4 Switching
 
