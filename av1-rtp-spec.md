@@ -653,8 +653,8 @@ To facilitate the work of selectively forwarding portions of a scalable video bi
 * temporal ID
 * DTIs
 * frame_number of the current frame
-* frame_numbers of the Referred frames
-* frame_numbers of last frame in each Chain
+* frame_number of each of the Referred frames
+* frame_number of last frame in each Chain
 
 
 ##### A.4.1 Syntax
