@@ -1013,9 +1013,6 @@ Table A.2. DTI values.
 Table A.3. Derivation Of Next Spatial ID And Temporal ID Values.
 {: .caption }
 
-**TODO:** Add process descriptions and examples.
-{:.alert .alert-danger }
-
 
 ##### A.4.3 Deciding Decodability using Chains
 
