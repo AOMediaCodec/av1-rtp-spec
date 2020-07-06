@@ -396,7 +396,7 @@ An example of media representation in SDP is as follows:
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=2; level-idx=8; tier=1;
 
-### 7.3.1 Level upgrading
+#### 7.3.1 Level upgrading
 In the following example the offer is accepted with level upgrading. The level to use in the offerer-to-answerer direction is Level 2.0, and the level to use in the answerer-to-offerer direction is Level 3.0/Tier 1.  The answerer is allowed to send at any level up to and including Level 2.0, and the offerer is allowed to send at any level up to and including Level 3.0/Tier 1:
 
 Offer SDP:
@@ -409,9 +409,9 @@ Answer SDP:
 * a=rtpmap:98 AV1/90000
 * a=fmtp:98 profile=0; level-idx=4; tier=1;
 
-### 7.3.2 Simulcast with payload multiplexing
+#### 7.3.2 Simulcast with payload multiplexing
 
-### 7.3.3 Simulcast with SSRC/RID multiplexing
+#### 7.3.3 Simulcast with SSRC/RID multiplexing
 In the following example an offer is made by a conferencing server to receive 3 simulcast streams.  The answerer agrees to send 3 simulcast streams at different resolutions.
 
 Offer SDP:
@@ -454,7 +454,7 @@ Answer SDP:
 * a=rid:q send
 * a=simulcast:send f;h;q
 
-### 7.3.4 Single stream simulcast
+#### 7.3.4 Single stream simulcast
 In the following example an offer is made to send a single RTP stream to a conferencing server. This single stream might include any AV1 dependency structure, including "S" scalability modes.
 
 Offer SDP:
