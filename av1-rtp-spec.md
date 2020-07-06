@@ -392,95 +392,100 @@ When AV1 over RTP is offered with SDP in a declarative style, as in Real Time St
 ### 7.3 Examples
 An example of media representation in SDP is as follows:
 
-* m=video 49170 RTP/AVPF 98
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level-idx=8; tier=1;
+m=video 49170 RTP/AVPF 98
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
 
+### 7.3.1 Level upgrading
 In the following example the offer is accepted with level upgrading. The level to use in the offerer-to-answerer direction is Level 2.0, and the level to use in the answerer-to-offerer direction is Level 3.0/Tier 1.  The answerer is allowed to send at any level up to and including Level 2.0, and the offerer is allowed to send at any level up to and including Level 3.0/Tier 1:
 
 Offer SDP:
-* m=video 49170 RTP/AVPF 98
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=0; level-idx=0;
+m=video 49170 RTP/AVPF 98
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=0; level-idx=0;
 
 Answer SDP:
-* m=video 49170 RTP/AVPF 98
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=0; level-idx=4; tier=1;
+m=video 49170 RTP/AVPF 98
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=0; level-idx=4; tier=1;
 
+### 7.3.2 Simulcast with payload multiplexing
+
+### 7.3.3 Simulcast with SSRC/RID multiplexing
 In the following example an offer is made by a conferencing server to receive 3 simulcast streams.  The answerer agrees to send 3 simulcast streams at different resolutions.
 
 Offer SDP:
-* m=video 49170 UDP/TLS/RTP/SAVPF 98
-* a=mid:0
-* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-* a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
-* a=extmap:3 urn:3gpp:video-orientation
-* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-* a=sendrecv
-* a=rtcp-mux
-* a=rtcp-rsize
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level-idx=8; tier=1;
-* a=rtcp-fb:98 ccm fir
-* a=rtcp-fb:98 nack
-* a=rtcp-fb:98 nack pli
-* a=rid:f recv
-* a=rid:h recv
-* a=rid:q recv
-* a=simulcast:recv f;h;q
+m=video 49170 UDP/TLS/RTP/SAVPF 98
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:3gpp:video-orientation
+a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack
+a=rtcp-fb:98 nack pli
+a=rid:f recv
+a=rid:h recv
+a=rid:q recv
+a=simulcast:recv f;h;q
 
 Answer SDP:
-* m=video 48120 UDP/TLS/RTP/SAVPF 98
-* a=mid:0
-* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-* a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
-* a=extmap:3 urn:3gpp:video-orientation
-* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-* a=sendrecv
-* a=rtcp-mux
-* a=rtcp-rsize
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level-idx=8; tier=1;
-* a=rtcp-fb:98 ccm fir
-* a=rtcp-fb:98 nack
-* a=rtcp-fb:98 nack pli
-* a=rid:f send
-* a=rid:h send
-* a=rid:q send
-* a=simulcast:send f;h;q
+m=video 48120 UDP/TLS/RTP/SAVPF 98
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:3gpp:video-orientation
+a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack
+a=rtcp-fb:98 nack pli
+a=rid:f send
+a=rid:h send
+a=rid:q send
+a=simulcast:send f;h;q
 
-In the following example an offer is made by a browser to send a single RTP stream to a conferencing server. This single stream could include include any AV1 scalability mode, including "S" modes involving simulcast.
+### 7.3.4 Single stream simulcast
+In the following example an offer is made to send a single RTP stream to a conferencing server. This single stream might include any AV1 dependency structure, including "S" scalability modes.
 
 Offer SDP:
-* m=video 49170 UDP/TLS/RTP/SAVPF 98
-* a=mid:0
-* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-* a=extmap:3 urn:3gpp:video-orientation
-* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-* a=sendrecv
-* a=rtcp-mux
-* a=rtcp-rsize
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level-idx=8; tier=1;
-* a=rtcp-fb:98 ccm fir
-* a=rtcp-fb:98 nack
-* a=rtcp-fb:98 nack pli
+m=video 49170 UDP/TLS/RTP/SAVPF 98
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:3 urn:3gpp:video-orientation
+a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack
+a=rtcp-fb:98 nack pli
 
 Answer SDP:
-* m=video 48120 UDP/TLS/RTP/SAVPF 98
-* a=mid:0
-* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
-* a=extmap:3 urn:3gpp:video-orientation
-* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
-* a=sendrecv
-* a=rtcp-mux
-* a=rtcp-rsize
-* a=rtpmap:98 AV1/90000
-* a=fmtp:98 profile=2; level-idx=8; tier=1;
-* a=rtcp-fb:98 ccm fir
-* a=rtcp-fb:98 nack
-* a=rtcp-fb:98 nack pli
+m=video 48120 UDP/TLS/RTP/SAVPF 98
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:3 urn:3gpp:video-orientation
+a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+a=sendrecv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:98 AV1/90000
+a=fmtp:98 profile=2; level-idx=8; tier=1;
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack
+a=rtcp-fb:98 nack pli
 
 
 ## 8. Feedback Messages
