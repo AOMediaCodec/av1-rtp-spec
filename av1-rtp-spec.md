@@ -392,9 +392,9 @@ When AV1 over RTP is offered with SDP in a declarative style, as in Real Time St
 ### 7.3 Examples
 An example of media representation in SDP is as follows:
 
-m=video 49170 RTP/AVPF 98
-a=rtpmap:98 AV1/90000
-a=fmtp:98 profile=2; level-idx=8; tier=1;
+* m=video 49170 RTP/AVPF 98
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=2; level-idx=8; tier=1;
 
 ### 7.3.1 Level upgrading
 In the following example the offer is accepted with level upgrading. The level to use in the offerer-to-answerer direction is Level 2.0, and the level to use in the answerer-to-offerer direction is Level 3.0/Tier 1.  The answerer is allowed to send at any level up to and including Level 2.0, and the offerer is allowed to send at any level up to and including Level 3.0/Tier 1:
