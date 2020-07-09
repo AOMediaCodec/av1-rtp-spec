@@ -431,10 +431,10 @@ Offer SDP:
 * a=rtcp-fb:98 ccm fir
 * a=rtcp-fb:98 nack
 * a=rtcp-fb:98 nack pli
-* a=rid:f recv pt=98;max-width=1920;max-height=1080
+* a=rid:q recv pt=98;max-width=640;max-height=480
 * a=rid:h recv pt=99;max-width=1280;max-height=720
-* a=rid:q recv pt=100;max-width=640;max-height=480
-* a=simulcast:recv f;h;q
+* a=rid:f recv pt=100;max-width=1920;max-height=1080
+* a=simulcast:recv q;h;f
  
 Answer SDP:
 * m=video 48120 UDP/TLS/RTP/SAVPF 98
@@ -453,9 +453,9 @@ Answer SDP:
 * a=rtcp-fb:98 ccm fir
 * a=rtcp-fb:98 nack
 * a=rtcp-fb:98 nack pli
-* a=rid:f send pt=98;max-width=1920;max-height=1080
+* a=rid:q send pt=98;max-width=640;max-height=480
 * a=rid:h send pt=99;max-width=1280;max-height=720
-* a=rid:q send pt=100;max-width=640;max-height=480
+* a=rid:f send pt=100;max-width=1920;max-height=1080
 * a=simulcast:send f;h;q
 
 
