@@ -429,10 +429,10 @@ Offer SDP:
 * a=rtcp-fb:98 ccm fir
 * a=rtcp-fb:98 nack
 * a=rtcp-fb:98 nack pli
-* a=rid:f recv
-* a=rid:h recv
 * a=rid:q recv
-* a=simulcast:recv f;h;q
+* a=rid:h recv
+* a=rid:f recv
+* a=simulcast:recv q;h;f
 
 Answer SDP:
 * m=video 48120 UDP/TLS/RTP/SAVPF 98
@@ -449,10 +449,10 @@ Answer SDP:
 * a=rtcp-fb:98 ccm fir
 * a=rtcp-fb:98 nack
 * a=rtcp-fb:98 nack pli
-* a=rid:f send
-* a=rid:h send
 * a=rid:q send
-* a=simulcast:send f;h;q
+* a=rid:h send
+* a=rid:f send
+* a=simulcast:send q;h;f
 
 #### 7.3.4 Single stream simulcast
 In the following example an offer is made to send a single RTP stream to a conferencing server. This single stream might include any AV1 dependency structure, including "S" scalability modes.
