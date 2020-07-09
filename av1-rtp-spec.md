@@ -456,7 +456,7 @@ Answer SDP:
 * a=rid:q send pt=98;max-width=640;max-height=480
 * a=rid:h send pt=99;max-width=1280;max-height=720
 * a=rid:f send pt=100;max-width=1920;max-height=1080
-* a=simulcast:send f;h;q
+* a=simulcast:send q;h;f
 
 
 #### 7.3.3 Simulcast with SSRC multiplexing
