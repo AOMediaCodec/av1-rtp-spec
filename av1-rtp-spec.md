@@ -410,9 +410,57 @@ Answer SDP:
 * a=fmtp:98 profile=0; level-idx=4; tier=1;
 
 #### 7.3.2 Simulcast with payload multiplexing
+In the following example an offer is made by a conferencing server to receive 3 simulcast streams with payload multiplexing.  The answerer agrees to send 3 simulcast streams at different resolutions.
 
-#### 7.3.3 Simulcast with SSRC/RID multiplexing
-In the following example an offer is made by a conferencing server to receive 3 simulcast streams.  The answerer agrees to send 3 simulcast streams at different resolutions.
+Offer SDP:
+* m=video 49170 UDP/TLS/RTP/SAVPF 98
+* a=mid:0
+* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+* a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+* a=extmap:3 urn:3gpp:video-orientation
+* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+* a=sendrecv
+* a=rtcp-mux
+* a=rtcp-rsize
+* a=rtpmap:98 AV1/90000
+* a=rtpmap:99 AV1/90000
+* a=rtpmap:100 AV1/90000
+* a=fmtp:98 profile=2; level-idx=8; tier=1;
+* a=fmtp:99 profile=2; level-idx=8; tier=1;
+* a=fmtp:100 profile=2; level-idx=8; tier=1;
+* a=rtcp-fb:98 ccm fir
+* a=rtcp-fb:98 nack
+* a=rtcp-fb:98 nack pli
+* a=rid:q recv pt=98;max-width=640;max-height=480
+* a=rid:h recv pt=99;max-width=1280;max-height=720
+* a=rid:f recv pt=100;max-width=1920;max-height=1080
+* a=simulcast:recv q;h;f
+ 
+Answer SDP:
+* m=video 48120 UDP/TLS/RTP/SAVPF 98
+* a=mid:0
+* a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+* a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+* a=extmap:3 urn:3gpp:video-orientation
+* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
+* a=sendrecv
+* a=rtcp-mux
+* a=rtcp-rsize
+* a=rtpmap:98 AV1/90000
+* a=fmtp:98 profile=2; level-idx=8; tier=1;
+* a=fmtp:99 profile=2; level-idx=8; tier=1;
+* a=fmtp:100 profile=2; level-idx=8; tier=1;
+* a=rtcp-fb:98 ccm fir
+* a=rtcp-fb:98 nack
+* a=rtcp-fb:98 nack pli
+* a=rid:q send pt=98;max-width=640;max-height=480
+* a=rid:h send pt=99;max-width=1280;max-height=720
+* a=rid:f send pt=100;max-width=1920;max-height=1080
+* a=simulcast:send q;h;f
+
+
+#### 7.3.3 Simulcast with SSRC multiplexing
+In the following example an offer is made by a conferencing server to receive 3 simulcast streams with SSRC multiplexing.  The answerer agrees to send 3 simulcast streams at different resolutions.
 
 Offer SDP:
 * m=video 49170 UDP/TLS/RTP/SAVPF 98
