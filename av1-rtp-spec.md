@@ -666,7 +666,7 @@ End-to-end security services such as authentication, integrity, or confidentiali
 
 This appendix describes the Dependency Descriptor (DD) RTP Header extension for conveying information about individual video frames and the dependencies between them. The Dependency Descriptor includes provisions for both temporal and spatial scalability.
 
-In the DD, the smallest unit for which dependencies are described is an RTP Frame. An RTP frame contains one complete coded video frame and may also contain additional information (e.g., metadata). This specification allows for fragmentation of RTP Frames over multiple packets. RTP frame aggregation is explicitly disallowed.
+In the DD, the smallest unit for which dependencies are described is an RTP frame. An RTP frame contains one complete coded video frame and may also contain additional information (e.g., metadata). This specification allows for the transmission of an RTP frame over multiple packets. RTP frame aggregation is explicitly disallowed. Hereinafter, RTP frame will be referred to as frame.
 
 To facilitate the work of selectively forwarding portions of a scalable video bitstream to each endpoint in a video conference, as is done by a Selective Forwarding Unit (SFU), for each packet, several pieces of information are required (e.g., spatial and temporal layer identification). To reduce overhead, repetitive information can be predefined and sent once. Subsequent packets may index to a template containing predefined information. In particular, when an encoder uses an unchanging (static) prediction structure to encode a scalable bitstream, parameter values used to describe the bitstream repeat in a predictable way. The techniques described in this document provide means to send repeating information as predefined templates that can be referenced at future points of the bitstream. Since a reference index to a template requires fewer bits to convey than the associated structures themselves, header overhead can be substantially reduced.
 
@@ -689,7 +689,7 @@ Decode Target Indication (DTI)
 Discardable indication
 : An indication for a frame, associated with a given Decode target, that it will not be a Referred frame for any frame belonging to that Decode target.
 
-**Note:** A Frame belonging to more than one Decode target may be discardable for one Decode target and not for another.
+**Note:** A frame belonging to more than one Decode target may be discardable for one Decode target and not for another.
 {:.alert .alert-info }
 
 Frame dependency structure
@@ -702,12 +702,12 @@ Not present indication
 : An indication for a frame, that it is not associated with a given Decode target.
 
 Referred frame
-: A Frame on which the current frame depends.
+: A frame on which the current frame depends.
 
 Required indication
 : An indication for a frame, associated with a given Decode target, that it belongs to the Decode target and has neither a Discardable indication nor a Switch indication.
 
-**Note:** A Frame belonging to more than one Decode target may be required for one Decode target and not required (either discardable or switch) for another.
+**Note:** A frame belonging to more than one Decode target may be required for one Decode target and not required (either discardable or switch) for another.
 {:.alert .alert-info }
 
 Switch indication
@@ -1005,16 +1005,16 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 **Mandatory Descriptor Fields**
 
-* **start_of_frame**: MUST be set to 1 if the first payload octet of the RTP packet is the beginning of a new Frame, and MUST be set to 0 otherwise. Note that this frame might not be the first frame of a temporal unit.
+* **start_of_frame**: MUST be set to 1 if the first payload octet of the RTP packet is the beginning of a new frame, and MUST be set to 0 otherwise. Note that this frame might not be the first frame of a temporal unit.
 
-* **end_of_frame**: MUST be set to 1 for the final RTP packet of a Frame, and MUST be set to 0 otherwise. Note that, if spatial scalability is in use, more frames from the same temporal unit may follow.
+* **end_of_frame**: MUST be set to 1 for the final RTP packet of a frame, and MUST be set to 0 otherwise. Note that, if spatial scalability is in use, more frames from the same temporal unit may follow.
 
-* **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same Frame MUST have the same frame_number value.
+* **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same frame MUST have the same frame_number value.
 
 **Note:** frame_number is not the same as Frame ID in [AV1 specification][AV1].
 {:.alert .alert-info }
 
-* **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same Frame.
+* **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same frame.
 
 **Note:** values outside of the valid range may be caused by a change of the template dependency structure, that is a packet with the new template dependency structure was lost or delayed.
 {:.alert .alert-info }
@@ -1096,13 +1096,13 @@ Table A.3. Derivation Of Next Spatial ID And Temporal ID Values.
 
 Chains provide Instantaneous Decidability of Decodability (IDD). That is, the ability to decide, immediately upon receiving the very first packet after packet loss, if the lost packet(s) contained a packet that is needed to decode the information present in that first and following packets.
 
-The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFU the ability to know the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Every packet includes, for every Chain, the frame_number for the previous Frame in that Chain. An SFU can instantaneously detect a broken Chain by checking whether or not the previous Frame in that Chain has been received. Due to the fact that Chain information for all Chains is present in all packets, an SFU can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain.
+The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFU the ability to know the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Every packet includes, for every Chain, the frame_number for the previous frame in that Chain. An SFU can instantaneously detect a broken Chain by checking whether or not the previous frame in that Chain has been received. Due to the fact that Chain information for all Chains is present in all packets, an SFU can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain.
 
-In order to start/restart Chains, a packet may reference its own frame_number as an indication that no previous Frames are needed for the Chain. Key frames are common cases for such '(re)start of Chain' indications.
+In order to start/restart Chains, a packet may reference its own frame_number as an indication that no previous frames are needed for the Chain. Key frames are common cases for such '(re)start of Chain' indications.
 
 ##### A.4.4 Switching
 
-An SFU may begin forwarding packets belonging to a new Decode target beginning with a decodable Frame containing a Switch indication to that Decode target.
+An SFU may begin forwarding packets belonging to a new Decode target beginning with a decodable frame containing a Switch indication to that Decode target.
 
 An SFU may change which Decode targets it forwards. Similarly, a sender may change the Decode targets that are currently being produced. In both cases, not all Decode targets may be available for decoding. Such changes SHOULD be signaled to the receiver using the active_decode_targets_bitmask and SHOULD be signaled to the receiver in a reliable way.
 
@@ -1147,7 +1147,7 @@ Table A.4. DTI values
 
 ##### A.6.1 L1T3 Single Spatial Layer with 3 Temporal Layers
 
-This example uses one Chain, which includes Frames with temporal ID equal to 0.
+This example uses one Chain, which includes frames with temporal ID equal to 0.
 
 ![L1T3](assets/images/L1T3.svg)
 
@@ -1180,7 +1180,7 @@ This example uses one Chain, which includes Frames with temporal ID equal to 0.
 
 ##### A.6.2 L2T1 Full SVC with Occasional Switch
 
-This example uses two Chains. Chain 0 includes Frames with spatial ID equal to 0. Chain 1 includes all Frames.
+This example uses two Chains. Chain 0 includes frames with spatial ID equal to 0. Chain 1 includes all frames.
 
 ![L2T1](assets/images/L2T1.svg)
 
@@ -1213,7 +1213,7 @@ This example uses two Chains. Chain 0 includes Frames with spatial ID equal to 0
 
 ##### A.6.3 L3T3 Full SVC
 
-This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all Frames with temporal ID equal to 0.
+This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all frames with temporal ID equal to 0.
 
 ![L3T3](assets/images/L3T3.svg)
 
@@ -1276,7 +1276,7 @@ This example uses three Chains. Chain 0 includes Frames with spatial ID equal to
 
 ##### A.6.4 L3T3 K-SVC with Temporal Shift
 
-This example uses three Chains. Chain 0 includes Frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes Frame 100 and Frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes Frames 100, 101, and Frames with spatial ID equal to 2 and temporal ID equal to 0.
+This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frame 100 and frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes frames 100, 101, and frames with spatial ID equal to 2 and temporal ID equal to 0.
 
 ![L3T3_KEY_SHIFT](assets/images/L3T3_KEY_SHIFT.svg)
 
