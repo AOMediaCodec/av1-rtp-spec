@@ -978,9 +978,7 @@ template_chains() {
     return
   }
   for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
-    // If a decode target is not tracked by a chain, it will have
-    // chain id equal to chains_cnt.
-    <b>decode_target_protected_by[dtiIndex]</b> = ns(chains_cnt + 1)
+    <b>decode_target_protected_by[dtiIndex]</b> = ns(chains_cnt)
   }
   for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
     for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
@@ -1051,7 +1049,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **chains_cnt**: indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
 
-* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects the Decode target, dtIndex. A value of decode_target_protected_by[dtIndex] equal to chains_cnt  indicates that Decode target dtIndex is not protected by a Chain. Each Decode target MAY be protected by at most one Chain.
+* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects the Decode target, dtIndex. When chains_cnt > 0, each Decode target MUST be protected by exactly one Chain.
 
 * **template_dti[templateIndex][]**: an array of size dtis_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.2 contains a description of the Decode Target Indication values.
 
