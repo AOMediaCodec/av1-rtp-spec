@@ -150,10 +150,13 @@ The structure is as follows.
 </code></pre>
 
 Z: MUST be set to 1 if the first OBU element is an OBU fragment that is a continuation of an OBU fragment from the previous packet, and MUST be set to 0 otherwise.
+{:& ParseTreatsContinuationFlagAsNotBeginningOfFrame,ParseTreatsNoContinuationFlagAsNotBeginningOfFrame}
 
 Y: MUST be set to 1 if the last OBU element is an OBU fragment that will continue in the next packet, and MUST be set to 0 otherwise.
+{:& ParseTreatsWillContinueFlagAsNotEndOfFrame,ParseTreatsNoWillContinueFlagAsNotEndOfFrame}
 
 W: two bit field that describes the number of OBU elements in the packet. This field MUST be set equal to 0 or equal to the number of OBU elements contained in the packet. If set to 0, each OBU element MUST be preceded by a length field. If not set to 0 (i.e., W = 1, 2 or 3) the last OBU element MUST NOT be preceded by a length field. Instead, the length of the last OBU element contained in the packet can be calculated as follows:
+{:& needs-test}
 
 <pre><code>
 Length of the last OBU element = 
@@ -163,9 +166,11 @@ Length of the last OBU element =
 </code></pre>
 
 N: MUST be set to 1 if the packet is the first packet of a coded video sequence, and MUST be set to 0 otherwise.
+{:& ParseUsesNewCodedVideoSequenceBitAsKeyFrameIndicator,ParseUsesUnsetNewCodedVideoSequenceBitAsDeltaFrameIndicator}
 
 **Note:** if N equals 1 then Z must equal 0.
 {:.alert .alert-info }
+{:& ParseRejectsPacketWithNewCVSAndContinuationFlagsBothSet}
 
 
 ### 4.5 Payload Structure
@@ -179,6 +184,7 @@ The length field is encoded using leb128. Leb128 is defined in the AV1 specifica
 Whether or not the first and/or last OBU element is a fragment of an OBU is signaled in the aggregation header. Fragmentation may occur regardless of how the W field is set.
 
 The AV1 specification allows OBUs to have an optional size field called obu_size (also leb128 encoded), signaled by the obu_has_size_field flag in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD be set to zero in all OBUs.
+{:& AssembleFrameSetsOBUPayloadSizeWhenAbsent,AssembleFrameSetsOBUPayloadSizeWhenPresent}
 
 The following figure shows an example payload where the length field is shown as taking two bytes for the first and second OBU elements and one byte for the last (N) OBU element.
 
@@ -248,6 +254,7 @@ OBU element 2 data        = 303 - 1 - (2 + 200) = 100 bytes
 Each RTP packet MUST contain OBUs that belong to a single temporal unit.
 
 The temporal delimiter OBU, if present, SHOULD be removed when transmitting, and MUST be ignored by receivers. Tile list OBUs are not supported. They SHOULD be removed when transmitted, and MUST be ignored by receivers.
+{:& needs-test}
 
 If a sequence header OBU is present in an RTP packet and operating_points_cnt_minus_1 > 0 then for any number i where 0 <= i < operating_points_cnt_minus_1 the following MUST be true: (operating_point_idc[i] & operating_point_idc[i+1]) == operating_point_idc[i+1].
 
