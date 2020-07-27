@@ -44,7 +44,7 @@ Coded frame
 Frame
 : A frame in this document is synonymous to a Coded frame.
 
-**Note:** In contrast, in [AV1 video codec][AV1], Frame is defined as the representation of video signals in the spatial domain.
+**Note:** In contrast, in the [AV1 video codec][AV1], Frame is defined as the representation of video signals in the spatial domain.
 {:.alert .alert-info }
 
 **Note:** Multiple frames may be present at the same instant in time.
@@ -68,15 +68,15 @@ Temporal unit
 
 ## 3. Media Format Description
 
-AV1 has similarities to other video codecs, but introduces a number of key design changes as well. [AV1 video codec][AV1] can maintain up to eight reference frames, of which up to seven can be referenced by any new frame. [AV1 video codec][AV1] also allows a frame to use another frame of a different spatial resolution as a reference frame. This allows internal resolution changes without requiring the use of key frames. These features together enable an encoder to implement various forms of coarse-grained scalability, including temporal, spatial, and quality scalability modes, as well as combinations of these, without the need for explicit scalable coding tools.
+AV1 has similarities to other video codecs, but introduces a number of key design changes as well. The [AV1 video codec][AV1] can maintain up to eight reference frames, of which up to seven can be referenced by any new frame. The [AV1 video codec][AV1] also allows a frame to use another frame of a different spatial resolution as a reference frame. This allows internal resolution changes without requiring the use of key frames. These features together enable an encoder to implement various forms of coarse-grained scalability, including temporal, spatial, and quality scalability modes, as well as combinations of these, without the need for explicit scalable coding tools.
 
-Spatial and quality layers define different and possibly dependent representations of a single input frame. For a given spatial layer, temporal layers define different frame rates of video. Spatial layers allow a frame to be encoded at different spatial resolutions, whereas quality layers allow a frame to be encoded at the same spatial resolution but at different qualities (and thus with different amounts of coding error). [AV1 video codec][AV1] supports quality layers as spatial layers without any resolution changes; hereinafter, the term "spatial layer" is used to represent both spatial and quality layers.
+Spatial and quality layers define different and possibly dependent representations of a single input frame. For a given spatial layer, temporal layers define different frame rates of video. Spatial layers allow a frame to be encoded at different spatial resolutions, whereas quality layers allow a frame to be encoded at the same spatial resolution but at different qualities (and thus with different amounts of coding error). The [AV1 video codec][AV1] supports quality layers as spatial layers without any resolution changes; hereinafter, the term "spatial layer" is used to represent both spatial and quality layers.
 
 This payload format specification provides for specific mechanisms through which such temporal and spatial scalability layers can be described and communicated.
 
 Temporal and spatial scalability layers are associated with non-negative integer IDs. The lowest layer of either type has an ID equal to 0.
 
-**Note:** Layer dependencies are constrained by the AV1 specification such that a temporal layer with temporal_id T and spatial layer with spatial_id S are only allowed to reference previously coded video data having temporal_id T' and spatial_id S', where T' <= T and S' <= S. {:.alert .alert-info }
+**Note:** Layer dependencies are constrained by the [AV1 video codec][AV1] such that a temporal layer with temporal_id T and spatial layer with spatial_id S are only allowed to reference previously coded video data having temporal_id T' and spatial_id S', where T' <= T and S' <= S. {:.alert .alert-info }
 
 
 ## 4. Payload Format
@@ -174,7 +174,7 @@ The smallest high-level syntax unit in AV1 is the OBU. All [AV1] bitstream struc
 
 The payload contains a series of one or more OBU elements. The design allows for a combination of aggregation and fragmentation of OBUs, i.e., a set of OBU elements in which the first and/or last element is a fragment of an OBU.
 
-The length field is encoded using leb128. Leb128 is defined in [AV1 video codec][AV1], and provides for a variable-sized, byte-oriented encoding of non-negative integers where the first bit of each (little-endian) byte indicates whether or not additional bytes are used in the representation ([AV1 video codec][AV1] Section 4.10.5).
+The length field is encoded using leb128. Leb128 is defined in the [AV1 video codec][AV1], and provides for a variable-sized, byte-oriented encoding of non-negative integers where the first bit of each (little-endian) byte indicates whether or not additional bytes are used in the representation ([AV1 video codec][AV1] Section 4.10.5).
 
 Whether or not the first and/or last OBU element is a fragment of an OBU is signaled in the aggregation header. Fragmentation may occur regardless of how the W field is set.
 
