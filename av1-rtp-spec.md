@@ -623,7 +623,7 @@ End-to-end security services such as authentication, integrity, or confidentiali
 ### 11.1 Normative References
 
 
-* [AV1] **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
+* [AV1] **AV1 Bitstream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
 * [RFC3550] **RTP: A Transport Protocol for Real-Time Applications**, H. Schulzrinne, S. Casner, R. Frederick, and V. Jacobson, July 2003.
 
@@ -1368,7 +1368,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 
 ##### A.7.2 Informative References
 
-* [AV1] **AV1 Bistream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
+* [AV1] **AV1 Bitstream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
 * [RFC3264] **An Offer/Answer Model with the Session Description Protocol (SDP)**, J. Rosenberg and H. Schulzrinne, June 2002.
 
