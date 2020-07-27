@@ -44,7 +44,7 @@ Coded frame
 Frame
 : A frame in this document is synonymous to a Coded frame.
 
-**Note:** In contrast, in [AV1], Frame is defined as the representation of video signals in the spatial domain.
+**Note:** In contrast, in [AV1 video codec][AV1], Frame is defined as the representation of video signals in the spatial domain.
 {:.alert .alert-info }
 
 **Note:** Multiple frames may be present at the same instant in time.
@@ -68,9 +68,9 @@ Temporal unit
 
 ## 3. Media Format Description
 
-AV1 has similarities to other video codecs, but introduces a number of key design changes as well. The AV1 codec can maintain up to eight reference frames, of which up to seven can be referenced by any new frame. AV1 also allows a frame to use another frame of a different spatial resolution as a reference frame. This allows internal resolution changes without requiring the use of key frames. These features together enable an encoder to implement various forms of coarse-grained scalability, including temporal, spatial, and quality scalability modes, as well as combinations of these, without the need for explicit scalable coding tools.
+AV1 has similarities to other video codecs, but introduces a number of key design changes as well. [AV1 video codec][AV1] can maintain up to eight reference frames, of which up to seven can be referenced by any new frame. [AV1 video codec][AV1] also allows a frame to use another frame of a different spatial resolution as a reference frame. This allows internal resolution changes without requiring the use of key frames. These features together enable an encoder to implement various forms of coarse-grained scalability, including temporal, spatial, and quality scalability modes, as well as combinations of these, without the need for explicit scalable coding tools.
 
-Spatial and quality layers define different and possibly dependent representations of a single input frame. For a given spatial layer, temporal layers define different frame rates of video. Spatial layers allow a frame to be encoded at different spatial resolutions, whereas quality layers allow a frame to be encoded at the same spatial resolution but at different qualities (and thus with different amounts of coding error). AV1 supports quality layers as spatial layers without any resolution changes; hereinafter, the term "spatial layer" is used to represent both spatial and quality layers.
+Spatial and quality layers define different and possibly dependent representations of a single input frame. For a given spatial layer, temporal layers define different frame rates of video. Spatial layers allow a frame to be encoded at different spatial resolutions, whereas quality layers allow a frame to be encoded at the same spatial resolution but at different qualities (and thus with different amounts of coding error). [AV1 video codec][AV1] supports quality layers as spatial layers without any resolution changes; hereinafter, the term "spatial layer" is used to represent both spatial and quality layers.
 
 This payload format specification provides for specific mechanisms through which such temporal and spatial scalability layers can be described and communicated.
 
@@ -170,15 +170,15 @@ N: MUST be set to 1 if the packet is the first packet of a coded video sequence,
 
 ### 4.5 Payload Structure
 
-The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream structures are packetized in OBUs. Each OBU has a header, which provides identifying information for the contained data (payload).
+The smallest high-level syntax unit in AV1 is the OBU. All [AV1] bitstream structures are packetized in OBUs. Each OBU has a header, which provides identifying information for the contained data (payload).
 
 The payload contains a series of one or more OBU elements. The design allows for a combination of aggregation and fragmentation of OBUs, i.e., a set of OBU elements in which the first and/or last element is a fragment of an OBU.
 
-The length field is encoded using leb128. Leb128 is defined in the AV1 specification, and provides for a variable-sized, byte-oriented encoding of non-negative integers where the first bit of each (little-endian) byte indicates whether or not additional bytes are used in the representation (AV1, Section 4.10.5).
+The length field is encoded using leb128. Leb128 is defined in [AV1 video codec][AV1], and provides for a variable-sized, byte-oriented encoding of non-negative integers where the first bit of each (little-endian) byte indicates whether or not additional bytes are used in the representation ([AV1 video codec][AV1] Section 4.10.5).
 
 Whether or not the first and/or last OBU element is a fragment of an OBU is signaled in the aggregation header. Fragmentation may occur regardless of how the W field is set.
 
-The AV1 specification allows OBUs to have an optional size field called obu_size (also leb128 encoded), signaled by the obu_has_size_field flag in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD be set to zero in all OBUs.
+[AV1 video codec][AV1] allows OBUs to have an optional size field called obu_size (also leb128 encoded), signaled by the obu_has_size_field flag in the OBU header. To minimize overhead, the obu_has_size_field flag SHOULD be set to zero in all OBUs.
 
 The following figure shows an example payload where the length field is shown as taking two bytes for the first and second OBU elements and one byte for the last (N) OBU element.
 
@@ -305,7 +305,7 @@ The RTP payload defined in this specification supports two distinct modes for tr
 
 When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs)  for each encoding [I-D.ietf-avtext-rid] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFUs, utilizes Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast] [I-D.ietf-mmusic-rid].
 
-When simulcast encodings are transported on a single RTP stream, RIDs are not used and Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since [AV1] enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFUs.
+When simulcast encodings are transported on a single RTP stream, RIDs are not used and Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since [AV1 video codec][AV1] enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFUs.
 
 
 ### 6.1.1 Example
@@ -341,7 +341,7 @@ This payload format has three optional parameters.
 * Interoperability considerations:
   * None.
 * Published specification:
-  * [AV1 bitstream format][AV1]
+  * [AV1 video codec][AV1]
 * Applications which use this media type:
   * Video over IP, video conferencing.
 * Fragment identifier considerations:
@@ -380,8 +380,8 @@ The RID specification declares the set of codec-agnostic restrictions for media 
 * **max-fps**, maximum number of temporal units per second.
 * **max-fs**, maximum size of the frame in units of samples. The meaning of the restriction is the same as variable **MaxPicSize** of the levels table from Section A.3 of [AV1].
 * **max-br**, maximum bit rate in units bits per second. The meaning of the restriction is the same as variable **MaxBitrate** defined in Section A.3 of [AV1]. 
-* **max-pps**, maximum decode rate in units of samples per second. The meaning of the restriction is the same as variable **MaxDecodeRate** of the levels table from Section A.3 of [AV1].
-* **max-bpp**, maximum number of bits per pixel of any given coded frame, calculated as a ratio between **CompressedSize** variable defined Section A.3 of [AV1] and expressed in bits, and number of samples in frame.
+* **max-pps**, maximum decode rate in units of samples per second. The meaning of the restriction is the same as variable **MaxDecodeRate** of the levels table from Section A.3 of [AV1 video codec][AV1].
+* **max-bpp**, maximum number of bits per pixel of any given coded frame, calculated as a ratio between **CompressedSize** variable defined Section A.3 of [AV1 video codec][AV1] and expressed in bits, and number of samples in frame.
   
 If during SDP negotiation process both parties acknowledge restrictions, then transported media stream must have at least one operational point with negotiated restrictions.
 
@@ -573,7 +573,7 @@ Point.
 
 Upon reception of an FIR, for every SSRC indicated in the FIR message,
 the AV1 sender MUST send a new coded video sequence as soon as possible.
-See section 7.5 of the [AV1] bitstream specification for the definition
+See section 7.5 of the [AV1 video codec][AV1] for the definition
 of a new coded video sequence.
 
 If simulcast encodings of the same source are transported on distinct SSRCs,
@@ -594,9 +594,9 @@ The Layer Refresh Request [I-D.ietf-avtext-lrr] is designed to allow a receiver 
 
                              Figure 4
 
-AV1 streams MUST use the Layer Refresh Request format defined for VP9 [I-D.ietf-payload-vp9] (see Section 5.3), with the high order bit of its three-bit SID field set to 0. Figure 4 shows the format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id and TID is associatd with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream specification [AV1] for details on the temporal_id and spatial_id fields.
+AV1 streams MUST use the Layer Refresh Request format defined for VP9 [I-D.ietf-payload-vp9] (see Section 5.3), with the high order bit of its three-bit SID field set to 0. Figure 4 shows the format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id and TID is associatd with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the [AV1 video codec][AV1] for details on the temporal_id and spatial_id fields.
 
-Identification of a layer refresh frame may be performed by examining the coding dependency structure of the coded video sequence it belongs to. This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 of [AV1]), either in the form of a pre-defined scalability mode or through a scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively, the Dependency Descriptor RTP header extension that is specified in Appendix A of this document may be used.
+Identification of a layer refresh frame may be performed by examining the coding dependency structure of the coded video sequence it belongs to. This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 of [AV1 video codec][AV1]), either in the form of a pre-defined scalability mode or through a scalability structure (Sections 5.8.6 and 6.7.6 of [AV1 video codec][AV1]). Alternatively, the Dependency Descriptor RTP header extension that is specified in Appendix A of this document may be used.
 
 
 ## 9. IANA Considerations
