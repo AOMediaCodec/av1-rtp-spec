@@ -245,7 +245,7 @@ OBU element 2 data        = 303 - 1 - (2 + 200) = 100 bytes
 
 ## 5. Packetization Rules
 
-Each RTP packet MUST contain OBUs that belong to a single temporal unit.
+Each RTP packet MUST NOT contain OBUs that belong to different temporal units.
 
 The temporal delimiter OBU, if present, SHOULD be removed when transmitting, and MUST be ignored by receivers. Tile list OBUs are not supported. They SHOULD be removed when transmitted, and MUST be ignored by receivers.
 
