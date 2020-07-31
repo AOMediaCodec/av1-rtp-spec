@@ -1122,6 +1122,73 @@ The URI for declaring this header extension in an extmap attribute is "https://a
 
 #### A.6 Examples
 
+#### A.6.1 Decode targets, Chains and DTIs based on L2T3 structure
+![L2T3](assets/images/L2T3.svg)
+
+A decode target is a set of frames needed to decode a coded video sequence at a given spatial and temporal fidelity.
+There are different ways do define decode targets for the scalable video structure.
+For the purpose of this example, the following four decode targets have been defined:
+![HD7fps](assets/images/L2T3_DT0.svg)
+DT0: HD@7.5fps
+
+![VGA15fps](assets/images/L2T3_DT1.svg)
+DT1: VGA@15fps
+
+![VGA30fps](assets/images/L2T3_DT2.svg)
+DT2: VGA@30fps
+
+![HD30fps](assets/images/L2T3.svg)
+DT3: HD@30fps
+
+For frame_number=5, the Decode Target Indication (DTI) is different for each of the decode targets:
+|     |  Indication |   description    |  SFU behavior |
+|-----|-------------|------------------|---------------|
+| DT0 | Not present | frame_number=5 is not associated with DT0 | SFU should not forward this frame to a DT0 client |
+| DT1 | Discardable | no frame depends on the frame_number=5 | SFU should forward this frame to a DT1 client, but may discard it, e.g., when bandwidth is low. |
+| DT2 | Switch      | if it is possible to decode frame_number=5, then all later frames associated with the decode target DT2 would also be decodable | SFU must forward frame_number=5 to the DT2 client In addition, an SFU is allowed to switch the chosen decode target to DT2 if it considers the frame decodable for the client |
+| Dt3 | Required    | If it is possible to decode frame_number=5, it could happen that only frame_number=1 and frame_number=5 were received, while frame_number=2 was dropped. In such a case, it wouldn’t be possible to decode frame_number=6 | SFU must forward frame_number=5 to the DT3 client, but can’t make any other decisions based on this DTI. |
+
+
+For DT0, the DTI is equal to “Not present.” I.e., frame_number=5 is not associated with DT0.
+and SFU should not forward this frame to a DT0 client.
+For DT1, the DTI is equal to “Discardable.” I.e., no frame depends on the frame_number=5 and an SFU should forward this frame to a DT1 client, but may discard it, e.g., when bandwidth is low.
+For DT2, the DTI is equal to “Switch.” I.e., if it is possible to decode frame_number=5, then all later frames associated with the decode target DT2 would also be decodable.
+I.e., an SFU must forward frame_number=5 to the DT2 client In addition, an SFU is allowed to switch the chosen decode target to DT2 if it considers the frame decodable for the client.
+For DT3, the DTI is equal to “Required.” If it is possible to decode frame_number=5, it could happen that only frame_number=1 and frame_number=5 were received, while frame_number=2 was dropped. In such a case, it wouldn’t be possible to decode frame_number=6.
+I.e., an SFU must forward frame_number=5 to the DT3 client, but can’t make any other decisions based on this DTI.
+
+
+A Chain is a sequence of frames for which it can be determined instantly if a frame from that sequence has been lost.
+For the purpose of this example, the following two chains have been defined:
+
+![ChainS0](assets/images/L2T3_C0.svg)
+Chain0
+
+![ChainS1](assets/images/L2T3_C1.svg)
+Chain1
+
+Note that the decoding process for frame_number=9 doesn’t depend on frame_number=2,
+but frame_number=9 immediately follows frame_number=2 in Chain1.
+
+Chain0 protects DT1 and DT2 (i.e., Decode targets with VGA spatial fidelity).
+Chain1 protects DT0 and DT3 (i.e., Decode targets with HD spatial fidelity).
+
+frame_number=5 is not part of any chain.
+For frame_number=5, the last frame in Chain0 is frame_number=1,
+and the last frame in Chain1 is frame_number=2.
+
+Let’s take two clients. One expects DT2, while the other expects DT3.
+(Note: the SFU notifies each client which Decode target to expect with active_decode_targets_bitmask field.)
+Those two clients would track different chains. Consider the situation where each of these two clients have received and decoded frame_number=1 and then received frame_number=5.
+frame_number=5 refer only frame_number=1, thus frame_number=5 is decodable.
+
+The DT2 client would track Chain0. From frame_number=5, the client would see that the last important frame was frame_number=1. Thus it is safe to start decoding frame_number=5. Even if the DT2 client missed frame_number=3, frames followed frame_number=5 are decodable due to the fact that frame_number=3 is Discardable.
+
+The DT3 client would track Chain1. From frame_number=5, the client would see that the last important frame was frame_number=2. Thus it is not safe to start decoding frame_number=5. E.g., decoding frame_number=5 may overwrite the codec buffer that frame_number=2 relies on. Consequently, the DT3 client should wait until frame_number=2 is fully received and decoded.
+
+
+#### A.6.2 Scalability structure examples
+
 Each example in this section contains a prediction structure figure and a table describing the associated Frame dependency structure. The Frame dependency structure table column headings have the meanings listed below. For the DTI- related columns, Table A.4 shows the symbol used to represent each DTI value.
 
   * Idx - template index
