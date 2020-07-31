@@ -1128,16 +1128,24 @@ The URI for declaring this header extension in an extmap attribute is "https://a
 A decode target is a set of frames needed to decode a coded video sequence at a given spatial and temporal fidelity.
 There are different ways do define decode targets for the scalable video structure.
 For the purpose of this example, the following four decode targets have been defined:
+
 ![HD7fps](assets/images/L2T3_DT0.svg)
+
 DT0: HD@7.5fps
 
+
 ![VGA15fps](assets/images/L2T3_DT1.svg)
+
 DT1: VGA@15fps
 
+
 ![VGA30fps](assets/images/L2T3_DT2.svg)
+
 DT2: VGA@30fps
 
+
 ![HD30fps](assets/images/L2T3.svg)
+
 DT3: HD@30fps
 
 For frame_number=5, the Decode Target Indication (DTI) is different for each of the decode targets:
