@@ -44,7 +44,7 @@ Coded frame
 Frame
 : A frame in this document is synonymous to a Coded frame.
 
-**Note:** In contrast, in [AV1], Frame is defined as the representation of video signals in the spatial domain.
+**Note:** In contrast, in AV1, Frame is defined as the representation of video signals in the spatial domain.
 {:.alert .alert-info }
 
 **Note:** Multiple frames may be present at the same instant in time.
@@ -63,7 +63,7 @@ Selective Forwarding Middlebox (SFM)
 : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without requiring access to the media ([RFC7667]).
 
 Temporal unit
-: Defined by the [AV1 video codec][AV1] specification: A temporal unit consists of all the OBUs that are associated with a specific, distinct time instant.
+: Defined by the AV1 specification: A temporal unit consists of all the OBUs that are associated with a specific, distinct time instant.
 
 
 ## 3. Media Format Description
@@ -306,7 +306,7 @@ The RTP payload defined in this specification supports two distinct modes for tr
 
 When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs)  for each encoding [I-D.ietf-avtext-rid] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFMs, utilizes Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast] [I-D.ietf-mmusic-rid].
 
-When simulcast encodings are transported on a single RTP stream, RIDs are not used and Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since [AV1] enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFMs.
+When simulcast encodings are transported on a single RTP stream, RIDs are not used and Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since AV1 enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFMs.
 
 
 ### 6.1.1 Example
@@ -342,7 +342,7 @@ This payload format has three optional parameters.
 * Interoperability considerations:
   * None.
 * Published specification:
-  * [AV1 bitstream format][AV1]
+  * [AV1 video codec][AV1]
 * Applications which use this media type:
   * Video over IP, video conferencing.
 * Fragment identifier considerations:
@@ -574,7 +574,7 @@ Point.
 
 Upon reception of an FIR, for every SSRC indicated in the FIR message,
 the AV1 sender MUST send a new coded video sequence as soon as possible.
-See section 7.5 of the [AV1] bitstream specification for the definition
+See section 7.5 of the [AV1 video codec][AV1] for the definition
 of a new coded video sequence.
 
 If simulcast encodings of the same source are transported on distinct SSRCs,
