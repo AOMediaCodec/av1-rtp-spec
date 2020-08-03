@@ -76,12 +76,13 @@ This payload format specification provides for specific mechanisms through which
 
 Temporal and spatial scalability layers are associated with non-negative integer IDs. The lowest layer of either type has an ID equal to 0.
 
-**Note:** Layer dependencies are constrained by the AV1 specification such that a temporal layer with temporal_id T and spatial layer with spatial_id S are only allowed to reference previously coded video data having temporal_id T' and spatial_id S', where T' <= T and S' <= S. {:.alert .alert-info }
+**Note:** Layer dependencies are constrained by the AV1 specification such that a temporal layer with temporal_id T and spatial layer with spatial_id S are only allowed to reference previously coded video data having temporal_id T' and spatial_id S', where T' <= T and S' <= S. 
+{:.alert .alert-info }
 
 
 ## 4. Payload Format
 
-This section describes how the encoded AV1 bitstream is encapsulated in RTP. All integer fields in the specifications are encoded as unsigned integers in network octet order.
+This section describes how the encoded AV1 bitstream is encapsulated in RTP. All integer fields in the specifications are encoded as unsigned integers in network byte order.
 
 
 ### 4.1 RTP Header Usage
@@ -108,7 +109,7 @@ The Dependency Descriptor and AV1 aggregation header are described in this docum
 |   0x1(ID)     |  hdr_length   |                               |
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+                               |
 |                                                               |
-|          dependency descriptor (hdr_length #octets)           |
+|          dependency descriptor (hdr_length #bytes)            |
 |                                                               |
 |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                               | Other rtp header extensions...|
@@ -129,7 +130,7 @@ The Dependency Descriptor and AV1 aggregation header are described in this docum
 The RTP header Marker bit MUST be set equal to 0 if the packet is not the last packet of the temporal unit, it SHOULD be set equal to 1 otherwise.
 
 **Note:** It is possible for a receiver to receive the last packet of a temporal unit without the marker bit being set equal to 1, and a receiver should be able to handle this case. The last packet of a temporal unit is also indicated by the next packet, in RTP sequence number order, having an incremented timestamp.
-
+{:.alert .alert-info }
 
 ### 4.3  Dependency Descriptor RTP Header Extension
 
@@ -253,7 +254,7 @@ If a sequence header OBU is present in an RTP packet and operating_points_cnt_mi
 
 A sender MAY produce a sequence header with operating_points_cnt_minus_1 = 0 and operating_point_idc[0] = 0xFFF and seq_level_idx[0] = 0. In such case, seq_level_idx[0] does not reflect the level of the operating point.
 
-**Note:** The intent is to disable OBU dropping in the decoder. To ensure a decoder’s capabilities are not exceeded, OBU filtering should instead be implemented at the system level (e.g., SFM).
+**Note:** The intent is to disable OBU dropping in the decoder. To ensure a decoder’s capabilities are not exceeded, OBU filtering should instead be implemented at the system level (e.g., in a MANE).
 {:.alert .alert-info }
 
 If more than one OBU contained in an RTP packet has an OBU extension header, then the values of the temporal_id and spatial_id MUST be the same in all such OBUs in the RTP packet.
@@ -721,7 +722,7 @@ A bitstream conformant to this extension must adhere to the following statement(
 A frame for which all Referred frames are decodable MUST itself be decodable.
 
 **Note:** dependencies are not limited to motion compensated prediction, other relevant information such as entropy decoder state also constitute dependencies.
-
+{:.alert .alert-info }
 
 #### A.4 Dependency Descriptor Format
 
@@ -1003,7 +1004,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 **Mandatory Descriptor Fields**
 
-* **start_of_frame**: MUST be set to 1 if the first payload octet of the RTP packet is the beginning of a new frame, and MUST be set to 0 otherwise. Note that this frame might not be the first frame of a temporal unit.
+* **start_of_frame**: MUST be set to 1 if the first payload byte of the RTP packet is the beginning of a new frame, and MUST be set to 0 otherwise. Note that this frame might not be the first frame of a temporal unit.
 
 * **end_of_frame**: MUST be set to 1 for the final RTP packet of a frame, and MUST be set to 0 otherwise. Note that, if spatial scalability is in use, more frames from the same temporal unit may follow.
 
