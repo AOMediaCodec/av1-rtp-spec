@@ -1123,41 +1123,42 @@ The URI for declaring this header extension in an extmap attribute is "https://a
 
 #### A.6 Examples
 
-#### A.6.1 Decode targets, Chains and DTIs based on L2T3 structure
+#### A.6.1 Decode targets, Decode Target Indications, and Chains
+In the following example, the concepts of Decode targets, Chains, and DTI are discussed in the context of the L2T3 scalability structure from the perspective of frame_number=5.
+
 ![L2T3](assets/images/L2T3.svg)
-
-A decode target is a set of frames needed to decode a coded video sequence at a given spatial and temporal fidelity.
-There are different ways do define decode targets for the scalable video structure.
-For the purpose of this example, the following four decode targets have been defined:
-
-![HD7fps](assets/images/L2T3_DT0.svg)
-DT0: HD@7fps
+L2T3
 {: .caption }
 
-![VGA15fps](assets/images/L2T3_DT1.svg)
-DT1: VGA@15fps
+A Decode target (DT) is a subset of a scalable video stream necessary to decode the stream at a certain temporal and spatial fidelity. For the L2T3 scalability structure, it is natural to define six Decode targets: VGA @ 15, 30 and 60 FPS, and HD @ 15, 30 and 60 FPS. It is however not necessary to define these six Decode targets, in this example four are used as shown in the diagrams below.
+
+![HD15fps](assets/images/L2T3_DT0.svg)
+DT0: HD @ 15fps
 {: .caption }
 
-![VGA30fps](assets/images/L2T3_DT2.svg)
-DT2: VGA@30fps
+![VGA30fps](assets/images/L2T3_DT1.svg)
+DT1: VGA @ 30fps
 {: .caption }
 
-![HD30fps](assets/images/L2T3.svg)
-DT3: HD@30fps
+![VGA60fps](assets/images/L2T3_DT2.svg)
+DT2: VGA @ 60fps
 {: .caption }
 
-For frame_number=5, the Decode Target Indication (DTI) is different for each of the decode targets:
-|     |  Indication |   description    |  SFM behavior |
+![HD60fps](assets/images/L2T3_DT3.svg)
+DT3: HD @ 60fps
+{: .caption }
+
+A Decode Target Indication describes the relationship of a frame to a Decode target. For frame_number=5 (F5), the Decode Target Indication is different for each of the decode targets as shown in the table below.
+
+|     |  Indication |   Description    |  SFM behavior |
 |-----|-------------|------------------|---------------|
-| DT0 | Not present | frame_number=5 is not associated with DT0 | SFM should not forward this frame to a DT0 client |
-| DT1 | Discardable | no frame depends on the frame_number=5 | SFM should forward this frame to a DT1 client, but may discard it, e.g., when bandwidth is low. |
-| DT2 | Switch      | if it is possible to decode frame_number=5, then all later frames associated with the decode target DT2 would also be decodable | SFM must forward frame_number=5 to the DT2 client In addition, an SFM is allowed to switch selected Decode target to DT2 if it considers the frame decodable for the client |
-| DT3 | Required    | If it is possible to decode frame_number=5, it could happen that only frame_number=1 and frame_number=5 were received, while frame_number=2 was dropped. In such a case, it wouldn’t be possible to decode frame_number=6 | SFM must forward frame_number=5 to the DT3 client, but can’t make any other decisions based on this indication. |
+| DT0 | Not present | F5 is not associated with DT0. | Do not forward F5 to a DT0 client. |
+| DT1 | Discardable | No frame in DT1 will reference F5. | Should forward F5 to a DT1 client, but may discard it, e.g., when bandwidth is low. |
+| DT2 | Switch      | If it is possible to decode F5, then all future frames in DT2 are also decodable. | Forward F5 to the DT2 client. In addition, the SFM can rely on the fact that if the F5 frame is decodable for a particular client then that client may be switched to DT2. |
+| DT3 | Required    | Future frames in DT3 reference F5. | Forward F5 to a DT3 client. No additional decisions can be made. |
 {:.table .table-sm .table-bordered }
 
-
-A Chain is a sequence of frames for which it can be determined instantly if a frame from that sequence has been lost.
-For the purpose of this example, the following two chains have been defined:
+A Chain is a sequence of frames for which it can be determined instantly if a frame from that sequence has been lost. In this example two are used as shown in the diagrams below.
 
 ![ChainS0](assets/images/L2T3_C0.svg)
 Chain0
@@ -1167,15 +1168,11 @@ Chain0
 Chain1
 {: .caption }
 
-Note that the decoding process for frame_number=9 doesn’t depend on frame_number=2,
-but frame_number=9 immediately follows frame_number=2 in Chain1.
+Note that the yellow arrows in the Chain diagrams do not show frame dependencies, rather they indicate the order of frames in the Chain. For example, F9 doesn’t depend on F2, but F9 immediately follows F2 in Chain1. 
 
-Chain0 protects DT1 and DT2 (i.e., Decode targets with VGA spatial fidelity).
-Chain1 protects DT0 and DT3 (i.e., Decode targets with HD spatial fidelity).
+F5 is not part of any chain. For F5, the last frame in Chain0 is F1, and the last frame in Chain1 is F2.
 
-frame_number=5 is not part of any chain.
-For frame_number=5, the last frame in Chain0 is frame_number=1,
-and the last frame in Chain1 is frame_number=2.
+Decode targets are protected by Chains. In this example, Chain0 protects DT1 and DT2 (i.e., Decode targets with VGA spatial fidelity) and Chain1 protects DT0 and DT3 (i.e., Decode targets with HD spatial fidelity).
 
 Let’s take two clients. One expects DT2, while the other expects DT3.
 (Note: the SFM notifies each client which Decode target to expect with active_decode_targets_bitmask field.)
@@ -1210,7 +1207,7 @@ Table A.4. DTI values
 {: .caption }
 
 
-##### A.6.1 L1T3 Single Spatial Layer with 3 Temporal Layers
+##### A.6.2.1 L1T3 Single Spatial Layer with 3 Temporal Layers
 
 This example uses one Chain, which includes frames with temporal ID equal to 0.
 
@@ -1243,7 +1240,7 @@ This example uses one Chain, which includes frames with temporal ID equal to 0.
 </tr>
 </tbody></table>
 
-##### A.6.2 L2T1 Full SVC with Occasional Switch
+##### A.6.2.2 L2T1 Full SVC with Occasional Switch
 
 This example uses two Chains. Chain 0 includes frames with spatial ID equal to 0. Chain 1 includes all frames.
 
@@ -1276,7 +1273,7 @@ This example uses two Chains. Chain 0 includes frames with spatial ID equal to 0
 </tr>
 </tbody></table>
 
-##### A.6.3 L3T3 Full SVC
+##### A.6.2.3 L3T3 Full SVC
 
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all frames with temporal ID equal to 0.
 
@@ -1339,7 +1336,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 </tr>
 </tbody></table>
 
-##### A.6.4 L3T3 K-SVC with Temporal Shift
+##### A.6.2.4 L3T3 K-SVC with Temporal Shift
 
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frame 100 and frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes frames 100, 101, and frames with spatial ID equal to 2 and temporal ID equal to 0.
 
