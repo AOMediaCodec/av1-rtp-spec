@@ -380,7 +380,7 @@ The RID specification declares the set of codec-agnostic restrictions for media 
 * **max-pps**, maximum decode rate in units of samples per second. The meaning of the restriction is the same as variable **MaxDecodeRate** of the levels table from Section A.3 of [AV1].
 * **max-bpp**, maximum number of bits per pixel of any given coded frame, calculated as a ratio between **CompressedSize** variable defined Section A.3 of [AV1] and expressed in bits, and number of samples in frame.
   
-If during the SDP negotiation process both parties acknowledge restrictions, then the transported media stream MUST have at least one operational point with the negotiated restrictions.
+If during the SDP negotiation process both parties acknowledge restrictions, then the transported media stream MUST have at least one operating point with the negotiated restrictions.
 
 
 #### 7.2.3  Usage with the SDP Offer/Answer Model
