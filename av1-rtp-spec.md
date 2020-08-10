@@ -82,7 +82,7 @@ Temporal and spatial scalability layers are associated with non-negative integer
 
 ## 4. Payload Format
 
-This section describes how the encoded AV1 bitstream is encapsulated in RTP. All integer fields in the specifications are encoded as unsigned integers in network byte order.
+This section describes how the encoded AV1 bitstream is encapsulated in RTP. All integer fields in this specification are encoded as unsigned integers in network byte order.
 
 
 ### 4.1 RTP Header Usage
@@ -269,25 +269,21 @@ A sequence header OBU SHOULD be included in the base layer when scalable encodin
 The following are example packetizations of OBU sequences. A two-letter notation is used to identify the OBU type: FH - frame header, TG - tile group, FR - frame, SH - sequence header, TD - temporal delimitered, MD - metadata. Parentheses after the type indicate the temporal_id and spatial_id combination. For example "TG(0,1)" indicates a tile group OBU with temporal_id equal to 0 and spatial_id equal to 1.
 
 The following is an example coded video sequence:
-
 <pre><code>
     TD SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG(0,1)
 </code></pre>
 
-This sequence could be packetized as follows. First, the TD OBU is dropped. Then, the following packetization grouping (indicated using square brackets) may be used.
-
+This sequence could be packetized as follows. First, the TD OBU is dropped. Then, the following packetization grouping (indicated using square brackets) may be used:
 <pre><code>
     [ SH MD MD(0,0) FH(0,0) TG(0,0) ] [ MD(0,1) FH(0,1) TG(0,1) ]
 </code></pre>
 
 It is also possible to send each OBU in its own RTP packet:
-
 <pre><code>
     [ SH ] [ MD ] [ MD(0,0) ] [ FH(0,0) ] [ TG(0,0) ] ...
 </code></pre>
 
-The following packetization grouping would not be allowed, since it combines data from different spatial layers in the same packet.
-
+The following packetization grouping would not be allowed, since it combines data from different spatial layers in the same packet:
 <pre><code>
     [ SH MD MD(0,0) FH(0,0) TG(0,0) MD(0,1) FH(0,1) TG(0,1) ]
 </code></pre>
@@ -304,9 +300,9 @@ The general function of a MANE or SFM is to selectively forward packets to recei
 
 The RTP payload defined in this specification supports two distinct modes for transport of simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated with each spatial layer. Both modes MUST be supported by implementations of this specification.
 
-When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs)  for each encoding [I-D.ietf-avtext-rid] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFMs, utilizes Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast] [I-D.ietf-mmusic-rid].
+When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs) for each encoding as described in [I-D.ietf-avtext-rid] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFMs, utilizes Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast] and [I-D.ietf-mmusic-rid].
 
-When simulcast encodings are transported on a single RTP stream, RIDs are not used and Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since AV1 enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFMs.
+When simulcast encodings are transported on a single RTP stream, RIDs are not used and the Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since AV1 enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFMs.
 
 
 ### 6.1.1 Example
@@ -318,7 +314,7 @@ When sending each simulcast encoding on a distinct SSRC, the scalability mode 'L
 
 ## 7. Payload Format Parameters
 
-This payload format has three optional parameters.
+This section specifies the parameters that MAY be used to select optional features of the payload format and certain features of the bitstream.
 
 
 ### 7.1. Media Type Definition
@@ -371,11 +367,11 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
 * The clock rate in the "a=rtpmap" line MUST be 90000.
 * The parameters "**profile**", and "**level-idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
-* Parameter "**tier**" MAY be included alongside "**profile**" and "**level-idx** parameters in "a=fmtp" line if the indicated level supports tier different to 0.
+* Parameter "**tier**" MAY be included alongside "**profile**" and "**level-idx** parameters in "a=fmtp" line if the indicated level supports a non-zero tier.
 
 ### 7.2.2 RID restrictions mapping for AV1
 
-The RID specification declares the set of codec-agnostic restrictions for media streams. All the restrictions are optional and are subject to negotiation based on the SDP Offer/Answer rules described in Section 6 in [I-D.ietf-mmusic-rid]. When restrictions are applied to the AV1 codec, they must have following interpretation:
+The RID specification declares the set of codec-agnostic restrictions for media streams. All the restrictions are optional and are subject to negotiation based on the SDP Offer/Answer rules described in Section 6 in [I-D.ietf-mmusic-rid]. When these restrictions are applied to the AV1 codec, they MUST have following interpretation:
 * **max-width**, maximum width of the frame in units of samples. The meaning of the restriction is the same as variable **MaxHSize** of the levels table from Section A.3 of [AV1].
 * **max-height**, maximum height of the frame in units of samples. The meaning of the restriction is the same as variable **MaxVSize** of the levels table from Section A.3 of [AV1].
 * **max-fps**, maximum number of temporal units per second.
@@ -384,7 +380,7 @@ The RID specification declares the set of codec-agnostic restrictions for media 
 * **max-pps**, maximum decode rate in units of samples per second. The meaning of the restriction is the same as variable **MaxDecodeRate** of the levels table from Section A.3 of [AV1].
 * **max-bpp**, maximum number of bits per pixel of any given coded frame, calculated as a ratio between **CompressedSize** variable defined Section A.3 of [AV1] and expressed in bits, and number of samples in frame.
   
-If during SDP negotiation process both parties acknowledge restrictions, then transported media stream must have at least one operational point with negotiated restrictions.
+If during the SDP negotiation process both parties acknowledge restrictions, then the transported media stream MUST have at least one operational point with the negotiated restrictions.
 
 
 #### 7.2.3  Usage with the SDP Offer/Answer Model
@@ -393,7 +389,7 @@ When AV1 is offered over RTP using SDP in an Offer/Answer model [RFC3264] for ne
 * The media format configuration is identified by **level-idx**, **profile** and **tier**.  Answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and the answerer MAY declare its own media configuration if the answerer capabilities are different from the offerer.
   * The profile to use in the offerer-to-answerer direction MUST be lesser or equal to the profile the answerer supports for receiving, and the profile to use in the answerer-to-offerer direction MUST be lesser or equal to the profile the offerer supports for receiving.
   * The level to use in the offerer-to-answerer direction MUST be lesser or equal to the level the answerer supports for receiving, and the level to use in the answerer-to-offerer direction MUST be lesser or equal to the level the offerer supports for receiving.
-  * The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be lesser or equal to the tier the offerer supports for receiving.
+  * The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be less than or equal to the tier the offerer supports for receiving.
 
 
 #### 7.2.4  Usage in Declarative Session Descriptions
@@ -567,7 +563,7 @@ Answer SDP:
 
 ## 8.1.  Full Intra Request (FIR)
 
-The Full Intra Request (FIR) [RFC5104] RTCP feedback message allows a
+The Full Intra Request (FIR) RTCP feedback message defined in [RFC5104] allows a
 receiver to request a Decoder Refresh Point of an encoded stream.
 Section 3 of [RFC8082] updates the definition of the Decoder Refresh
 Point.
@@ -585,7 +581,7 @@ new coded video sequences for other encodings from the same source(s).
 
 ## 8.2.  Layer Refresh Request (LRR)
 
-The Layer Refresh Request [I-D.ietf-avtext-lrr] is designed to allow a receiver of a layered media stream to request that one or more of its substreams be refreshed, such that it can then be decoded by an endpoint which previously was not receiving those layers, without requiring that the entire stream be refreshed (as it would be if the receiver sent a Full Intra Request (FIR) [RFC5104] [RFC8082]).
+The Layer Refresh Request [I-D.ietf-avtext-lrr] is designed to allow a receiver of a layered media stream to request that one or more of its substreams be refreshed, such that it can then be decoded by an endpoint which previously was not receiving those layers, without requiring that the entire stream be refreshed (as it would be if the receiver sent a Full Intra Request (FIR) [RFC5104]).
 
            +---------------+---------------+
            |0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|
@@ -595,7 +591,7 @@ The Layer Refresh Request [I-D.ietf-avtext-lrr] is designed to allow a receiver 
 
                              Figure 4
 
-AV1 streams MUST use the Layer Refresh Request format defined for VP9 [I-D.ietf-payload-vp9] (see Section 5.3), with the high order bit of its three-bit SID field set to 0. Figure 4 shows the format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id and TID is associatd with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream specification [AV1] for details on the temporal_id and spatial_id fields.
+AV1 streams MUST use the Layer Refresh Request format defined for VP9 [I-D.ietf-payload-vp9] (see Section 5.3), with the high order bit of its three-bit SID field set to 0. Figure 4 shows the format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id and TID is associated with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream specification [AV1] for details on the temporal_id and spatial_id fields.
 
 Identification of a layer refresh frame may be performed by examining the coding dependency structure of the coded video sequence it belongs to. This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 of [AV1]), either in the form of a pre-defined scalability mode or through a scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively, the Dependency Descriptor RTP header extension that is specified in Appendix A of this document may be used.
 
@@ -609,7 +605,7 @@ Upon publication, a new media type, as specified in Section 7.1 of this document
 
 RTP packets using the payload format defined in this document are subject to the security considerations discussed in the RTP specification [RFC3550] and in any appropriate RTP profile. This implies that confidentiality of the media streams is achieved by encryption, for example, through the application of SRTP [RFC3711]. A potential denial-of-service threat exists for data encodings using compression techniques that have non-uniform receiver-end computational load. The attacker can inject pathological datagrams into the stream that are complex to decode and that cause the receiver to be overloaded. Therefore, the usage of data origin authentication and data integrity protection of at least the RTP packet is RECOMMENDED, for example, with SRTP [RFC3711].
 
-Note that the appropriate mechanism to ensure confidentiality and integrity of RTP packets and their payloads is very dependent on the application and on the transport and signaling protocols employed. Thus, although SRTP is given as an example above, other possible choices exist [RFC7202].
+Note that the appropriate mechanism to ensure confidentiality and integrity of RTP packets and their payloads is very dependent on the application and on the transport and signaling protocols employed. Thus, although SRTP is given as an example above, other possible choices exist. See[RFC7202].
 
 Decoders MUST exercise caution with respect to the handling of reserved OBU types and reserved metadata OBU types, particularly if they contain active elements, and MUST restrict their domain of applicability to the presentation containing the stream. The safest way is to simply discard these OBUs.
 
@@ -630,8 +626,6 @@ End-to-end security services such as authentication, integrity, or confidentiali
 
 * [RFC5104] **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008.
 
-* [RFC6184] **RTP Payload Format for H.264 Video**, Y.-K. Wang, R. Even, T. Kristensen, and R. Jesup, May 2011.
-
 * [RFC8285] **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
 
 * [RFC7667] **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
@@ -650,8 +644,6 @@ End-to-end security services such as authentication, integrity, or confidentiali
 ### 11.2 Informative References
 
 * [RFC3711] **The Secure Real-time Transport Protocol (SRTP)**, M. Baugher, D. McGrew, M. Naslund, E. Carrara, and K. Norrman, March 2004.
-
-* [RFC5104] **Codec Control Messages in the RTP Audio-Visual Profile with Feedback (AVPF)**, S. Wenger, U. Chandra, M. Westerlund, and B. Burman, February 2008.
 
 * [RFC7202] **Securing the RTP Framework: Why RTP Does Not Mandate a Single Security Solution**, C. Perkins and M. Westerlund, April 2014.
 
@@ -1068,7 +1060,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 | Required indication    | 3     | Payload for this Decode target is present but it is neither discardable nor is it a Switch indication.
 {:.table .table-sm .table-bordered }
 
-Table A.2. DTI values.
+Table A.2. Decode Target Indication (DTI) values.
 {: .caption }
 
 **Frame dependency defintion**
@@ -1370,10 +1362,6 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 ##### A.7.2 Informative References
 
 * [AV1] **AV1 Bitstream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
-
-* [RFC3264] **An Offer/Answer Model with the Session Description Protocol (SDP)**, J. Rosenberg and H. Schulzrinne, June 2002.
-
-* [RFC4566] **SDP: Session Description Protocol**, M. Handley, V. Jacobson, and C. Perkins, July 2006.
 
 * [RFC4585] **Extended RTP Profile for Real-time Transport Control Protocol (RTCP)-Based Feedback (RTP/AVPF)**, J. Ott, S. Wenger, N. Sato, C. Burmeister, and J. Rey, July 2006.
 
