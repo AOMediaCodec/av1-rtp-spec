@@ -362,7 +362,7 @@ The receiver MUST ignore any fmtp parameter not specified in this document.
 
 
 #### 7.2.1 Mapping of Media Subtype Parameters to SDP
-The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) [RFC4566] as follows:
+The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) per [RFC4566] as follows:
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
 * The clock rate in the "a=rtpmap" line MUST be 90000.
