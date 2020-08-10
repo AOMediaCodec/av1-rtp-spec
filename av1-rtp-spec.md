@@ -591,7 +591,7 @@ The Layer Refresh Request specified in [I-D.ietf-avtext-lrr] is designed to allo
 
                              Figure 4
 
-AV1 streams MUST use the Layer Refresh Request format defined for VP9 [I-D.ietf-payload-vp9] (see Section 5.3), with the high order bit of its three-bit SID field set to 0. Figure 4 shows the format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id and TID is associated with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream specification [AV1] for details on the temporal_id and spatial_id fields.
+AV1 streams MUST use the Layer Refresh Request format defined for VP9 in Section 5.3 of [I-D.ietf-payload-vp9], with the high order bit of its three-bit SID field set to 0. Figure 4 shows the format for AV1 streams. Notice that SID here is two bits.  SID is associated with AV1's spatial_id and TID is associated with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream specification [AV1] for details on the temporal_id and spatial_id fields.
 
 Identification of a layer refresh frame may be performed by examining the coding dependency structure of the coded video sequence it belongs to. This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 of [AV1]), either in the form of a pre-defined scalability mode or through a scalability structure (Sections 5.8.6 and 6.7.6 of [AV1]). Alternatively, the Dependency Descriptor RTP header extension that is specified in Appendix A of this document may be used.
 
