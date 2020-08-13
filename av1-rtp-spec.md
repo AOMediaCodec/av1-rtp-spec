@@ -1170,18 +1170,15 @@ Chain1
 
 Note that the yellow arrows in the Chain diagrams do not show frame dependencies, rather they indicate the order of frames in the Chain. For example, F9 doesn’t depend on F2, but F9 immediately follows F2 in Chain1. 
 
-F5 is not part of any chain. For F5, the last frame in Chain0 is F1, and the last frame in Chain1 is F2.
+Purple arrow indicates the previous frame in the chain. F5 is not in any chain. For F5, the last frame in Chain0 is F1, and the last frame in Chain1 is F2.
 
-Decode targets are protected by Chains. In this example, Chain0 protects DT1 and DT2 (i.e., Decode targets with VGA spatial fidelity) and Chain1 protects DT0 and DT3 (i.e., Decode targets with HD spatial fidelity).
+Decode targets are protected by Chains. In this example, DT1 and DT2 (i.e., Decode targets with VGA spatial fidelity) are protected by Chain0, and DT0 and DT3 (i.e., Decode targets with HD spatial fidelity) are protected by Chain1.
 
-Let’s take two clients. One expects DT2, while the other expects DT3.
-(Note: the SFM notifies each client which Decode target to expect with active_decode_targets_bitmask field.)
-Those two clients would track different chains. Consider the situation where each of these two clients have received and decoded frame_number=1 and then received frame_number=5.
-frame_number=5 refer only frame_number=1, thus frame_number=5 is decodable.
+To better understand how Chains are used, consider two receiving clients. One client expects DT2, while the other expects DT3. These two clients would track different chains. In this example, each client has received and decoded F1 and then receives F5. F5 depends only on F1, thus F5 is decodable.
 
-The DT2 client would track Chain0. From frame_number=5, the client would see that the last important frame was frame_number=1. Thus it is safe to start decoding frame_number=5. Even if the DT2 client missed frame_number=3, frames followed frame_number=5 are decodable due to the fact that frame_number=3 is Discardable.
+The DT2 client would track Chain0. From the DD received with F5, the client would detect that the last essential frame is F1. Consequently, it is safe to start decoding F5. Even if the DT2 client does not receive F3, frames following F5 are decodable due to the fact that F3 is Discardable for DT2.
 
-The DT3 client would track Chain1. From frame_number=5, the client would see that the last important frame was frame_number=2. Thus it is not safe to start decoding frame_number=5. E.g., decoding frame_number=5 may overwrite the codec buffer that frame_number=2 relies on. Consequently, the DT3 client should wait until frame_number=2 is fully received and decoded.
+The DT3 client would track Chain1. From the DD received with F5, the client would detect that the last essential frame is F2. Thus it is not safe to start decoding F5. Due to the fact that frames must be decoded in decode order and F2 is essential for all HD frames, decoding F5 before F2 would prevent the decoding of F2 and all subsequent HD frames. 
 
 
 #### A.6.2 Scalability structure examples
