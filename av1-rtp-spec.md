@@ -1130,7 +1130,7 @@ The URI for declaring this header extension in an extmap attribute is "https://a
 #### A.6 Examples
 
 #### A.6.1 Decode targets, Decode Target Indications, and Chains
-In the following example, the concepts of Decode targets, Chains, and DTI are discussed in the context of the L2T3 scalability structure from the perspective of frame_number=5.
+In the following example, the concepts of Decode targets, Chains, and DTI are discussed in the context of the L2T3 scalability structure from the perspective of frame_number=5 (F5).
 
 ![L2T3](assets/images/L2T3.svg)
 L2T3
@@ -1154,7 +1154,7 @@ DT2: VGA @ 60fps
 DT3: HD @ 60fps
 {: .caption }
 
-A Decode Target Indication describes the relationship of a frame to a Decode target. For frame_number=5 (F5), the Decode Target Indication is different for each of the decode targets as shown in the table below.
+A Decode Target Indication describes the relationship of a frame to a Decode target. For F5, the Decode Target Indication is different for each of the decode targets as shown in the table below.
 
 |     |  Indication |   Description    |  SFM behavior |
 |-----|-------------|------------------|---------------|
@@ -1184,7 +1184,7 @@ To better understand how Chains are used, consider two receiving clients. One cl
 
 The DT2 client would track Chain0. From the DD received with F5, the client would detect that the last essential frame is F1. Consequently, it is safe to start decoding F5. Even if the DT2 client does not receive F3, frames following F5 are decodable due to the fact that F3 is Discardable for DT2.
 
-The DT3 client would track Chain1. From the DD received with F5, the client would detect that the last essential frame is F2. Thus it is not safe to start decoding F5. Due to the fact that frames must be decoded in decode order and F2 is essential for all HD frames, decoding F5 before F2 would prevent the decoding of F2 and all subsequent HD frames. The client therefore should send a Layer Refresh Request (LRR) per [I-D.ietf-avtext-lrr] in order to refresh the media substream.
+The DT3 client would track Chain1. From the DD received with F5, the client would detect that the last essential frame is F2. Thus it is not safe to start decoding F5. Due to the fact that frames must be decoded in decode order and F2 is essential for all HD frames, decoding F5 before F2 would prevent the decoding of F2 and all subsequent HD frames. The client therefore should wait for F2. The client may send a Generic NACK per [RFC4585] in order to request to resend missed packets since F1, or may send a Layer Refresh Request (LRR) per [I-D.ietf-avtext-lrr] in order to refresh the media substream.
 
 
 #### A.6.2 Scalability structure examples
