@@ -1164,7 +1164,7 @@ A Decode Target Indication describes the relationship of a frame to a Decode tar
 | DT3 | Required    | Future frames in DT3 reference F5. | Forward F5 to a DT3 client. No additional decisions can be made. |
 {:.table .table-sm .table-bordered }
 
-A Chain is a sequence of frames for which it can be determined instantly if a frame from that sequence has been lost. In this example two are used as shown in the diagrams below.
+A Chain is a sequence of frames for which it can be determined instantly if a frame from that sequence has been lost. In this example, two are used as shown in the diagrams below.
 
 ![ChainS0](assets/images/L2T3_C0.svg)
 Chain0
