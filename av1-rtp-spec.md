@@ -825,7 +825,7 @@ extended_descriptor_fields() {
     <b>dtis_cnt_minus_one</b> = f(5)
     DtisCnt = dtis_cnt_minus_one + 1
     if (custom_chains_flag) {
-      chains_cnt = ns(DtisCnt + 1)
+      <b>chains_cnt</b> = ns(DtisCnt + 1)
     }
   }
 
