@@ -821,6 +821,12 @@ extended_descriptor_fields() {
   if (template_dependency_structure_present_flag) {
     template_dependency_structure()
     active_decode_targets_bitmask = (1 << DtisCnt) - 1
+  } else if (active_decode_targets_present_flag || custom_dtis_flag || custom_chains_flag ) {
+    <b>dtis_cnt_minus_one</b> = f(5)
+    DtisCnt = dtis_cnt_minus_one + 1
+    if (custom_chains_flag) {
+      chains_cnt = ns(DtisCnt + 1)
+    }
   }
 
   if (active_decode_targets_present_flag) {
