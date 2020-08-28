@@ -1216,8 +1216,9 @@ One way is to set Switch indication both in F105 and F106 and reset chain at F10
 |105|S0|**Switch**|**105**|103|
 |106|S1|**Switch**|105|**105**|
 |107|S0|Required|106|105|
-|108|S1|Required|107|106|
+|108|S1|Required|107|107, 106|
 {:.table .table-sm .table-bordered }
+
 TODO: note bold entries in the table means deviation from the regular pattern,
 or find another way to express that
 
@@ -1234,7 +1235,7 @@ Another way it to set Switch indication just on F106 and reset chain at F106
 |105|S0|Required|104|103|
 |106|S1|**Switch**|**106**|**105**|
 |107|S0|Required|106|105|
-|108|S1|Required|107|106|
+|108|S1|Required|107|107, 106|
 {:.table .table-sm .table-bordered }
 
 ![L2T1_CHAIN_RESET_AT_106](assets/images/L2T1_C106.svg)
