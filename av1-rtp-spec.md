@@ -1210,7 +1210,7 @@ There are several ways sender can do that for the same (frame dependencies)
 One way is to set Switch indication both in F105 and F106 and reset chain at F105
 
 | frame_number |  Layer | Indication |  Previous Frame in Chain | Frame dependencies |
-|--------------|<------>|------------|--------------------------|--------------------|
+|--------------|:------:|------------|--------------------------|--------------------|
 |103|S0|Required|102|101|
 |104|S1|Required|103|103, 102|
 |105|S0|**Switch**|**105**|103|
@@ -1228,7 +1228,7 @@ Chain reset at F105
 Another way it to set Switch indication just on F106 and reset chain at F106
 
 | frame_number |  Layer | Indication |  Previous Frame in Chain | Frame dependencies |
-|--------------|<------>|------------|--------------------------|--------------------|
+|--------------|:------:|------------|--------------------------|--------------------|
 |103|S0|Required|102|101|
 |104|S1|Required|103|103, 102|
 |105|S0|Required|104|103|
