@@ -1129,7 +1129,9 @@ The URI for declaring this header extension in an extmap attribute is "https://a
 
 #### A.6 Examples
 
-#### A.6.1 Decode targets, Decode Target Indications, and Chains
+#### A.6.1 Scenarios
+
+#### A.6.1.1 Decode targets, Decode Target Indications, and Chains
 In the following example, the concepts of Decode targets, Chains, and DTI are discussed in the context of the L2T3 scalability structure from the perspective of frame_number=5 (F5).
 
 ![L2T3](assets/images/L2T3.svg)
@@ -1185,6 +1187,67 @@ To better understand how Chains are used, consider two receiving clients. One cl
 The DT2 client would track Chain0. From the DD received with F5, the client would detect that the last essential frame is F1. Consequently, it is safe to start decoding F5. Even if the DT2 client does not receive F3, frames following F5 are decodable due to the fact that F3 is Discardable for DT2.
 
 The DT3 client would track Chain1. From the DD received with F5, the client would detect that the last essential frame is F2. Thus it is not safe to start decoding F5. Due to the fact that frames must be decoded in decode order and F2 is essential for all HD frames, decoding F5 before F2 would prevent the decoding of F2 and all subsequent HD frames. The client therefore should wait for F2. The client may send a Generic NACK per [RFC4585] in order to notify the sender that packets have been missed since the receipt of F1, or may send a Layer Refresh Request (LRR) per [I-D.ietf-avtext-lrr] in order to refresh the media substream.
+
+#### A.6.1.2 Spatial Upswitch
+
+In the following example, spatial upswitch is discussed in the context of the L2T1 scalability structure.
+![L2T1](assets/images/L2T1.svg)
+L2T1
+{: .caption }
+
+For the L2T1 scalability structure, it is natural to define two Decode targets each protected by their own chain. In this example, a single Decode is used. Both the Decode target and chain protecting it contain all frames.
+
+In this example, Sender receives an LRR for spatial layer=1 (S1) after frame_number=104 (F104) was produced and sent. Receiver could have sent LRR because F102 was lost or because receiver was receiving a different Decode target and would like to switch to the upper spatial layer.
+
+To fulfil the LRR request, Sender needs to produce frame F106 in the layer S1 that doesn’t depend on the previous frame in the layer S1.
+![L2T1_FDIFFS](assets/images/L2T1_FDIFFS.svg)
+Frame dependencies
+{: .caption }
+
+To notify receiver upswitch is possible, Sender needs to send a frame with Switch indication and reset the chain to indicate no former frames from layer S1 are required.
+There are several ways sender can do that for the same (frame dependencies)
+
+One way is to set Switch indication both in F105 and F106 and reset chain at F105
+
+| frame_number |  Layer | Indication |  Previous Frame in Chain | Frame dependencies |
+|---|<->|---|---|---|
+|103|S0|Required|102|101|
+|104|S1|Required|103|103, 102|
+|105|S0|**Switch**|**105**|103|
+|106|S1|**Switch**|105|**105**|
+|107|S0|Required|106|105|
+|108|S1|Required|107|106|
+{:.table .table-sm .table-bordered }
+TODO: note bold entries in the table means deviation from the regular pattern,
+or find another way to express that
+
+![L2T1_CHAIN_RESET_AT_105](assets/images/L2T1_C105.svg)
+Chain reset at F105
+{: .caption }
+
+Another way it to set Switch indication just on F106 and reset chain at F106
+
+| frame_number |  Layer | Indication |  Previous Frame in Chain | Frame dependencies |
+|---|<->|---|---|---|
+|103|S0|Required|102|101|
+|104|S1|Required|103|103, 102|
+|105|S0|Required|104|103|
+|106|S1|**Switch**|**106**|**105**|
+|107|S0|Required|106|105|
+|108|S1|Required|107|106|
+{:.table .table-sm .table-bordered }
+
+![L2T1_CHAIN_RESET_AT_106](assets/images/L2T1_C106.svg)
+Chain reset at F106
+{: .caption }
+
+This demonstrates that decode target indications can be set differently for the same stream of frames. 
+
+Another example of weaker Decode Target Indication can be noticed looking at the F104. No Frame depends on F104 and thus F104 may have Discardable indication. However Sender uses Required indication because when F104 was produced, Sender wasn’t aware F106 would not depend on the F104.
+
+Besides different ways to set Decode Target Indication and reset of the chain, there are also different ways to send that information over the wire.
+Since sender supports LRR, it may include templates for F105 and F106 in the list of templates in the template_dependency_structure, even though such frames will be rare. This way such frames still would use minimal 3 bytes for the dependency descriptor payload.
+On the other hand, the sender doesn’t have to include those templates. In such case the packet containing template_dependency_structure would be smaller at the cost of larger dependency descriptor for the packets containing F105 and F106.
 
 
 #### A.6.2 Scalability structure examples
@@ -1243,40 +1306,7 @@ This example uses one Chain, which includes frames with temporal ID equal to 0.
 </tr>
 </tbody></table>
 
-##### A.6.2.2 L2T1 Full SVC with Occasional Switch
-
-This example uses two Chains. Chain 0 includes frames with spatial ID equal to 0. Chain 1 includes all frames.
-
-![L2T1](assets/images/L2T1.svg)
-
-<table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
-<tbody><tr>
-<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='2' rowspan='1' >Chains</th><th colspan='2' rowspan='1' >DTI</th>
-</tr>
-<tr>
-<th colspan='1' rowspan='1' >0</th><th colspan='1' rowspan='1' >1</th><th colspan='1' rowspan='1' >HD</th><th colspan='1' rowspan='1' >VGA</th>
-</tr>
-<tr>
-<td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td>
-</tr>
-<tr>
-<td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >R</td><td colspan='1' rowspan='1' >S</td>
-</tr>
-<tr>
-<td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td>
-</tr>
-<tr>
-<td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td>
-</tr>
-<tr>
-<td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2,1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >R</td><td colspan='1' rowspan='1' >-</td>
-</tr>
-<tr>
-<td colspan='6' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td>
-</tr>
-</tbody></table>
-
-##### A.6.2.3 L3T3 Full SVC
+##### A.6.2.2 L3T3 Full SVC
 
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all frames with temporal ID equal to 0.
 
@@ -1339,7 +1369,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 </tr>
 </tbody></table>
 
-##### A.6.2.4 L3T3 K-SVC with Temporal Shift
+##### A.6.2.3 L3T3 K-SVC with Temporal Shift
 
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frame 100 and frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes frames 100, 101, and frames with spatial ID equal to 2 and temporal ID equal to 0.
 
