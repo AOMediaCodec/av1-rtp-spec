@@ -1195,41 +1195,36 @@ In the following example, spatial upswitch is discussed in the context of the L2
 L2T1
 {: .caption }
 
-For the L2T1 scalability structure, it is natural to define two Decode targets each protected by their own chain. In this example, a single Decode is used. Both the Decode target and chain protecting it contain all frames.
+For the L2T1 scalability structure, it is natural to define two Decode targets, DT0 and DT1. DT0 includes all frames in spatial layer=0 (S0) and DT1 includes all frames in S0 and spatial layer=1 (S1). DT0 is protected by Chain0, which contains all frames in DT0. DT1 is protected by Chain1, which contains all frames in DT1.
 
-In this example, Sender receives an LRR for spatial layer=1 (S1) after frame_number=104 (F104) was produced and sent. Receiver could have sent LRR because F102 was lost or because receiver was receiving a different Decode target and would like to switch to the upper spatial layer.
+In this example, the sender receives a Layer Refresh Request (LRR) for S1 after frame_number=104 (F104) was produced and sent. To fulfil the LRR, the sender should  produce F106 such that it does not depend on any previous frame in S1.
 
-To fulfil the LRR request, Sender needs to produce frame F106 in the layer S1 that doesn’t depend on the previous frame in the layer S1.
 ![L2T1_FDIFFS](assets/images/L2T1_FDIFFS.svg)
 Frame dependencies
 {: .caption }
 
-To notify receiver upswitch is possible, Sender needs to send a frame with Switch indication and reset the chain to indicate no former frames from layer S1 are required.
-There are several ways sender can do that for the same (frame dependencies)
+To notify the receiver that an upswitch is possible (i.e., no previous frames from layer S1 are required to decode future S1 frames), the sender needs to send a frame with a Switch indication to DT1 and reset Chain1.
 
-One way is to set Switch indication both in F105 and F106 and reset chain at F105
+One way to notify the receiver is to set a Switch indication in F105 and reset Chain1 at F105 as shown in the table and figure below.
 
-| frame_number |  Layer | Indication |  Previous Frame in Chain | Frame dependencies |
-|--------------|:------:|------------|--------------------------|--------------------|
+| frame_number |  Layer | Indication for DT1 |  Previous Frame in Chain1 | Frame dependencies |
+|--------------|:------:|--------------------|---------------------------|--------------------|
 |103|S0|Required|102|101|
 |104|S1|Required|103|103, 102|
 |105|S0|**Switch**|**105**|103|
-|106|S1|**Switch**|105|**105**|
+|106|S1|Required|105|**105**|
 |107|S0|Required|106|105|
 |108|S1|Required|107|107, 106|
 {:.table .table-sm .table-bordered }
 
-TODO: note bold entries in the table means deviation from the regular pattern,
-or find another way to express that
-
 ![L2T1_CHAIN_RESET_AT_105](assets/images/L2T1_C105.svg)
-Chain reset at F105
+Chain1 reset at F105
 {: .caption }
 
-Another way it to set Switch indication just on F106 and reset chain at F106
+Another way to notify the receiver is to set a Switch indication in F106 and reset Chain1 at F106 as shown in the table and figure below.
 
-| frame_number |  Layer | Indication |  Previous Frame in Chain | Frame dependencies |
-|--------------|:------:|------------|--------------------------|--------------------|
+| frame_number |  Layer | Indication for DT1 |  Previous Frame in Chain1 | Frame dependencies |
+|--------------|:------:|--------------------|---------------------------|--------------------|
 |103|S0|Required|102|101|
 |104|S1|Required|103|103, 102|
 |105|S0|Required|104|103|
@@ -1239,17 +1234,10 @@ Another way it to set Switch indication just on F106 and reset chain at F106
 {:.table .table-sm .table-bordered }
 
 ![L2T1_CHAIN_RESET_AT_106](assets/images/L2T1_C106.svg)
-Chain reset at F106
+Chain1 reset at F106
 {: .caption }
 
-This demonstrates that decode target indications can be set differently for the same stream of frames. 
-
-Another example of weaker Decode Target Indication can be noticed looking at the F104. No Frame depends on F104 and thus F104 may have Discardable indication. However Sender uses Required indication because when F104 was produced, Sender wasn’t aware F106 would not depend on the F104.
-
-Besides different ways to set Decode Target Indication and reset of the chain, there are also different ways to send that information over the wire.
-Since sender supports LRR, it may include templates for F105 and F106 in the list of templates in the template_dependency_structure, even though such frames will be rare. This way such frames still would use minimal 3 bytes for the dependency descriptor payload.
-On the other hand, the sender doesn’t have to include those templates. In such case the packet containing template_dependency_structure would be smaller at the cost of larger dependency descriptor for the packets containing F105 and F106.
-
+The two ways of notifying the receiver as shown above demonstrate that Decode Target Indications and Chains can be set differently even though the stream structure and frame dependencies are the same.
 
 #### A.6.2 Scalability structure examples
 
