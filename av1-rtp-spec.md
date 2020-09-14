@@ -1129,7 +1129,9 @@ The URI for declaring this header extension in an extmap attribute is "https://a
 
 #### A.6 Examples
 
-#### A.6.1 Decode targets, Decode Target Indications, and Chains
+#### A.6.1 Scenarios
+
+#### A.6.1.1 Decode targets, Decode Target Indications, and Chains
 In the following example, the concepts of Decode targets, Chains, and DTI are discussed in the context of the L2T3 scalability structure from the perspective of frame_number=5 (F5).
 
 ![L2T3](assets/images/L2T3.svg)
@@ -1186,6 +1188,56 @@ The DT2 client would track Chain0. From the DD received with F5, the client woul
 
 The DT3 client would track Chain1. From the DD received with F5, the client would detect that the last essential frame is F2. Thus it is not safe to start decoding F5. Due to the fact that frames must be decoded in decode order and F2 is essential for all HD frames, decoding F5 before F2 would prevent the decoding of F2 and all subsequent HD frames. The client therefore should wait for F2. The client may send a Generic NACK per [RFC4585] in order to notify the sender that packets have been missed since the receipt of F1, or may send a Layer Refresh Request (LRR) per [I-D.ietf-avtext-lrr] in order to refresh the media substream.
 
+#### A.6.1.2 Spatial Upswitch
+
+In the following example, spatial upswitch is discussed in the context of the L2T1 scalability structure.
+![L2T1](assets/images/L2T1.svg)
+L2T1
+{: .caption }
+
+For the L2T1 scalability structure, it is natural to define two Decode targets, DT0 and DT1. DT0 includes all frames in spatial layer=0 (S0) and DT1 includes all frames in S0 and spatial layer=1 (S1). DT0 is protected by Chain0, which contains all frames in DT0. DT1 is protected by Chain1, which contains all frames in DT1.
+
+In this example, the sender receives a Layer Refresh Request (LRR) for S1 after frame_number=104 (F104) was produced and sent. To fulfil the LRR, the sender should  produce F106 such that it does not depend on any previous frame in S1.
+
+![L2T1_FDIFFS](assets/images/L2T1_FDIFFS.svg)
+Frame dependencies
+{: .caption }
+
+To notify the receiver that an upswitch is possible (i.e., no previous frames from layer S1 are required to decode future S1 frames), the sender needs to send a frame with a Switch indication to DT1 and reset Chain1.
+
+One way to notify the receiver is to set a Switch indication in F105 and reset Chain1 at F105 as shown in the table and figure below.
+
+| frame_number |  Layer | Indication for DT1 |  Previous Frame in Chain1 | Frame dependencies |
+|--------------|:------:|--------------------|---------------------------|--------------------|
+|103|S0|Required|102|101|
+|104|S1|Required|103|103, 102|
+|105|S0|**Switch**|**105**|103|
+|106|S1|Required|105|**105**|
+|107|S0|Required|106|105|
+|108|S1|Required|107|107, 106|
+{:.table .table-sm .table-bordered }
+
+![L2T1_CHAIN_RESET_AT_105](assets/images/L2T1_C105.svg)
+Chain1 reset at F105
+{: .caption }
+
+Another way to notify the receiver is to set a Switch indication in F106 and reset Chain1 at F106 as shown in the table and figure below.
+
+| frame_number |  Layer | Indication for DT1 |  Previous Frame in Chain1 | Frame dependencies |
+|--------------|:------:|--------------------|---------------------------|--------------------|
+|103|S0|Required|102|101|
+|104|S1|Required|103|103, 102|
+|105|S0|Required|104|103|
+|106|S1|**Switch**|**106**|**105**|
+|107|S0|Required|106|105|
+|108|S1|Required|107|107, 106|
+{:.table .table-sm .table-bordered }
+
+![L2T1_CHAIN_RESET_AT_106](assets/images/L2T1_C106.svg)
+Chain1 reset at F106
+{: .caption }
+
+The two ways of notifying the receiver as shown above demonstrate that Decode Target Indications and Chains can be set differently even though the stream structure and frame dependencies are the same.
 
 #### A.6.2 Scalability structure examples
 
@@ -1243,40 +1295,7 @@ This example uses one Chain, which includes frames with temporal ID equal to 0.
 </tr>
 </tbody></table>
 
-##### A.6.2.2 L2T1 Full SVC with Occasional Switch
-
-This example uses two Chains. Chain 0 includes frames with spatial ID equal to 0. Chain 1 includes all frames.
-
-![L2T1](assets/images/L2T1.svg)
-
-<table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
-<tbody><tr>
-<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='2' rowspan='1' >Chains</th><th colspan='2' rowspan='1' >DTI</th>
-</tr>
-<tr>
-<th colspan='1' rowspan='1' >0</th><th colspan='1' rowspan='1' >1</th><th colspan='1' rowspan='1' >HD</th><th colspan='1' rowspan='1' >VGA</th>
-</tr>
-<tr>
-<td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' ></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td>
-</tr>
-<tr>
-<td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >R</td><td colspan='1' rowspan='1' >S</td>
-</tr>
-<tr>
-<td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >S</td>
-</tr>
-<tr>
-<td colspan='1' rowspan='1' >4</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >S</td><td colspan='1' rowspan='1' >-</td>
-</tr>
-<tr>
-<td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2,1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >R</td><td colspan='1' rowspan='1' >-</td>
-</tr>
-<tr>
-<td colspan='6' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td>
-</tr>
-</tbody></table>
-
-##### A.6.2.3 L3T3 Full SVC
+##### A.6.2.2 L3T3 Full SVC
 
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all frames with temporal ID equal to 0.
 
@@ -1339,7 +1358,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 </tr>
 </tbody></table>
 
-##### A.6.2.4 L3T3 K-SVC with Temporal Shift
+##### A.6.2.3 L3T3 K-SVC with Temporal Shift
 
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frame 100 and frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes frames 100, 101, and frames with spatial ID equal to 2 and temporal ID equal to 0.
 
