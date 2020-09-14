@@ -1189,8 +1189,8 @@ The DT2 client would track Chain0. From the DD received with F5, the client woul
 The DT3 client would track Chain1. From the DD received with F5, the client would detect that the last essential frame is F2. Thus it is not safe to start decoding F5. Due to the fact that frames must be decoded in decode order and F2 is essential for all HD frames, decoding F5 before F2 would prevent the decoding of F2 and all subsequent HD frames. The client therefore should wait for F2. The client may send a Generic NACK per [RFC4585] in order to notify the sender that packets have been missed since the receipt of F1, or may send a Layer Refresh Request (LRR) per [I-D.ietf-avtext-lrr] in order to refresh the media substream.
 
 #### A.6.1.2 Spatial Upswitch
-
 In the following example, spatial upswitch is discussed in the context of the L2T1 scalability structure.
+
 ![L2T1](assets/images/L2T1.svg)
 L2T1
 {: .caption }
