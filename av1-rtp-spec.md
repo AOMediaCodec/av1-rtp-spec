@@ -1258,6 +1258,71 @@ Another way to notify the receiver is to set a Switch indication in F106 and res
 The two ways of notifying the receiver as shown above demonstrate that Decode Target Indications and Chains can be set differently even though the stream structure and frame dependencies are the same.
 
 
+##### A.6.1.3 Dynamic Prediction Structure
+In the following example, the sender encodes two quality layers, S0 and S1 (i.e., layers with the same resolution but different qualities).
+
+<figure style="display: block;" align="center">
+  <img src="assets/images/Q2T1.svg" width="40%" />
+</figure>
+
+In this example, there are two Decode targets, DT0 and DT1. DT0 includes all frames in S0. DT1 includes all frames in S0 and S1. DT0 is protected by Chain0, which contains all frames in DT0. DT1 is protected by Chain1, which contains all frames in DT1. 
+
+The sender has a bit rate constraint for DT0. When the encoder overshoots that constraint, the sender can skip encoding a few frames. The figure and table below show an example in which three frames are skipped.
+
+<figure style="display: block;" align="center">
+  <img src="assets/images/Q2T1_SKIP_FRAMES.svg" width="80%" />
+</figure>
+
+|frame_number | Layer | Previous Frame in Chain0 | Frame Dependencies|
+|-------------|-------|--------------------------|-------------------|
+|103          |S0     |101                       |101                |
+|104          |S1     |103                       |103, 102           |
+|105          |S1     |**103**                   |**104**             |
+|106          |S1     |**103**                   |**105**             |
+|107          |S1     |**103**                   |**106**             |
+|108          |S0     |**103**                   |**103**             |
+|109          |S1     |108                       |108, 107           |
+{:.table .table-sm .table-bordered }
+
+One way to signal this dynamic prediction structure would be to define a basic set of templates as shown in the table below and override chain diffs and/or frame diffs directly in the DD when necessary.
+
+|Template id | Layer | Chain0 diff | Frame diff | Referenced by frame_number | Note          |
+|------------|-------|-------------|------------|----------------------------|---------------|
+|0           |S0     |0            |-           |1                           |Key frame      |
+|1           |S0     |2            |2           |101, 103, **108**, 110      |S0 steady state|
+|2           |S1     |1            |1           |2, **105, 106, 107**        |S1 first frame |
+|3           |S1     |1            |1, 2        |102, 104, 109, 111          |S1 steady state|
+{:.table .table-sm .table-bordered }
+
+Custom frame diffs and chain diffs can be set as shown in the table below.
+
+|frame_number | custom_fdiffs_flag | FrameFdiff[] | custom_chains_flag | frame_chain_fdiff[0]|
+|-------------|--------------------|--------------|--------------------|---------------------|
+|105          |false               |-             |true                |2                    |
+|106          |false               |-             |true                |3                    |
+|107          |false               |-             |true                |4                    |
+|108          |true                |5             |true                |5                    |
+{:.table .table-sm .table-bordered }
+
+Another way to signal this dynamic prediction structure would be to define a larger set of templates as shown in the table below. This way up to three frames can be skipped in DT0 without the sender having to override frame diffs and/or chain diffs.
+
+|Template index | Layer | Chain0 diff | Frame diff | Referenced by frame_number | Note              |
+|---------------|-------|-------------|------------|----------------------------|-------------------|
+|0              |S0     |0            |-           |1                           |Key frame          |
+|1              |S0     |2            |2           |101, 103, 110               |S0 steady state    |
+|2              |S0     |3            |3           |-                           |One frame skipped  |
+|3              |S0     |4            |4           |-                           |Two frame skipped  |
+|4              |S0     |5            |5           |**108**                     |Three frame skipped|
+|5              |S1     |1            |1           |2                           |S1 first frame     |
+|6              |S1     |1            |1, 2        |102, 104, 109, 111          |S1 steady state    |
+|7              |S1     |2            |1           |**105**                     |One frame skipped  |
+|8              |S1     |3            |1           |**106**                     |Two frame skipped  |
+|9              |S1     |4            |1           |**107**                     |Three frame skipped|
+{:.table .table-sm .table-bordered }
+
+The first way uses fewer templates and therefore requires fewer bits in the first packet of the key frame, while the second way uses more templates but requires fewer bits in all packets of F105 to F108.
+
+
 #### A.6.2 Scalability structure examples
 
 Each example in this section contains a prediction structure figure and a table describing the associated Frame dependency structure. The Frame dependency structure table column headings have the meanings listed below. For the DTI- related columns, Table A.4 shows the symbol used to represent each DTI value.
