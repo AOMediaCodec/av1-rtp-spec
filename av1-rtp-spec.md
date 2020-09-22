@@ -85,7 +85,7 @@ Temporal and spatial scalability layers are associated with non-negative integer
 
 ## 4. Payload Format
 
-This section describes how the encoded AV1 bitstream is encapsulated in RTP. All integer fields in this specification are encoded as unsigned integers in network byte order.
+This section describes how the encoded AV1 bitstream is encapsulated in RTP.
 
 
 ### 4.1 RTP Header Usage
