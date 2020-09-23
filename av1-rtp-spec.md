@@ -1191,17 +1191,19 @@ The DT3 client would track Chain1. From the DD received with F5, the client woul
 ##### A.6.1.2 Spatial Upswitch
 In the following example, spatial upswitch is discussed in the context of the L2T1 scalability structure.
 
-![L2T1](assets/images/L2T1.svg)
-L2T1
-{: .caption }
+<figure style="display: block;" align="center">
+  <img src="assets/images/L2T1.svg" width="40%" />
+  <figcaption>L2T1</figcaption>
+</figure>
 
 For the L2T1 scalability structure, it is natural to define two Decode targets, DT0 and DT1. DT0 includes all frames in spatial layer=0 (S0) and DT1 includes all frames in S0 and spatial layer=1 (S1). DT0 is protected by Chain0, which contains all frames in DT0. DT1 is protected by Chain1, which contains all frames in DT1.
 
 In this example, the sender receives a Layer Refresh Request (LRR) for S1 after frame_number=104 (F104) was produced and sent. To fulfil the LRR, the sender should  produce F106 such that it does not depend on any previous frame in S1.
 
-![L2T1_FDIFFS](assets/images/L2T1_FDIFFS.svg)
-Frame dependencies
-{: .caption }
+<figure style="display: block;" align="center">
+  <img src="assets/images/L2T1_FDIFFS.svg" width="55%" />
+  <figcaption>Frame dependencies</figcaption>
+</figure>
 
 To notify the receiver that an upswitch is possible (i.e., no previous frames from layer S1 are required to decode future S1 frames), the sender needs to send a frame with a Switch indication to DT1 and reset Chain1.
 
@@ -1217,9 +1219,10 @@ One way to notify the receiver is to set a Switch indication in F105 and reset C
 |108|S1|Required|107|107, 106|
 {:.table .table-sm .table-bordered }
 
-![L2T1_CHAIN_RESET_AT_105](assets/images/L2T1_C105.svg)
-Chain1 reset at F105
-{: .caption }
+<figure style="display: block;" align="center">
+  <img src="assets/images/L2T1_C105.svg" width="55%" />
+  <figcaption>Chain1 reset at F105</figcaption>
+</figure>
 
 Another way to notify the receiver is to set a Switch indication in F106 and reset Chain1 at F106 as shown in the table and figure below.
 
@@ -1233,9 +1236,10 @@ Another way to notify the receiver is to set a Switch indication in F106 and res
 |108|S1|Required|107|107, 106|
 {:.table .table-sm .table-bordered }
 
-![L2T1_CHAIN_RESET_AT_106](assets/images/L2T1_C106.svg)
-Chain1 reset at F106
-{: .caption }
+<figure style="display: block;" align="center">
+  <img src="assets/images/L2T1_C106.svg" width="55%" />
+  <figcaption>Chain1 reset at F106</figcaption>
+</figure>
 
 The two ways of notifying the receiver as shown above demonstrate that Decode Target Indications and Chains can be set differently even though the stream structure and frame dependencies are the same.
 
