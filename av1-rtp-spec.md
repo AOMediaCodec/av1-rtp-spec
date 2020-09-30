@@ -768,6 +768,20 @@ read_bit() {
 </code></pre>
 
 **ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e., output in range 0..n-1).
+
+This descriptor is similar to ceiling of the base 2 logarithm of the input n, but reduces wastage incurred when encoding non-power of two value ranges by encoding 1 fewer bits for the lower part of the value range. For example, when n is equal to 5, the encodings are as follows (full binary encodings are also presented for comparison):
+
+| Value | Full binary encoding | ns(n) encoding |
+| ----- | -------------------- | -------------- |
+| 0     | 000                  | 00             |
+| 1     | 001                  | 01             |
+| 2     | 010                  | 10             |
+| 3     | 011                  | 110            |
+| 4     | 100                  | 111            |
+{:.table .table-sm .table-bordered }
+
+The parsing process for this descriptor is specified as:
+
 <pre><code>
 ns(n) {
   w = 0
@@ -784,6 +798,28 @@ ns(n) {
   return (v << 1) - m + extra_bit
 }
 </code></pre>
+
+The serialization proccess for this descriptor is specified as:
+
+<pre><code>
+write_ns(n,v) {
+  if (n == 1) return
+  w = 0
+  x = n
+  while (x != 0) {
+    x = x >> 1
+    w++
+  }
+  m = (1 << w) - n
+  if (v< m)
+    write(w - 1, val);
+  else
+    write(w, v + m) 
+}
+</code></pre>
+
+where write(n,v) writes the bit stream representation of v using n bits.
+
 
 | Symbol name               | Value | Description                                         |
 | ------------------------- | ----- | --------------------------------------------------- |
