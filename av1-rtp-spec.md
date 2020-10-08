@@ -769,7 +769,7 @@ read_bit() {
 
 **ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e., output in range 0..n-1).
 
-This descriptor is similar to ceiling of the base 2 logarithm of the input n, but reduces wastage incurred when encoding non-power of two value ranges by encoding 1 fewer bits for the lower part of the value range. For example, when n is equal to 5, the encodings are as follows (full binary encodings are also presented for comparison):
+This descriptor is similar to ceiling of the base 2 logarithm of the input n, but reduces wastage incurred when encoding non-power of two value ranges by encoding one fewer bits for the lower part of the value range. For example, when n is equal to five, the encodings are as follows (full binary encodings are also presented for comparison):
 
 | Value | Full binary encoding | ns(n) encoding |
 | ----- | -------------------- | -------------- |
@@ -811,14 +811,14 @@ write_ns(n,v) {
     w++
   }
   m = (1 << w) - n
-  if (v< m)
-    write(w - 1, val);
+  if (v < m)
+    write_f(w - 1, val);
   else
-    write(w, v + m) 
+    write_f(w, v + m) 
 }
 </code></pre>
 
-where write(n,v) writes the bit stream representation of v using n bits.
+where write_f(n,v) writes the bit stream representation of v using n bits.
 
 
 | Symbol name               | Value | Description                                         |
