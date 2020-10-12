@@ -820,17 +820,6 @@ write_ns(n,v) {
 
 where write_f(n,v) writes the bit stream representation of v using n bits.
 
-
-| Symbol name               | Value | Description                                         |
-| ------------------------- | ----- | --------------------------------------------------- |
-| MAX_TEMPLATE_ID           | 63    | Maximum value for a frame_dependency_template_id to identify a template
-| MAX_SPATIAL_ID            | 3     | Maximum value for a FrameSpatialId
-| MAX_TEMPORAL_ID           | 7     | Maximum value for a FrameTemporalId
-{:.table .table-sm .table-bordered }
-
-Table A.1. Syntax constants
-{: .caption }
-
 <pre><code>
 dependency_descriptor( sz ) {
   TotalConsumedBits = 0
