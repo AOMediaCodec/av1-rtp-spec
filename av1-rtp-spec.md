@@ -912,6 +912,7 @@ template_dependency_structure() {
   template_dtis()
   template_fdiffs()
   template_chains()
+  decode_target_layers()
   <b>resolutions_present_flag</b> = f(1)
   if (resolutions_present_flag) {
     render_resolutions()
@@ -1059,6 +1060,28 @@ template_chains() {
 frame_chains() {
   for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
     <b>frame_chain_fdiff[chainIndex]</b> = f(8)
+  }
+}
+</code></pre>
+
+
+<pre><code>
+decode_target_layers() {
+  for (dtIndex = 0; dtIndex < dtCnt; dtIndex++) {
+    spatialId = 0
+    temporalId = 0
+    for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
+      if (template_dti[templateIndex][dtIndex] != 0) {
+        if (TemplateSpatialId[templateIndex] > spatialId) {
+          spatialId = TemplateSpatialId[templateIndex]
+        }
+        if (TemplateTemporalId[templateIndex] > temporalId) {
+          temporalId = TemplateTemporalId[templateIndex]
+        }
+      }
+    }
+    DecodeTargetSpatialId[dtIndex] = spatialId
+    DecodeTargetTemporalId[dtIndex] = temporalId
   }
 }
 </code></pre>
