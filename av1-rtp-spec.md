@@ -801,6 +801,20 @@ read_bit() {
 </code></pre>
 
 **ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e., output in range 0..n-1).
+
+This descriptor is similar to ceiling of the base 2 logarithm of the input n, but reduces wastage incurred when encoding non-power of two value ranges by encoding one fewer bits for the lower part of the value range. For example, when n is equal to five, the encodings are as follows (full binary encodings are also presented for comparison):
+
+| Value | Full binary encoding | ns(n) encoding |
+| ----- | -------------------- | -------------- |
+| 0     | 000                  | 00             |
+| 1     | 001                  | 01             |
+| 2     | 010                  | 10             |
+| 3     | 011                  | 110            |
+| 4     | 100                  | 111            |
+{:.table .table-sm .table-bordered }
+
+The parsing process for this descriptor is specified as:
+
 <pre><code>
 ns(n) {
   w = 0
@@ -818,15 +832,26 @@ ns(n) {
 }
 </code></pre>
 
-| Symbol name               | Value | Description                                         |
-| ------------------------- | ----- | --------------------------------------------------- |
-| MAX_TEMPLATE_ID           | 63    | Maximum value for a frame_dependency_template_id to identify a template
-| MAX_SPATIAL_ID            | 3     | Maximum value for a FrameSpatialId
-| MAX_TEMPORAL_ID           | 7     | Maximum value for a FrameTemporalId
-{:.table .table-sm .table-bordered }
+The serialization proccess for this descriptor is specified as:
 
-Table A.1. Syntax constants
-{: .caption }
+<pre><code>
+write_ns(n,v) {
+  if (n == 1) return
+  w = 0
+  x = n
+  while (x != 0) {
+    x = x >> 1
+    w++
+  }
+  m = (1 << w) - n
+  if (v < m)
+    write_f(w - 1, val);
+  else
+    write_f(w, v + m) 
+}
+</code></pre>
+
+where write_f(n,v) writes the bit stream representation of v using n bits.
 
 <pre><code>
 dependency_descriptor( sz ) {
@@ -861,11 +886,11 @@ extended_descriptor_fields() {
 
   if (template_dependency_structure_present_flag) {
     template_dependency_structure()
-    active_decode_targets_bitmask = (1 << DtisCnt) - 1
+    active_decode_targets_bitmask = (1 << DtCnt) - 1
   }
 
   if (active_decode_targets_present_flag) {
-    <b>active_decode_targets_bitmask</b> = f(DtisCnt)
+    <b>active_decode_targets_bitmask</b> = f(DtCnt)
   }
 }
 </code></pre>
@@ -881,8 +906,8 @@ no_extended_descriptor_fields() {
 <pre><code>
 template_dependency_structure() {
   <b>template_id_offset</b> = f(6)
-  <b>dtis_cnt_minus_one</b> = f(5)
-  DtisCnt = dtis_cnt_minus_one + 1
+  <b>dt_cnt_minus_one</b> = f(5)
+  DtCnt = dt_cnt_minus_one + 1
   template_layers()
   template_dtis()
   template_fdiffs()
@@ -896,8 +921,7 @@ template_dependency_structure() {
 
 <pre><code>
 frame_dependency_definition() {
-  templateIndex = (frame_dependency_template_id + (MAX_TEMPLATE_ID + 1) -
-                   template_id_offset) % (MAX_TEMPLATE_ID + 1)
+  templateIndex = (frame_dependency_template_id + 64 - template_id_offset) % 64
   If (templateIndex >= TemplatesCnt) {
     return  // error
   }
@@ -968,9 +992,9 @@ render_resolutions() {
 <pre><code>
 template_dtis() {
   for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
-    for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
-      // See table A.2 below for meaning of DTI values.
-      <b>template_dti[templateIndex][dtiIndex]</b> = f(2)
+    for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
+      // See table A.1 below for meaning of DTI values.
+      <b>template_dti[templateIndex][dtIndex]</b> = f(2)
     }
   }
 }
@@ -978,9 +1002,9 @@ template_dtis() {
 
 <pre><code>
 frame_dtis() {
-  for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
-    // See table A.2 below for meaning of DTI values.
-    <b>frame_dti[dtiIndex]</b> = f(2)
+  for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
+    // See table A.1 below for meaning of DTI values.
+    <b>frame_dti[dtIndex]</b> = f(2)
   }
 }
 </code></pre>
@@ -1016,12 +1040,12 @@ frame_fdiffs() {
 
 <pre><code>
 template_chains() {
-  <b>chains_cnt</b> = ns(DtisCnt + 1)
+  <b>chains_cnt</b> = ns(DtCnt + 1)
   if (chains_cnt == 0) {
     return
   }
-  for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
-    <b>decode_target_protected_by[dtiIndex]</b> = ns(chains_cnt)
+  for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
+    <b>decode_target_protected_by[dtIndex]</b> = ns(chains_cnt)
   }
   for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
     for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
@@ -1080,11 +1104,11 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **template_id_offset**: indicates the value of the frame_dependency_template_id having templateIndex=0. The value of template_id_offset SHOULD be chosen so that the valid frame_dependency_template_id range, template_id_offset to template_id_offset + TemplatesCnt - 1, inclusive, of a new template_dependency_structure, does not overlap the valid frame_dependency_template_id range for the existing template_dependency_structure. When template_id_offset of a new template_dependency_structure is the same as in the existing template_dependency_structure, all fields in both template_dependency_structures MUST have identical values.
 
-* **dtis_cnt_minus_one**: dtis_cnt_minus_one + 1 indicates the number of Decode targets present in the coded video sequence.
+* **dt_cnt_minus_one**: dt_cnt_minus_one + 1 indicates the number of Decode targets present in the coded video sequence.
 
 * **resolutions_present_flag**: indicates the presence of render_resolutions. When the resolutions_present_flag is set to 1, render_resolutions MUST be present; otherwise render_resolutions MUST NOT be present.
 
-* **next_layer_idc**: used to determine spatial ID and temporal ID for the next Frame dependency template. Table A.3 describes how the spatial ID and temporal ID values are determined. A next_layer_idc equal to 3 indicates that no more Frame dependency templates are present in the Frame dependency structure.
+* **next_layer_idc**: used to determine spatial ID and temporal ID for the next Frame dependency template. Table A.2 describes how the spatial ID and temporal ID values are determined. A next_layer_idc equal to 3 indicates that no more Frame dependency templates are present in the Frame dependency structure.
 
 * **max_render_width_minus_1[spatial_id]**: indicates the maximum render width minus 1 for frames with spatial ID equal to spatial_id.
 
@@ -1092,32 +1116,32 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **chains_cnt**: indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
 
-* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects the Decode target, dtIndex. When chains_cnt > 0, each Decode target MUST be protected by exactly one Chain.
+* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects Decode target with index equal to dtIndex. When chains_cnt > 0, each Decode target MUST be protected by exactly one Chain.
 
-* **template_dti[templateIndex][]**: an array of size dtis_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.2 contains a description of the Decode Target Indication values.
+* **template_dti[templateIndex][]**: an array of size dt_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.1 contains a description of the Decode Target Indication values.
 
-* **template_chain_fdiff[templateIndex][]**: an array of size chains_cnt containing chain-FDIFF values for the Frame dependency template having index value equal to templateIndex. In a template, the values of chain-FDIFF can be in the range 0 to 15, inclusive.
+* **template_chain_fdiff[templateIndex][]**: an array of size chains_cnt containing frame_chain_fdiff values for the Frame dependency template having index value equal to templateIndex. In a template, the values of frame_chain_fdiff can be in the range 0 to 15, inclusive.
 
 * **fdiff_follows_flag**: indicates the presence of a frame difference value. When the fdiff_follows_flag is set to 1, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present for the current Frame dependency template.
 
 * **fdiff_minus_one**: the difference between frame_number and the frame_number of the Referred frame minus one. The calculation is done modulo the size of the frame_number field.
 
-| DTI                    | Value |                                                        |
-| ---------------------- | ----- | ------------------------------------------------------ |
-| Not present indication | 0     | No payload for this Decode target is present.
-| Discardable indication | 1     | Payload for this Decode target is present and discardable.
-| Switch indication      | 2     | Payload for this Decode target is present and switch is possible (Switch indication).
-| Required indication    | 3     | Payload for this Decode target is present but it is neither discardable nor is it a Switch indication.
+| DTI                    | Value | Symbol |                                                        |
+| ---------------------- | ----- | ------ | ------------------------------------------------------ |
+| Not present indication | 0     | -      | No payload for this Decode target is present.
+| Discardable indication | 1     | D      | Payload for this Decode target is present and discardable.
+| Switch indication      | 2     | S      | Payload for this Decode target is present and switch is possible (Switch indication).
+| Required indication    | 3     | R      | Payload for this Decode target is present but it is neither discardable nor is it a Switch indication.
 {:.table .table-sm .table-bordered }
 
-Table A.2. Decode Target Indication (DTI) values.
+Table A.1. Decode Target Indication (DTI) values.
 {: .caption }
 
 **Frame dependency defintion**
 
 * **next_fdiff_size**: indicates the size of following fdiff_minus_one syntax elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present.
 
-* **frame_dti[dtiIndex]**: Decode Target Indication describing the relationship between the current frame and the Decode target having index equal to dtiIndex. Table A.2 contains a description of the Decode Target Indication values.
+* **frame_dti[dtIndex]**: Decode Target Indication describing the relationship between the current frame and the Decode target having index equal to dtIndex. Table A.2 contains a description of the Decode Target Indication values.
 
 * **frame_chain_fdiff[chainIdx]**: indicates the difference between the frame_number and the frame_number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and frame_number=112 the previous frame in the Chain with index equal to chainIdx has frame_number=109. The calculation is done modulo the size of the frame_number field.
 
@@ -1129,7 +1153,7 @@ Table A.2. Decode Target Indication (DTI) values.
 | 3              | No more Frame dependency templates are present in the Frame dependency structure.
 {:.table .table-sm .table-bordered }
 
-Table A.3. Derivation Of Next Spatial ID And Temporal ID Values.
+Table A.2. Derivation Of Next Spatial ID And Temporal ID Values.
 {: .caption }
 
 
@@ -1326,7 +1350,7 @@ The first way uses fewer templates and therefore requires fewer bits in the firs
 
 #### A.8.2 Scalability structure examples
 
-Each example in this section contains a prediction structure figure and a table describing the associated Frame dependency structure. The Frame dependency structure table column headings have the meanings listed below. For the DTI- related columns, Table A.4 shows the symbol used to represent each DTI value.
+Each example in this section contains a prediction structure figure and a table describing the associated Frame dependency structure. The Frame dependency structure table column headings have the meanings listed below. For the DTI- related columns, Table A.1 shows the symbol used to represent each DTI value.
 
   * Idx - template index
   * S - spatial ID
@@ -1334,17 +1358,6 @@ Each example in this section contains a prediction structure figure and a table 
   * Fdiffs - comma delimited list of TemplateFdiff[Idx] values
   * Chain(s) - **template_chain_fdiff[Idx]** values for each Chain
   * DTI - **template_dti[Idx]**
-
-| DTI                    | Value | Symbol   |
-| ---------------------- | ----- | -------- |
-| Not present indication | 0     | -        |
-| Discardable indication | 1     | D        |
-| Switch indication      | 2     | S        |
-| Required indication    | 3     | R        |
-{:.table .table-sm .table-bordered }
-
-Table A.4. DTI values
-{: .caption }
 
 
 ##### A.8.2.1 L1T3 Single Spatial Layer with 3 Temporal Layers
