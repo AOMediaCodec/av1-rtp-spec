@@ -1030,6 +1030,35 @@ frame_chains() {
 }
 </code></pre>
 
+<div class="alert alert-info">
+  <p><b>Note:</b> The spatial ID of a Decode target can be calculated as follows:</p>
+  <pre><code>
+  decode_target_spatial_id(dtIndex) {
+    spatialId = 0
+    for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
+      if (template_dti[templateIndex][dtIndex] != 0 &&
+          TemplateSpatialId[templateIndex] > spatialId) {
+        spatialId = TemplateSpatialId[templateIndex]
+      }
+    }
+    return spatialId
+  }
+  </code></pre>
+  <p><b>Note:</b> The temporal ID of a Decode target can be calculated as follows:</p>
+  <pre><code>
+  decode_target_temporal_id(dtIndex) {
+    temporalId = 0
+    for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
+      if (template_dti[templateIndex][dtIndex] != 0 &&
+          TemplateTemporalId[templateIndex] > spatialId) {
+        temporalId = TemplateTemporalId[templateIndex]
+      }
+    }
+    return temporalId
+  }
+  </code></pre>
+</div>
+
 ##### A.4.2 Semantics
 
 The semantics pertaining to the Dependency Descriptor syntax section above is described in this section.
