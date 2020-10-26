@@ -879,6 +879,7 @@ template_dependency_structure() {
   template_dtis()
   template_fdiffs()
   template_chains()
+  decode_target_layers()
   <b>resolutions_present_flag</b> = f(1)
   if (resolutions_present_flag) {
     render_resolutions()
@@ -1030,34 +1031,27 @@ frame_chains() {
 }
 </code></pre>
 
-<div class="alert alert-info">
-  <p><b>Note:</b> The spatial ID of a Decode target can be calculated as follows:</p>
-  <pre><code>
-  decode_target_spatial_id(dtIndex) {
+
+<pre><code>
+decode_target_layers() {
+  for (dtIndex = 0; dtIndex < dtCnt; dtIndex++) {
     spatialId = 0
-    for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
-      if (template_dti[templateIndex][dtIndex] != 0 &&
-          TemplateSpatialId[templateIndex] > spatialId) {
-        spatialId = TemplateSpatialId[templateIndex]
-      }
-    }
-    return spatialId
-  }
-  </code></pre>
-  <p><b>Note:</b> The temporal ID of a Decode target can be calculated as follows:</p>
-  <pre><code>
-  decode_target_temporal_id(dtIndex) {
     temporalId = 0
     for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
-      if (template_dti[templateIndex][dtIndex] != 0 &&
-          TemplateTemporalId[templateIndex] > spatialId) {
-        temporalId = TemplateTemporalId[templateIndex]
+      if (template_dti[templateIndex][dtIndex] != 0) {
+        if (TemplateSpatialId[templateIndex] > spatialId) {
+          spatialId = TemplateSpatialId[templateIndex]
+        }
+        if (TemplateTemporalId[templateIndex] > temporalId) {
+          temporalId = TemplateTemporalId[templateIndex]
+        }
       }
     }
-    return temporalId
+    DecodeTargetSpatialId[dtIndex] = spatialId
+    DecodeTargetTemporalId[dtIndex] = temporalId
   }
-  </code></pre>
-</div>
+}
+</code></pre>
 
 ##### A.4.2 Semantics
 
