@@ -853,11 +853,11 @@ extended_descriptor_fields() {
 
   if (template_dependency_structure_present_flag) {
     template_dependency_structure()
-    active_decode_targets_bitmask = (1 << DtisCnt) - 1
+    active_decode_targets_bitmask = (1 << DtCnt) - 1
   }
 
   if (active_decode_targets_present_flag) {
-    <b>active_decode_targets_bitmask</b> = f(DtisCnt)
+    <b>active_decode_targets_bitmask</b> = f(DtCnt)
   }
 }
 </code></pre>
@@ -873,8 +873,8 @@ no_extended_descriptor_fields() {
 <pre><code>
 template_dependency_structure() {
   <b>template_id_offset</b> = f(6)
-  <b>dtis_cnt_minus_one</b> = f(5)
-  DtisCnt = dtis_cnt_minus_one + 1
+  <b>dt_cnt_minus_one</b> = f(5)
+  DtCnt = dt_cnt_minus_one + 1
   template_layers()
   template_dtis()
   template_fdiffs()
@@ -959,9 +959,9 @@ render_resolutions() {
 <pre><code>
 template_dtis() {
   for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
-    for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
+    for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
       // See table A.1 below for meaning of DTI values.
-      <b>template_dti[templateIndex][dtiIndex]</b> = f(2)
+      <b>template_dti[templateIndex][dtIndex]</b> = f(2)
     }
   }
 }
@@ -969,9 +969,9 @@ template_dtis() {
 
 <pre><code>
 frame_dtis() {
-  for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
+  for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
     // See table A.1 below for meaning of DTI values.
-    <b>frame_dti[dtiIndex]</b> = f(2)
+    <b>frame_dti[dtIndex]</b> = f(2)
   }
 }
 </code></pre>
@@ -1007,12 +1007,12 @@ frame_fdiffs() {
 
 <pre><code>
 template_chains() {
-  <b>chains_cnt</b> = ns(DtisCnt + 1)
+  <b>chains_cnt</b> = ns(DtCnt + 1)
   if (chains_cnt == 0) {
     return
   }
-  for (dtiIndex = 0; dtiIndex < DtisCnt; dtiIndex++) {
-    <b>decode_target_protected_by[dtiIndex]</b> = ns(chains_cnt)
+  for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
+    <b>decode_target_protected_by[dtIndex]</b> = ns(chains_cnt)
   }
   for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
     for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
@@ -1029,7 +1029,6 @@ frame_chains() {
   }
 }
 </code></pre>
-
 
 ##### A.4.2 Semantics
 
@@ -1071,7 +1070,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **template_id_offset**: indicates the value of the frame_dependency_template_id having templateIndex=0. The value of template_id_offset SHOULD be chosen so that the valid frame_dependency_template_id range, template_id_offset to template_id_offset + TemplatesCnt - 1, inclusive, of a new template_dependency_structure, does not overlap the valid frame_dependency_template_id range for the existing template_dependency_structure. When template_id_offset of a new template_dependency_structure is the same as in the existing template_dependency_structure, all fields in both template_dependency_structures MUST have identical values.
 
-* **dtis_cnt_minus_one**: dtis_cnt_minus_one + 1 indicates the number of Decode targets present in the coded video sequence.
+* **dt_cnt_minus_one**: dt_cnt_minus_one + 1 indicates the number of Decode targets present in the coded video sequence.
 
 * **resolutions_present_flag**: indicates the presence of render_resolutions. When the resolutions_present_flag is set to 1, render_resolutions MUST be present; otherwise render_resolutions MUST NOT be present.
 
@@ -1083,9 +1082,9 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **chains_cnt**: indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
 
-* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects the Decode target, dtIndex. When chains_cnt > 0, each Decode target MUST be protected by exactly one Chain.
+* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects Decode target with index equal to dtIndex. When chains_cnt > 0, each Decode target MUST be protected by exactly one Chain.
 
-* **template_dti[templateIndex][]**: an array of size dtis_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.1 contains a description of the Decode Target Indication values.
+* **template_dti[templateIndex][]**: an array of size dt_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.1 contains a description of the Decode Target Indication values.
 
 * **template_chain_fdiff[templateIndex][]**: an array of size chains_cnt containing frame_chain_fdiff values for the Frame dependency template having index value equal to templateIndex. In a template, the values of frame_chain_fdiff can be in the range 0 to 15, inclusive.
 
@@ -1108,7 +1107,7 @@ Table A.1. Decode Target Indication (DTI) values.
 
 * **next_fdiff_size**: indicates the size of following fdiff_minus_one syntax elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present.
 
-* **frame_dti[dtiIndex]**: Decode Target Indication describing the relationship between the current frame and the Decode target having index equal to dtiIndex. Table A.2 contains a description of the Decode Target Indication values.
+* **frame_dti[dtIndex]**: Decode Target Indication describing the relationship between the current frame and the Decode target having index equal to dtIndex. Table A.2 contains a description of the Decode Target Indication values.
 
 * **frame_chain_fdiff[chainIdx]**: indicates the difference between the frame_number and the frame_number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and frame_number=112 the previous frame in the Chain with index equal to chainIdx has frame_number=109. The calculation is done modulo the size of the frame_number field.
 
