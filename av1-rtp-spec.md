@@ -733,7 +733,33 @@ A frame for which all Referred frames are decodable MUST itself be decodable.
 {:.alert .alert-info }
 
 
-#### A.4 Dependency Descriptor Format
+#### A.4 Deciding Decodability using Chains
+
+Chains provide Instantaneous Decidability of Decodability (IDD). That is, the ability to decide, immediately upon receiving the very first packet after packet loss, if the lost packet(s) contained a packet that is needed to decode frames in packets that follow. The concept of Chains is a generalization of the TL0PICIDX field used in the RTP payload formats for scalable codecs such as H.264, VP8, and VP9. A chain defines a sequence of frames essential to decode Decode targets protected by that Chain. Frames in the Chain MUST be propagated and decoded. All other frames associated with the Decode target MAY be dropped, temporarily reducing Decode target fidelity. As long as all frames in the Chain are decoded, it should be possible to recover the Decode target’s full fidelity without requesting additional information from the sender (e.g., a key frame request).
+
+The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFM the ability to determine the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Every packet includes, for every Chain, the frame_number for the previous frame in that Chain. An SFM can instantaneously detect a broken Chain by checking whether or not the previous frame in that Chain has been received. Due to the fact that Chain information for all Chains is present in all packets, an SFM can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain.
+
+In order to start/restart Chains, a Dependency Descriptor may reference the frame_number of the frame carried in the same RTP packet to indicate that no previous frames are needed for the Chain. Key frames are common cases for such '(re)start of Chain' indications.
+
+
+#### A.5 Switching
+
+An SFM may begin forwarding packets belonging to a new Decode target beginning with a decodable frame containing a Switch indication to that Decode target.
+
+An SFM may change which Decode targets it forwards. Similarly, a sender may change the Decode targets that are currently being produced. In both cases, not all Decode targets may be available for decoding. Such changes SHOULD be signaled to the receiver using the active_decode_targets_bitmask and SHOULD be signaled to the receiver in a reliable way.
+
+When not all Decode targets are active, the active_decode_targets_bitmask MUST be sent in every packet where the template_dependency_structure_present_flag is equal to 1.
+
+**Note:** One way to achieve reliable delivery is to include the active_decode_targets_bitmask in every packet until a receiver report acknowledges a packet containing the latest active_decode_targets_bitmask. Alternately, for many video streams, reliable delivery may be achieved by including the active_decode_targets_bitmask on every chain in the first packet after a change in active decode targets.
+{:.alert .alert-info }
+
+Chains protecting no active decode targets MUST be ignored.
+
+**Note:** To increase the chance of using a predefined template, chains protecting no active decode targets may refer to any frame, including an RTP frame that was never produced.
+{:.alert .alert-info }
+
+
+#### A.6 Dependency Descriptor Format
 
 To facilitate the work of selectively forwarding portions of a scalable video bitstream, as is done by a selective forwarding middlebox (SFM), for each packet, the following information is made available (even though not all elements are present in every packet).
 
@@ -745,7 +771,14 @@ To facilitate the work of selectively forwarding portions of a scalable video bi
 * frame_number of last frame in each Chain
 
 
-##### A.4.1 Syntax
+##### A.6.1 Templates
+
+To facilitate selective forwarding portions of a scalable video stream to each endpoint in a video conference, as is done by a Selective Forwarding Middlebox (SFM), for each packet, several pieces of information are required. To reduce overhead, repetitive information can be predefined and sent once. Subsequent packets refer to a template containing predefined information. In particular, when a video encoder uses an unchanging (static) prediction structure to encode a scalable bitstream, parameter values used to describe the bitstream repeat in a predictable way. The techniques described in this document provide means to send repeating information as predefined templates that can be referenced at future points of the bitstream. Since a reference index to a template requires fewer bits to convey than the associated structures themselves, header overhead can be substantially reduced.
+
+The techniques also provide ways to describe changing (dynamic) prediction structures. In cases where custom dependency information is required, parameter values are explicitly defined rather than referenced in a predefined template. Typically, even in dynamic structures the majority of frames still follow one of the predefined templates.
+
+
+##### A.6.2 Syntax
 
 The syntax for the descriptor is described in pseudo-code form in this section. Parameters read directly from the bitstream appear in bold.
 
@@ -1053,7 +1086,8 @@ decode_target_layers() {
 }
 </code></pre>
 
-##### A.4.2 Semantics
+
+##### A.6.3 Semantics
 
 The semantics pertaining to the Dependency Descriptor syntax section above is described in this section.
 
@@ -1146,51 +1180,19 @@ Table A.2. Derivation Of Next Spatial ID And Temporal ID Values.
 {: .caption }
 
 
-##### A.4.3 Deciding Decodability using Chains
 
-Chains provide Instantaneous Decidability of Decodability (IDD). That is, the ability to decide, immediately upon receiving the very first packet after packet loss, if the lost packet(s) contained a packet that is needed to decode frames in packets that follow. The concept of Chains is a generalization of the TL0PICIDX field used in the RTP payload formats for scalable codecs such as H.264, VP8, and VP9. A chain defines a sequence of frames essential to decode Decode targets protected by that Chain. Frames in the Chain MUST be propagated and decoded. All other frames associated with the Decode target MAY be dropped, temporarily reducing Decode target fidelity. As long as all frames in the Chain are decoded, it should be possible to recover the Decode target’s full fidelity without requesting additional information from the sender (e.g., a key frame request).
-
-The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFM the ability to determine the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Every packet includes, for every Chain, the frame_number for the previous frame in that Chain. An SFM can instantaneously detect a broken Chain by checking whether or not the previous frame in that Chain has been received. Due to the fact that Chain information for all Chains is present in all packets, an SFM can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain.
-
-In order to start/restart Chains, a Dependency Descriptor may reference the frame_number of the frame carried in the same RTP packet to indicate that no previous frames are needed for the Chain. Key frames are common cases for such '(re)start of Chain' indications.
-
-
-##### A.4.4 Switching
-
-An SFM may begin forwarding packets belonging to a new Decode target beginning with a decodable frame containing a Switch indication to that Decode target.
-
-An SFM may change which Decode targets it forwards. Similarly, a sender may change the Decode targets that are currently being produced. In both cases, not all Decode targets may be available for decoding. Such changes SHOULD be signaled to the receiver using the active_decode_targets_bitmask and SHOULD be signaled to the receiver in a reliable way.
-
-When not all Decode targets are active, the active_decode_targets_bitmask MUST be sent in every packet where the template_dependency_structure_present_flag is equal to 1.
-
-**Note:** One way to achieve reliable delivery is to include the active_decode_targets_bitmask in every packet until a receiver report acknowledges a packet containing the latest active_decode_targets_bitmask. Alternately, for many video streams, reliable delivery may be achieved by including the active_decode_targets_bitmask on every chain in the first packet after a change in active decode targets.
-{:.alert .alert-info }
-
-Chains protecting no active decode targets MUST be ignored.
-
-**Note:** To increase the chance of using a predefined template, chains protecting no active decode targets may refer to any frame, including an RTP frame that was never produced.
-{:.alert .alert-info }
-
-
-##### A.4.5 Templates
-
-To facilitate selective forwarding portions of a scalable video stream to each endpoint in a video conference, as is done by a Selective Forwarding Middlebox (SFM), for each packet, several pieces of information are required. To reduce overhead, repetitive information can be predefined and sent once. Subsequent packets refer to a template containing predefined information. In particular, when a video encoder uses an unchanging (static) prediction structure to encode a scalable bitstream, parameter values used to describe the bitstream repeat in a predictable way. The techniques described in this document provide means to send repeating information as predefined templates that can be referenced at future points of the bitstream. Since a reference index to a template requires fewer bits to convey than the associated structures themselves, header overhead can be substantially reduced.
-
-The techniques also provide ways to describe changing (dynamic) prediction structures. In cases where custom dependency information is required, parameter values are explicitly defined rather than referenced in a predefined template. Typically, even in dynamic structures the majority of frames still follow one of the predefined templates.
-
-
-#### A.5 Signaling (Setup) Information
+#### A.7 Signaling (Setup) Information
 
 The URI for declaring this header extension in an extmap attribute is "https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension".
 
 
-#### A.6 Examples
+#### A.8 Examples
 
 
-#### A.6.1 Scenarios
+#### A.8.1 Scenarios
 
 
-##### A.6.1.1 Decode targets, Decode Target Indications, and Chains
+##### A.8.1.1 Decode targets, Decode Target Indications, and Chains
 In the following example, the concepts of Decode targets, Chains, and DTI are discussed in the context of the L2T3 scalability structure from the perspective of frame_number=5 (F5).
 
 ![L2T3](assets/images/L2T3.svg)
@@ -1248,7 +1250,7 @@ The DT2 client would track Chain0. From the DD received with F5, the client woul
 The DT3 client would track Chain1. From the DD received with F5, the client would detect that the last essential frame is F2. Thus it is not safe to start decoding F5. Due to the fact that frames must be decoded in decode order and F2 is essential for all HD frames, decoding F5 before F2 would prevent the decoding of F2 and all subsequent HD frames. The client therefore should wait for F2. The client may send a Generic NACK per [RFC4585] in order to notify the sender that packets have been missed since the receipt of F1, or may send a Layer Refresh Request (LRR) per [I-D.ietf-avtext-lrr] in order to refresh the media substream.
 
 
-##### A.6.1.2 Spatial Upswitch
+##### A.8.1.2 Spatial Upswitch
 In the following example, spatial upswitch is discussed in the context of the L2T1 scalability structure.
 
 <figure style="display: block;" align="center">
@@ -1304,7 +1306,7 @@ Another way to notify the receiver is to set a Switch indication in F106 and res
 The two ways of notifying the receiver as shown above demonstrate that Decode Target Indications and Chains can be set differently even though the stream structure and frame dependencies are the same.
 
 
-##### A.6.1.3 Dynamic Prediction Structure
+##### A.8.1.3 Dynamic Prediction Structure
 In the following example, the sender encodes two quality layers, S0 and S1 (i.e., layers with the same resolution but different qualities).
 
 <figure style="display: block;" align="center">
@@ -1369,7 +1371,7 @@ Another way to signal this dynamic prediction structure would be to define a lar
 The first way uses fewer templates and therefore requires fewer bits in the first packet of the key frame, while the second way uses more templates but requires fewer bits in all packets of F105 to F108.
 
 
-#### A.6.2 Scalability structure examples
+#### A.8.2 Scalability structure examples
 
 Each example in this section contains a prediction structure figure and a table describing the associated Frame dependency structure. The Frame dependency structure table column headings have the meanings listed below. For the DTI- related columns, Table A.1 shows the symbol used to represent each DTI value.
 
@@ -1381,7 +1383,7 @@ Each example in this section contains a prediction structure figure and a table 
   * DTI - **template_dti[Idx]**
 
 
-##### A.6.2.1 L1T3 Single Spatial Layer with 3 Temporal Layers
+##### A.8.2.1 L1T3 Single Spatial Layer with 3 Temporal Layers
 
 This example uses one Chain, which includes frames with temporal ID equal to 0.
 
@@ -1415,7 +1417,7 @@ This example uses one Chain, which includes frames with temporal ID equal to 0.
 </tbody></table>
 
 
-##### A.6.2.2 L3T3 Full SVC
+##### A.8.2.2 L3T3 Full SVC
 
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all frames with temporal ID equal to 0.
 
@@ -1479,7 +1481,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 </tbody></table>
 
 
-##### A.6.2.3 L3T3 K-SVC with Temporal Shift
+##### A.8.2.3 L3T3 K-SVC with Temporal Shift
 
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frame 100 and frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes frames 100, 101, and frames with spatial ID equal to 2 and temporal ID equal to 0.
 
@@ -1561,10 +1563,10 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 </tbody></table>
 
 
-#### A.7 References
+#### A.9 References
 
 
-##### A.7.1 Normative References
+##### A.9.1 Normative References
 
 * [RFC2119] **Key words for use in RFCs to Indicate Requirement Levels**, S. Bradner, March 1997.
 
@@ -1574,7 +1576,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 
 
 
-##### A.7.2 Informative References
+##### A.9.2 Informative References
 
 * [AV1] **AV1 Bitstream & Decoding Process Specification, Version 1.0.0 with Errata 1**, January 2019.
 
