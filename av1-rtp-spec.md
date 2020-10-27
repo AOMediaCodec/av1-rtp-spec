@@ -923,7 +923,7 @@ template_dependency_structure() {
 <pre><code>
 frame_dependency_definition() {
   templateIndex = (frame_dependency_template_id + 64 - template_id_offset) % 64
-  If (templateIndex >= TemplatesCnt) {
+  If (templateIndex >= TemplateCnt) {
     return  // error
   }
   FrameSpatialId = TemplateSpatialId[templateIndex]
@@ -938,7 +938,7 @@ frame_dependency_definition() {
   if (custom_fdiffs_flag) {
     frame_fdiffs()
   } else {
-    FrameFdiffsCnt = TemplateFdiffsCnt[templateIndex]
+    FrameFdiffCnt = TemplateFdiffCnt[templateIndex]
     FrameFdiff = TemplateFdiff[templateIndex]
   }
 
@@ -959,12 +959,12 @@ frame_dependency_definition() {
 template_layers() {
   temporalId = 0
   spatialId = 0
-  TemplatesCnt = 0;
+  TemplateCnt = 0;
   MaxTemporalId = 0
   do {
-    TemplateSpatialId[TemplatesCnt] = spatialId
-    TemplateTemporalId[TemplatesCnt] = temporalId
-    TemplatesCnt++
+    TemplateSpatialId[TemplateCnt] = spatialId
+    TemplateTemporalId[TemplateCnt] = temporalId
+    TemplateCnt++
     <b>next_layer_idc</b> = f(2)
     // next_layer_idc == 0 - same sid and tid
     if (next_layer_idc == 1) {
@@ -992,7 +992,7 @@ render_resolutions() {
 
 <pre><code>
 template_dtis() {
-  for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
+  for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
     for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
       // See table A.1 below for meaning of DTI values.
       <b>template_dti[templateIndex][dtIndex]</b> = f(2)
@@ -1012,28 +1012,28 @@ frame_dtis() {
 
 <pre><code>
 template_fdiffs() {
-  for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
-    fdiffsCnt = 0
+  for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
+    fdiffCnt = 0
     <b>fdiff_follows_flag</b> = f(1)
     while (fdiff_follows_flag) {
       <b>fdiff_minus_one</b> = f(4)
-      TemplateFdiff[templateIndex][fdiffsCnt] = fdiff_minus_one + 1
-      fdiffsCnt++
+      TemplateFdiff[templateIndex][fdiffCnt] = fdiff_minus_one + 1
+      fdiffCnt++
       <b>fdiff_follows_flag</b> = f(1)
     }
-    TemplateFdiffsCnt[templateIndex] = fdiffsCnt
+    TemplateFdiffCnt[templateIndex] = fdiffCnt
   }
 }
 </code></pre>
 
 <pre><code>
 frame_fdiffs() {
-  FrameFdiffsCnt = 0
+  FrameFdiffCnt = 0
   <b>next_fdiff_size</b> = f(2)
   while (next_fdiff_size) {
     <b>fdiff_minus_one</b> = f(4 * next_fdiff_size)
-    FrameFdiff[FrameFdiffsCnt] = fdiff_minus_one + 1
-    FrameFdiffsCnt++
+    FrameFdiff[FrameFdiffCnt] = fdiff_minus_one + 1
+    FrameFdiffCnt++
     <b>next_fdiff_size</b> = f(2)
   }
 }
@@ -1041,15 +1041,15 @@ frame_fdiffs() {
 
 <pre><code>
 template_chains() {
-  <b>chains_cnt</b> = ns(DtCnt + 1)
-  if (chains_cnt == 0) {
+  <b>chain_cnt</b> = ns(DtCnt + 1)
+  if (chain_cnt == 0) {
     return
   }
   for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
-    <b>decode_target_protected_by[dtIndex]</b> = ns(chains_cnt)
+    <b>decode_target_protected_by[dtIndex]</b> = ns(chain_cnt)
   }
-  for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
-    for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
+  for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
+    for (chainIndex = 0; chainIndex < chain_cnt; chainIndex++) {
       <b>template_chain_fdiff[templateIndex][chainIndex]</b> = f(4)
     }
   }
@@ -1058,7 +1058,7 @@ template_chains() {
 
 <pre><code>
 frame_chains() {
-  for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
+  for (chainIndex = 0; chainIndex < chain_cnt; chainIndex++) {
     <b>frame_chain_fdiff[chainIndex]</b> = f(8)
   }
 }
@@ -1070,7 +1070,7 @@ decode_target_layers() {
   for (dtIndex = 0; dtIndex < dtCnt; dtIndex++) {
     spatialId = 0
     temporalId = 0
-    for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
+    for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
       if (template_dti[templateIndex][dtIndex] != 0) {
         if (TemplateSpatialId[templateIndex] > spatialId) {
           spatialId = TemplateSpatialId[templateIndex]
@@ -1102,7 +1102,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 **Note:** frame_number is not the same as Frame ID in [AV1 specification][AV1].
 {:.alert .alert-info }
 
-* **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same frame.
+* **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplateCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same frame.
 
 **Note:** values outside of the valid range may be caused by a change of the template dependency structure, that is a packet with the new template dependency structure was lost or delayed.
 {:.alert .alert-info }
@@ -1125,7 +1125,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 **Template dependency structure**
 
-* **template_id_offset**: indicates the value of the frame_dependency_template_id having templateIndex=0. The value of template_id_offset SHOULD be chosen so that the valid frame_dependency_template_id range, template_id_offset to template_id_offset + TemplatesCnt - 1, inclusive, of a new template_dependency_structure, does not overlap the valid frame_dependency_template_id range for the existing template_dependency_structure. When template_id_offset of a new template_dependency_structure is the same as in the existing template_dependency_structure, all fields in both template_dependency_structures MUST have identical values.
+* **template_id_offset**: indicates the value of the frame_dependency_template_id having templateIndex=0. The value of template_id_offset SHOULD be chosen so that the valid frame_dependency_template_id range, template_id_offset to template_id_offset + TemplateCnt - 1, inclusive, of a new template_dependency_structure, does not overlap the valid frame_dependency_template_id range for the existing template_dependency_structure. When template_id_offset of a new template_dependency_structure is the same as in the existing template_dependency_structure, all fields in both template_dependency_structures MUST have identical values.
 
 * **dt_cnt_minus_one**: dt_cnt_minus_one + 1 indicates the number of Decode targets present in the coded video sequence.
 
@@ -1137,13 +1137,13 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **max_render_height_minus_1[spatial_id]**: indicates the maximum render height minus 1 for frames with spatial ID equal to spatial_id.
 
-* **chains_cnt**: indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
+* **chain_cnt**: indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
 
-* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects Decode target with index equal to dtIndex. When chains_cnt > 0, each Decode target MUST be protected by exactly one Chain.
+* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects Decode target with index equal to dtIndex. When chain_cnt > 0, each Decode target MUST be protected by exactly one Chain.
 
 * **template_dti[templateIndex][]**: an array of size dt_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.1 contains a description of the Decode Target Indication values.
 
-* **template_chain_fdiff[templateIndex][]**: an array of size chains_cnt containing frame_chain_fdiff values for the Frame dependency template having index value equal to templateIndex. In a template, the values of frame_chain_fdiff can be in the range 0 to 15, inclusive.
+* **template_chain_fdiff[templateIndex][]**: an array of size chain_cnt containing frame_chain_fdiff values for the Frame dependency template having index value equal to templateIndex. In a template, the values of frame_chain_fdiff can be in the range 0 to 15, inclusive.
 
 * **fdiff_follows_flag**: indicates the presence of a frame difference value. When the fdiff_follows_flag is set to 1, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present for the current Frame dependency template.
 
