@@ -1067,7 +1067,7 @@ frame_chains() {
 
 <pre><code>
 decode_target_layers() {
-  for (dtIndex = 0; dtIndex < dtCnt; dtIndex++) {
+  for (dtIndex = 0; dtIndex < DtsCnt; dtIndex++) {
     spatialId = 0
     temporalId = 0
     for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
