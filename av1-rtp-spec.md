@@ -337,12 +337,12 @@ This section specifies the parameters that MAY be used to select optional featur
 
   The profile specifies the highest AV1 profile that may have been used to generate the bitstream or that the receiver supports.  The value of profile MUST be in the range of 0 to 7, inclusive. If the parameter is not present, it MUST be inferred to be 0 (“Main” profile).
   
-  **Note:** [AV1] has three named profiles:
-    * **Main**: Main Compliant decoders must be able to decode streams with profile equal to 0.
-    * **High**: High Compliant decoders must be able to decode streams with profile less than or equal to 1.
-    * **Professional**: Professional compliant decoders must be able to decode streams with profile less than or equal to 2.
+   **Note:** [AV1] has three named profiles:
+     * **Main**: Main Compliant decoders must be able to decode streams with profile equal to 0.
+     * **High**: High Compliant decoders must be able to decode streams with profile less than or equal to 1.
+     * **Professional**: Professional compliant decoders must be able to decode streams with profile less than or equal to 2.
     
-  The Main profile supports YUV 4:2:0 or monochrome bitstreams with bit depth equal to 8 or 10. The High profile further adds support for 4:4:4 bitstreams with the same bit depth constraints. Finally, the Professional profile extends support over the High profile to bitstreams with bit depth equal to 12 and adds support for the 4:2:2 video format.
+   The Main profile supports YUV 4:2:0 or monochrome bitstreams with bit depth equal to 8 or 10. The High profile further adds support for 4:4:4 bitstreams with the same bit depth constraints. Finally, the Professional profile extends support over the High profile to bitstreams with bit depth equal to 12 and adds support for the 4:2:2 video format.
 {:.alert .alert-info }
 
   The level-idx parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The value of level-idx MUST be in the range of 0 to 31, inclusive. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
