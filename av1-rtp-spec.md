@@ -354,7 +354,7 @@ More information on these parameters is found in https://aomediacodec.github.io/
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
 * Security considerations:
-  * See Section 10.
+  * See Section 10 of https://aomediacodec.github.io/av1-rtp-spec/.
 * Interoperability considerations:
   * None.
 * Published specification:
