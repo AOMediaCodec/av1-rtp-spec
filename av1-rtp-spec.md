@@ -331,7 +331,7 @@ This section specifies the parameters that MAY be used to select optional featur
   * None.
 * Optional parameters:
 
-  profile, level-idx, tier:
+  * profile, level-idx, tier:
   
   These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier the receiver supports.
 
