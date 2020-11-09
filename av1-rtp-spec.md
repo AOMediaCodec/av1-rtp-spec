@@ -345,11 +345,11 @@ This section specifies the parameters that MAY be used to select optional featur
   The Main profile supports YUV 4:2:0 or monochrome bitstreams with bit depth equal to 8 or 10. The High profile further adds support for 4:4:4 bitstreams with the same bit depth constraints. Finally, the Professional profile extends support over the High profile to bitstreams with bit depth equal to 12 and adds support for the 4:2:2 video format.
 {:.alert .alert-info }
 
- The level-idx parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The value of level-idx MUST be in the range of 0 to 31, inclusive. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
+  The level-idx parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The value of level-idx MUST be in the range of 0 to 31, inclusive. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
 
-The tier parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The value of tier MUST be in the range of 0 to 1, inclusive. If the parameter is not present, the tier MUST be inferred to be 0. 
+  The tier parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The value of tier MUST be in the range of 0 to 1, inclusive. If the parameter is not present, the tier MUST be inferred to be 0. 
 
-More information on these parameters is found in https://aomediacodec.github.io/av1-rtp-spec/ and https://aomediacodec.github.io/av1-spec/av1-spec.pdf.
+  More information on these parameters is found in https://aomediacodec.github.io/av1-rtp-spec/ and https://aomediacodec.github.io/av1-spec/av1-spec.pdf.
 
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
