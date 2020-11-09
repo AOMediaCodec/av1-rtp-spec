@@ -63,7 +63,7 @@ Open Bitstream Unit (OBU)
 : A scalability mode in which multiple encodings are sent on the same SSRC. This includes the S2T1, S2T1h, S2T2, S2T2h, S2T3, S2T3h, S3T1, S3T1h, S3T2, S3T2h, S3T3 and S3T3h scalability modes defined in Section 6.7.5 of [AV1]. 
 
 Selective Forwarding Middlebox (SFM)
-: A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without requiring access to the media ([RFC7667]).
+: A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without accessing the media ([RFC7667]).
 
 Temporal unit
 : Defined by the AV1 specification: A temporal unit consists of all the OBUs that are associated with a specific, distinct time instant.
