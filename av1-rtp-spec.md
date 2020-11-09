@@ -330,10 +330,26 @@ This section specifies the parameters that MAY be used to select optional featur
 * Required parameters:
   * None.
 * Optional parameters:
-  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level-idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
-    * **profile**: The value of **profile** is an integer indicating the highest AV1 profile supported by the receiver. The range of possible values is identical to the **seq_profile** syntax element specified in [AV1]
-    * **level-idx**: The value of **level-idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to the **seq_level_idx** syntax element specified in [AV1]
-    * **tier**: The value of **tier** is an integer indicating tier of the indicated level. The range of possible values is identical to the **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
+
+  profile, level-idx, tier:
+  
+  These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier the receiver supports.
+
+  The profile specifies the highest AV1 profile that may have been used to generate the bitstream or that the receiver supports.  The value of profile MUST be in the range of 0 to 7, inclusive. If the parameter is not present, it MUST be inferred to be 0 (“Main” profile).
+  
+  **Note:** [AV1] has three named profiles:
+    * **Main**: Main Compliant decoders must be able to decode streams with profile equal to 0.
+    * **High**: High Compliant decoders must be able to decode streams with profile less than or equal to 1.
+    * **Professional**: Professional compliant decoders must be able to decode streams with profile less than or equal to 2.
+    
+  The Main profile supports YUV 4:2:0 or monochrome bitstreams with bit depth equal to 8 or 10. The High profile further adds support for 4:4:4 bitstreams with the same bit depth constraints. Finally, the Professional profile extends support over the High profile to bitstreams with bit depth equal to 12 and adds support for the 4:2:2 video format.
+{:.alert .alert-info }
+
+ The level-idx parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The value of level-idx MUST be in the range of 0 to 31, inclusive. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
+
+The tier parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The value of tier MUST be in the range of 0 to 1, inclusive. If the parameter is not present, the tier MUST be inferred to be 0. 
+
+More information on these parameters is found in https://aomediacodec.github.io/av1-rtp-spec/ and https://aomediacodec.github.io/av1-spec/av1-spec.pdf.
 
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
@@ -342,23 +358,23 @@ This section specifies the parameters that MAY be used to select optional featur
 * Interoperability considerations:
   * None.
 * Published specification:
-  * [AV1 video codec][AV1]
+  * https://aomediacodec.github.io/av1-rtp-spec/ and https://aomediacodec.github.io/av1-spec/av1-spec.pdf.
 * Applications which use this media type:
-  * Video over IP, video conferencing.
+  * Video over IP, video conferencing, video streaming.
 * Fragment identifier considerations:
   * N/A.
 * Additional information:
   * None.
 * Person & email address to contact for further information:
-  * TODO
+  * Stephen Botzko, Stephen.Botzko@gmail.com
 * Intended usage:
   * COMMON
 * Restrictions on usage:
   * This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].
 * Author:
-  * TODO
+  * RTC Subgroup of the AV1 Codec Working Group of the Alliance for Open Media (http://aomedia.org)
 * Change controller:
-  * AoMedia Codec Group, RTC sub-group
+  * AV1 Codec Working Group of the Alliance for Open Media (http://aomedia.org/)
 
 
 ### 7.2 SDP Parameters
