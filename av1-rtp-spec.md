@@ -109,7 +109,7 @@ The Dependency Descriptor and AV1 aggregation header are described in this docum
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 |         0x100         |  0x0  |       extensions length       |
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-|     ID      |  hdr_length   |                               |
+|      ID       |  hdr_length   |                               |
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+                               |
 |                                                               |
 |          dependency descriptor (hdr_length #bytes)            |
