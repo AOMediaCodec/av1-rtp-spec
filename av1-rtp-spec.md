@@ -109,7 +109,7 @@ The Dependency Descriptor and AV1 aggregation header are described in this docum
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 |         0x100         |  0x0  |       extensions length       |
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-|   0x1(ID)     |  hdr_length   |                               |
+|   0x4(ID)     |  hdr_length   |                               |
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+                               |
 |                                                               |
 |          dependency descriptor (hdr_length #bytes)            |
@@ -127,6 +127,8 @@ The Dependency Descriptor and AV1 aggregation header are described in this docum
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
+**Note:** The ID used to identify the Dependency Descriptor is signaled as defined in section A.7 of this specification.  Some examples are provided in sections 7.2 and 7.3.
+{:.alert .alert-info }
 
 ### 4.2 RTP Header Marker Bit (M)
 
@@ -1177,9 +1179,12 @@ Table A.2. Derivation Of Next Spatial ID And Temporal ID Values.
 
 
 
-#### A.7 Signaling (Setup) Information
+#### A.7 Signaling (SDP) Information
 
-The URI for declaring this header extension in an extmap attribute is "https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension".
+When the use of this header extension is signaled in SDP using an extmap attribute, the URI MUST be "https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension".
+
+For example:
+* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
 
 
 #### A.8 Examples
