@@ -372,8 +372,7 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
 * The clock rate in the "a=rtpmap" line MUST be 90000.
-* The parameters "**profile**", and "**level-idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
-* Parameter "**tier**" MAY be included alongside "**profile**" and "**level-idx** parameters in "a=fmtp" line if the indicated level supports a non-zero tier.
+* The parameters "**profile**", "**level-idx**", and "**tier**" MAY be included in the "a=fmtp" line of SDP. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
 
 The receiver MUST ignore any fmtp parameter not specified in this document.
 
