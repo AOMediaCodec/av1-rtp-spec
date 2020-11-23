@@ -330,49 +330,51 @@ This section specifies the parameters that MAY be used to select optional featur
 * Required parameters:
   * None.
 * Optional parameters:
-  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level-idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
-    * **profile**: The value of **profile** is an integer indicating the highest AV1 profile supported by the receiver. The range of possible values is identical to the **seq_profile** syntax element specified in [AV1]
-    * **level-idx**: The value of **level-idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to the **seq_level_idx** syntax element specified in [AV1]
-    * **tier**: The value of **tier** is an integer indicating tier of the indicated level. The range of possible values is identical to the **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
-
+ * None.
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
 * Security considerations:
-  * See Section 10.
+  * See Section 10 of https://aomediacodec.github.io/av1-rtp-spec/.
 * Interoperability considerations:
   * None.
 * Published specification:
-  * [AV1 video codec][AV1]
+  * https://aomediacodec.github.io/av1-rtp-spec/
 * Applications which use this media type:
-  * Video over IP, video conferencing.
+  * Video over IP, video conferencing, video streaming.
 * Fragment identifier considerations:
   * N/A.
 * Additional information:
   * None.
 * Person & email address to contact for further information:
-  * TODO
+  * Name: Alliance for Open Media
+  * Email: registrations@aomedia.org
 * Intended usage:
   * COMMON
 * Restrictions on usage:
-  * This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].
+  * This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].  Transfer within other framing protocols is not defined at this time.
 * Author:
-  * TODO
+  * RTC Subgroup of the AV1 Codec Working Group of the Alliance for Open Media (http://aomedia.org)
 * Change controller:
-  * AoMedia Codec Group, RTC sub-group
+  * AV1 Codec Working Group of the Alliance for Open Media (http://aomedia.org/)
 
 
 ### 7.2 SDP Parameters
-The receiver MUST ignore any fmtp parameter not specified in this document.
+The parameters for AV1 are **profile**, **level-idx**, and **tier**. These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier that the receiver supports. 
 
+The **profile** parameter is an integer indicating the highest AV1 profile that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_profile** syntax element specified in [AV1]. If the parameter is not present, it MUST be inferred to be 0 (“Main” profile).
+
+The **level-idx** parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_level_idx** syntax element specified in [AV1]. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
+
+The **tier** parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_tier** syntax element specified in [AV1]. If the parameter is not present, the tier MUST be inferred to be 0.
 
 #### 7.2.1 Mapping of Media Subtype Parameters to SDP
 The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) per [RFC4566] as follows:
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
 * The clock rate in the "a=rtpmap" line MUST be 90000.
-* The parameters "**profile**", and "**level-idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
-* Parameter "**tier**" MAY be included alongside "**profile**" and "**level-idx** parameters in "a=fmtp" line if the indicated level supports a non-zero tier.
+* The parameters "**profile**", "**level-idx**", and "**tier**" MAY be included in the "a=fmtp" line of SDP. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
 
+The receiver MUST ignore any fmtp parameter not specified in this document.
 
 ### 7.2.2 RID Restrictions Mapping for AV1
 
