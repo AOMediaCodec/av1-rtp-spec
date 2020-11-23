@@ -109,7 +109,7 @@ The Dependency Descriptor and AV1 aggregation header are described in this docum
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 |         0x100         |  0x0  |       extensions length       |
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-|   0x4(ID)     |  hdr_length   |                               |
+|     ID      |  hdr_length   |                               |
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+                               |
 |                                                               |
 |          dependency descriptor (hdr_length #bytes)            |
@@ -127,7 +127,7 @@ The Dependency Descriptor and AV1 aggregation header are described in this docum
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
-**Note:** The ID used to identify the Dependency Descriptor is signaled as defined in section A.7 of this specification.  Some examples are provided in sections 7.2 and 7.3.
+**Note:** The ID used to identify the Dependency Descriptor is signaled as defined in Section A.7 of this specification. Some examples are provided in Sections 7.2 and 7.3.
 {:.alert .alert-info }
 
 ### 4.2 RTP Header Marker Bit (M)
