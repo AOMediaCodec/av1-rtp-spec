@@ -330,27 +330,7 @@ This section specifies the parameters that MAY be used to select optional featur
 * Required parameters:
   * None.
 * Optional parameters:
-
-  * profile, level-idx, tier:
-  
-  These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier the receiver supports.
-
-  The profile specifies the highest AV1 profile that may have been used to generate the bitstream or that the receiver supports.  The value of profile MUST be in the range of 0 to 7, inclusive. If the parameter is not present, it MUST be inferred to be 0 (“Main” profile).
-  
-   **Note:** [AV1] has three named profiles:
-     * **Main**: Main Compliant decoders must be able to decode streams with profile equal to 0.
-     * **High**: High Compliant decoders must be able to decode streams with profile less than or equal to 1.
-     * **Professional**: Professional compliant decoders must be able to decode streams with profile less than or equal to 2.
-    
-   The Main profile supports YUV 4:2:0 or monochrome bitstreams with bit depth equal to 8 or 10. The High profile further adds support for 4:4:4 bitstreams with the same bit depth constraints. Finally, the Professional profile extends support over the High profile to bitstreams with bit depth equal to 12 and adds support for the 4:2:2 video format.
-{:.alert .alert-info }
-
-  The level-idx parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The value of level-idx MUST be in the range of 0 to 31, inclusive. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
-
-  The tier parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The value of tier MUST be in the range of 0 to 1, inclusive. If the parameter is not present, the tier MUST be inferred to be 0. 
-
-  More information on these parameters is found in https://aomediacodec.github.io/av1-rtp-spec/ and https://aomediacodec.github.io/av1-spec/av1-spec.pdf.
-
+ * None.
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
 * Security considerations:
@@ -358,7 +338,7 @@ This section specifies the parameters that MAY be used to select optional featur
 * Interoperability considerations:
   * None.
 * Published specification:
-  * https://aomediacodec.github.io/av1-rtp-spec/ and https://aomediacodec.github.io/av1-spec/av1-spec.pdf.
+  * https://aomediacodec.github.io/av1-rtp-spec/
 * Applications which use this media type:
   * Video over IP, video conferencing, video streaming.
 * Fragment identifier considerations:
@@ -366,11 +346,12 @@ This section specifies the parameters that MAY be used to select optional featur
 * Additional information:
   * None.
 * Person & email address to contact for further information:
-  * Stephen Botzko, Stephen.Botzko@gmail.com
+  * Name: Alliance for Open Media
+  * Email: registrations@aomedia.org
 * Intended usage:
   * COMMON
 * Restrictions on usage:
-  * This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].
+  * This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].  Transfer within other framing protocols is not defined at this time.
 * Author:
   * RTC Subgroup of the AV1 Codec Working Group of the Alliance for Open Media (http://aomedia.org)
 * Change controller:
@@ -378,8 +359,13 @@ This section specifies the parameters that MAY be used to select optional featur
 
 
 ### 7.2 SDP Parameters
-The receiver MUST ignore any fmtp parameter not specified in this document.
+The parameters for AV1 are **profile**, **level-idx**, and **tier**. These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier that the receiver supports. 
 
+The **profile** parameter is an integer indicating the highest AV1 profile that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_profile** syntax element specified in [AV1]. If the parameter is not present, it MUST be inferred to be 0 (“Main” profile).
+
+The **level-idx** parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_level_idx** syntax element specified in [AV1]. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
+
+The **tier** parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_tier** syntax element specified in [AV1]. If the parameter is not present, the tier MUST be inferred to be 0.
 
 #### 7.2.1 Mapping of Media Subtype Parameters to SDP
 The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) per [RFC4566] as follows:
@@ -389,6 +375,7 @@ The media type video/AV1 string is mapped to fields in the Session Description P
 * The parameters "**profile**", and "**level-idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
 * Parameter "**tier**" MAY be included alongside "**profile**" and "**level-idx** parameters in "a=fmtp" line if the indicated level supports a non-zero tier.
 
+The receiver MUST ignore any fmtp parameter not specified in this document.
 
 ### 7.2.2 RID Restrictions Mapping for AV1
 
