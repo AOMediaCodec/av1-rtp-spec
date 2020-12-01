@@ -349,7 +349,7 @@ This section specifies the parameters that MAY be used to select optional featur
   * None.
 * Person & email address to contact for further information:
   * Name: Alliance for Open Media
-  * Email: registrations@aomedia.org
+  * Email: registration@aomedia.org
 * Intended usage:
   * COMMON
 * Restrictions on usage:
