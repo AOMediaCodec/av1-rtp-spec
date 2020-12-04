@@ -332,7 +332,7 @@ This section specifies the parameters that MAY be used to select optional featur
 * Required parameters:
   * None.
 * Optional parameters:
- * None.
+  * None.
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
 * Security considerations:
