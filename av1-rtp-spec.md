@@ -63,7 +63,7 @@ Open Bitstream Unit (OBU)
 : A scalability mode in which multiple encodings are sent on the same SSRC. This includes the S2T1, S2T1h, S2T2, S2T2h, S2T3, S2T3h, S3T1, S3T1h, S3T2, S3T2h, S3T3 and S3T3h scalability modes defined in Section 6.7.5 of [AV1]. 
 
 Selective Forwarding Middlebox (SFM)
-: A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without requiring access to the media ([RFC7667]).
+: A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without accessing the media ([RFC7667]).
 
 Temporal unit
 : Defined by the AV1 specification: A temporal unit consists of all the OBUs that are associated with a specific, distinct time instant.
@@ -109,7 +109,7 @@ The Dependency Descriptor and AV1 aggregation header are described in this docum
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 |         0x100         |  0x0  |       extensions length       |
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-|   0x1(ID)     |  hdr_length   |                               |
+|      ID       |  hdr_length   |                               |
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+                               |
 |                                                               |
 |          dependency descriptor (hdr_length #bytes)            |
@@ -127,6 +127,8 @@ The Dependency Descriptor and AV1 aggregation header are described in this docum
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
 
+**Note:** The ID used to identify the Dependency Descriptor is signaled as defined in Section A.7 of this specification. Some examples are provided in Sections 7.2 and 7.3.
+{:.alert .alert-info }
 
 ### 4.2 RTP Header Marker Bit (M)
 
@@ -330,49 +332,51 @@ This section specifies the parameters that MAY be used to select optional featur
 * Required parameters:
   * None.
 * Optional parameters:
-  * These parameters are used to signal the capabilities of a receiver implementation. If the implementation is willing to receive media, **profile** and **level-idx** parameters MUST be provided. These parameters MUST NOT be used for any other purpose.
-    * **profile**: The value of **profile** is an integer indicating the highest AV1 profile supported by the receiver. The range of possible values is identical to the **seq_profile** syntax element specified in [AV1]
-    * **level-idx**: The value of **level-idx** is an integer indicating the highest AV1 level supported by the receiver. The range of possible values is identical to the **seq_level_idx** syntax element specified in [AV1]
-    * **tier**: The value of **tier** is an integer indicating tier of the indicated level. The range of possible values is identical to the **seq_tier** syntax element specified in [AV1]. If parameter is not present, level's tier is to be assumed equal to 0
-
+  * None.
 * Encoding considerations:
   * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
 * Security considerations:
-  * See Section 10.
+  * See Section 10 of https://aomediacodec.github.io/av1-rtp-spec/.
 * Interoperability considerations:
   * None.
 * Published specification:
-  * [AV1 video codec][AV1]
+  * https://aomediacodec.github.io/av1-rtp-spec/
 * Applications which use this media type:
-  * Video over IP, video conferencing.
+  * Video over IP, video conferencing, video streaming.
 * Fragment identifier considerations:
   * N/A.
 * Additional information:
   * None.
 * Person & email address to contact for further information:
-  * TODO
+  * Name: Alliance for Open Media
+  * Email: registration@aomedia.org
 * Intended usage:
   * COMMON
 * Restrictions on usage:
-  * This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].
+  * This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].  Transfer within other framing protocols is not defined at this time.
 * Author:
-  * TODO
+  * RTC Subgroup of the AV1 Codec Working Group of the Alliance for Open Media (http://aomedia.org)
 * Change controller:
-  * AoMedia Codec Group, RTC sub-group
+  * AV1 Codec Working Group of the Alliance for Open Media (http://aomedia.org/)
 
 
 ### 7.2 SDP Parameters
-The receiver MUST ignore any fmtp parameter not specified in this document.
+The parameters for AV1 are **profile**, **level-idx**, and **tier**. These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier that the receiver supports. 
 
+The **profile** parameter is an integer indicating the highest AV1 profile that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_profile** syntax element specified in [AV1]. If the parameter is not present, it MUST be inferred to be 0 (“Main” profile).
+
+The **level-idx** parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_level_idx** syntax element specified in [AV1]. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
+
+The **tier** parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_tier** syntax element specified in [AV1]. If the parameter is not present, the tier MUST be inferred to be 0.
 
 #### 7.2.1 Mapping of Media Subtype Parameters to SDP
 The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) per [RFC4566] as follows:
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
 * The clock rate in the "a=rtpmap" line MUST be 90000.
-* The parameters "**profile**", and "**level-idx**", MUST be included in the "a=fmtp" line of SDP if SDP is used to declare receiver capabilities. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
-* Parameter "**tier**" MAY be included alongside "**profile**" and "**level-idx** parameters in "a=fmtp" line if the indicated level supports a non-zero tier.
+* The parameters "**profile**", "**level-idx**", and "**tier**" MAY be included in the "a=fmtp" line of SDP. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
 
+The receiver MUST ignore any fmtp parameter not specified in this document.
 
 ### 7.2.2 RID Restrictions Mapping for AV1
 
@@ -391,10 +395,8 @@ If during the SDP negotiation process both parties acknowledge restrictions, the
 #### 7.2.3 Usage with the SDP Offer/Answer Model
 
 When AV1 is offered over RTP using SDP in an Offer/Answer model as described in [RFC3264] for negotiation for unicast usage, the following limitations and rules apply:
-* The media format configuration is identified by **level-idx**, **profile** and **tier**. The answerer SHOULD maintain all parameters. These media configuration parameters are asymmetrical and the answerer MAY declare its own media configuration if the answerer capabilities are different from the offerer.
-  * The profile to use in the offerer-to-answerer direction MUST be lesser or equal to the profile the answerer supports for receiving, and the profile to use in the answerer-to-offerer direction MUST be lesser or equal to the profile the offerer supports for receiving.
-  * The level to use in the offerer-to-answerer direction MUST be lesser or equal to the level the answerer supports for receiving, and the level to use in the answerer-to-offerer direction MUST be lesser or equal to the level the offerer supports for receiving.
-  * The tier to use in the offerer-to-answerer direction MUST be lesser or equal to the tier the answerer supports for receiving, and the tier to use in the answerer-to-offerer direction MUST be lesser or equal to the tier the offerer supports for receiving.
+* The media format configuration is identified by **level-idx**, **profile** and **tier**. These media configuration parameters are asymmetrical and the answerer MAY declare its own media configuration if the answerer receiving capabilities are different from the offerer.
+* The AV1 stream sent by either the offerer or the answerer MUST be encoded with a profile, level and tier, lesser or equal to the values of the **level-idx**, **profile** and **tier** declared in the SDP by the receiving agent.
 
 
 #### 7.2.4 Usage in Declarative Session Descriptions
@@ -615,9 +617,7 @@ RTP packets using the payload format defined in this document are subject to the
 
 Note that the appropriate mechanism to ensure confidentiality and integrity of RTP packets and their payloads is very dependent on the application and on the transport and signaling protocols employed. Thus, although SRTP is given as an example above, other possible choices exist. See [RFC7202].
 
-Decoders MUST discard reserved OBU types and reserved metadata OBU types, and SHOULD filter out temporal delimiter and tile list OBUs carried within the RTP payload. Middle boxes SHOULD NOT parse OBUs they do not support. SFMs MUST NOT parse OBUs at all, but instead MUST make forwarding decisions based on the information within the RTP header and Dependency Descriptor RTP header extension.
-
-When integrity protection is applied to a stream, care MUST be taken that the stream being transported may be scalable; hence a receiver may be able to access only part of the entire stream.
+Decoders MUST discard reserved OBU types and reserved metadata OBU types, and SHOULD filter out temporal delimiter and tile list OBUs carried within the RTP payload. Middle boxes SHOULD NOT parse OBUs they do not support. 
 
 End-to-end security services such as authentication, integrity, or confidentiality protection could prevent an SFM or MANE from performing media-aware operations other than discarding complete packets. For example, repacketization requires that the MANE have access to the cleartext media payload. The Dependency Descriptor RTP extension described in Appendix A allows discarding of packets in a media-aware way even when confidentiality protection is used.
 
@@ -768,7 +768,7 @@ Chains protecting no active decode targets MUST be ignored.
 
 #### A.6 Dependency Descriptor Format
 
-To facilitate the work of selectively forwarding portions of a scalable video bitstream, as is done by a selective forwarding middlebox (SFM), for each packet, the following information is made available (even though not all elements are present in every packet).
+To facilitate the work of selectively forwarding portions of a scalable video bitstream, as is done by an SFM, for each packet, the following information is made available (even though not all elements are present in every packet).
 
 * spatial ID
 * temporal ID
@@ -780,7 +780,7 @@ To facilitate the work of selectively forwarding portions of a scalable video bi
 
 ##### A.6.1 Templates
 
-To facilitate selective forwarding portions of a scalable video stream to each endpoint in a video conference, as is done by a Selective Forwarding Middlebox (SFM), for each packet, several pieces of information are required. To reduce overhead, repetitive information can be predefined and sent once. Subsequent packets refer to a template containing predefined information. In particular, when a video encoder uses an unchanging (static) prediction structure to encode a scalable bitstream, parameter values used to describe the bitstream repeat in a predictable way. The techniques described in this document provide means to send repeating information as predefined templates that can be referenced at future points of the bitstream. Since a reference index to a template requires fewer bits to convey than the associated structures themselves, header overhead can be substantially reduced.
+To reduce overhead, repetitive information can be predefined with templates and sent once. Subsequent packets refer to a template containing predefined information. In particular, when a video encoder uses an unchanging (static) prediction structure to encode a scalable bitstream, parameter values used to describe the bitstream repeat in a predictable way. The techniques described in this document provide means to send repeating information as predefined templates that can be referenced at future points of the bitstream. Since a reference index to a template requires fewer bits to convey than the associated structures themselves, header overhead can be substantially reduced.
 
 The techniques also provide ways to describe changing (dynamic) prediction structures. In cases where custom dependency information is required, parameter values are explicitly defined rather than referenced in a predefined template. Typically, even in dynamic structures the majority of frames still follow one of the predefined templates.
 
@@ -930,7 +930,7 @@ template_dependency_structure() {
 <pre><code>
 frame_dependency_definition() {
   templateIndex = (frame_dependency_template_id + 64 - template_id_offset) % 64
-  If (templateIndex >= TemplatesCnt) {
+  If (templateIndex >= TemplateCnt) {
     return  // error
   }
   FrameSpatialId = TemplateSpatialId[templateIndex]
@@ -945,7 +945,7 @@ frame_dependency_definition() {
   if (custom_fdiffs_flag) {
     frame_fdiffs()
   } else {
-    FrameFdiffsCnt = TemplateFdiffsCnt[templateIndex]
+    FrameFdiffCnt = TemplateFdiffCnt[templateIndex]
     FrameFdiff = TemplateFdiff[templateIndex]
   }
 
@@ -966,12 +966,12 @@ frame_dependency_definition() {
 template_layers() {
   temporalId = 0
   spatialId = 0
-  TemplatesCnt = 0;
+  TemplateCnt = 0;
   MaxTemporalId = 0
   do {
-    TemplateSpatialId[TemplatesCnt] = spatialId
-    TemplateTemporalId[TemplatesCnt] = temporalId
-    TemplatesCnt++
+    TemplateSpatialId[TemplateCnt] = spatialId
+    TemplateTemporalId[TemplateCnt] = temporalId
+    TemplateCnt++
     <b>next_layer_idc</b> = f(2)
     // next_layer_idc == 0 - same sid and tid
     if (next_layer_idc == 1) {
@@ -999,7 +999,7 @@ render_resolutions() {
 
 <pre><code>
 template_dtis() {
-  for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
+  for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
     for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
       // See table A.1 below for meaning of DTI values.
       <b>template_dti[templateIndex][dtIndex]</b> = f(2)
@@ -1019,28 +1019,28 @@ frame_dtis() {
 
 <pre><code>
 template_fdiffs() {
-  for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
-    fdiffsCnt = 0
+  for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
+    fdiffCnt = 0
     <b>fdiff_follows_flag</b> = f(1)
     while (fdiff_follows_flag) {
       <b>fdiff_minus_one</b> = f(4)
-      TemplateFdiff[templateIndex][fdiffsCnt] = fdiff_minus_one + 1
-      fdiffsCnt++
+      TemplateFdiff[templateIndex][fdiffCnt] = fdiff_minus_one + 1
+      fdiffCnt++
       <b>fdiff_follows_flag</b> = f(1)
     }
-    TemplateFdiffsCnt[templateIndex] = fdiffsCnt
+    TemplateFdiffCnt[templateIndex] = fdiffCnt
   }
 }
 </code></pre>
 
 <pre><code>
 frame_fdiffs() {
-  FrameFdiffsCnt = 0
+  FrameFdiffCnt = 0
   <b>next_fdiff_size</b> = f(2)
   while (next_fdiff_size) {
     <b>fdiff_minus_one</b> = f(4 * next_fdiff_size)
-    FrameFdiff[FrameFdiffsCnt] = fdiff_minus_one + 1
-    FrameFdiffsCnt++
+    FrameFdiff[FrameFdiffCnt] = fdiff_minus_one + 1
+    FrameFdiffCnt++
     <b>next_fdiff_size</b> = f(2)
   }
 }
@@ -1048,15 +1048,15 @@ frame_fdiffs() {
 
 <pre><code>
 template_chains() {
-  <b>chains_cnt</b> = ns(DtCnt + 1)
-  if (chains_cnt == 0) {
+  <b>chain_cnt</b> = ns(DtCnt + 1)
+  if (chain_cnt == 0) {
     return
   }
   for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
-    <b>decode_target_protected_by[dtIndex]</b> = ns(chains_cnt)
+    <b>decode_target_protected_by[dtIndex]</b> = ns(chain_cnt)
   }
-  for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
-    for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
+  for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
+    for (chainIndex = 0; chainIndex < chain_cnt; chainIndex++) {
       <b>template_chain_fdiff[templateIndex][chainIndex]</b> = f(4)
     }
   }
@@ -1065,7 +1065,7 @@ template_chains() {
 
 <pre><code>
 frame_chains() {
-  for (chainIndex = 0; chainIndex < chains_cnt; chainIndex++) {
+  for (chainIndex = 0; chainIndex < chain_cnt; chainIndex++) {
     <b>frame_chain_fdiff[chainIndex]</b> = f(8)
   }
 }
@@ -1077,7 +1077,7 @@ decode_target_layers() {
   for (dtIndex = 0; dtIndex < dtCnt; dtIndex++) {
     spatialId = 0
     temporalId = 0
-    for (templateIndex = 0; templateIndex < TemplatesCnt; templateIndex++) {
+    for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
       if (template_dti[templateIndex][dtIndex] != 0) {
         if (TemplateSpatialId[templateIndex] > spatialId) {
           spatialId = TemplateSpatialId[templateIndex]
@@ -1109,7 +1109,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 **Note:** frame_number is not the same as Frame ID in [AV1 specification][AV1].
 {:.alert .alert-info }
 
-* **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplatesCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same frame.
+* **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplateCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same frame.
 
 **Note:** values outside of the valid range may be caused by a change of the template dependency structure, that is a packet with the new template dependency structure was lost or delayed.
 {:.alert .alert-info }
@@ -1132,7 +1132,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 **Template dependency structure**
 
-* **template_id_offset**: indicates the value of the frame_dependency_template_id having templateIndex=0. The value of template_id_offset SHOULD be chosen so that the valid frame_dependency_template_id range, template_id_offset to template_id_offset + TemplatesCnt - 1, inclusive, of a new template_dependency_structure, does not overlap the valid frame_dependency_template_id range for the existing template_dependency_structure. When template_id_offset of a new template_dependency_structure is the same as in the existing template_dependency_structure, all fields in both template_dependency_structures MUST have identical values.
+* **template_id_offset**: indicates the value of the frame_dependency_template_id having templateIndex=0. The value of template_id_offset SHOULD be chosen so that the valid frame_dependency_template_id range, template_id_offset to template_id_offset + TemplateCnt - 1, inclusive, of a new template_dependency_structure, does not overlap the valid frame_dependency_template_id range for the existing template_dependency_structure. When template_id_offset of a new template_dependency_structure is the same as in the existing template_dependency_structure, all fields in both template_dependency_structures MUST have identical values.
 
 * **dt_cnt_minus_one**: dt_cnt_minus_one + 1 indicates the number of Decode targets present in the coded video sequence.
 
@@ -1144,13 +1144,13 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **max_render_height_minus_1[spatial_id]**: indicates the maximum render height minus 1 for frames with spatial ID equal to spatial_id.
 
-* **chains_cnt**: indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
+* **chain_cnt**: indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
 
-* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects Decode target with index equal to dtIndex. When chains_cnt > 0, each Decode target MUST be protected by exactly one Chain.
+* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects Decode target with index equal to dtIndex. When chain_cnt > 0, each Decode target MUST be protected by exactly one Chain.
 
 * **template_dti[templateIndex][]**: an array of size dt_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.1 contains a description of the Decode Target Indication values.
 
-* **template_chain_fdiff[templateIndex][]**: an array of size chains_cnt containing frame_chain_fdiff values for the Frame dependency template having index value equal to templateIndex. In a template, the values of frame_chain_fdiff can be in the range 0 to 15, inclusive.
+* **template_chain_fdiff[templateIndex][]**: an array of size chain_cnt containing frame_chain_fdiff values for the Frame dependency template having index value equal to templateIndex. In a template, the values of frame_chain_fdiff can be in the range 0 to 15, inclusive.
 
 * **fdiff_follows_flag**: indicates the presence of a frame difference value. When the fdiff_follows_flag is set to 1, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present for the current Frame dependency template.
 
@@ -1188,9 +1188,12 @@ Table A.2. Derivation Of Next Spatial ID And Temporal ID Values.
 
 
 
-#### A.7 Signaling (Setup) Information
+#### A.7 Signaling (SDP) Information
 
-The URI for declaring this header extension in an extmap attribute is "https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension".
+When the use of this header extension is signaled in SDP using an extmap attribute, the URI MUST be "https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension".
+
+For example:
+* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
 
 
 #### A.8 Examples
@@ -1398,7 +1401,7 @@ This example uses one Chain, which includes frames with temporal ID equal to 0.
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
-<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='1' rowspan='2' >Chain</th><th colspan='3' rowspan='1' >DTI</th>
+<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='1' rowspan='2' >Chain</th><th colspan='3' rowspan='1' >Decode Targets</th>
 </tr>
 <tr>
 <th colspan='1' rowspan='1' >30 fps</th><th colspan='1' rowspan='1' >15 fps</th><th colspan='1' rowspan='1' >7.5 fps</th>
@@ -1432,7 +1435,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
-<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='3' rowspan='1' >Chains</th><th colspan='9' rowspan='1' >DTI</th>
+<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='3' rowspan='1' >Chains</th><th colspan='9' rowspan='1' >Decode Targets</th>
 </tr>
 <tr>
 <th colspan='1' rowspan='1' >0</th><th colspan='1' rowspan='1' >1</th><th colspan='1' rowspan='1' >2</th><th colspan='1' rowspan='1' >HD30 fps</th><th colspan='1' rowspan='1' >HD15 fps</th><th colspan='1' rowspan='1' >HD7.5 fps</th><th colspan='1' rowspan='1' >VGA30 fps</th><th colspan='1' rowspan='1' >VGA15 fps</th><th colspan='1' rowspan='1' >VGA7.5fps</th><th colspan='1' rowspan='1' >QVGA30 fps</th><th colspan='1' rowspan='1' >QVGA15 fps</th><th colspan='1' rowspan='1' >QVGA7.5 fps</th>
@@ -1496,7 +1499,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
-<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='3' rowspan='1' >Chains</th><th colspan='9' rowspan='1' >DTI</th>
+<th colspan='1' rowspan='2' >Idx</th><th colspan='1' rowspan='2' >S</th><th colspan='1' rowspan='2' >T</th><th colspan='1' rowspan='2' >Fdiffs</th><th colspan='3' rowspan='1' >Chains</th><th colspan='9' rowspan='1' >Decode Targets</th>
 </tr>
 <tr>
 <th colspan='1' rowspan='1' >0</th><th colspan='1' rowspan='1' >1</th><th colspan='1' rowspan='1' >2</th><th colspan='1' rowspan='1' >HD 30 fps</th><th colspan='1' rowspan='1' >HD 15 fps</th><th colspan='1' rowspan='1' >HD 7.5 fps</th><th colspan='1' rowspan='1' >VGA 30 fps</th><th colspan='1' rowspan='1' >VGA 15 fps</th><th colspan='1' rowspan='1' >VGA 7.5 fps</th><th colspan='1' rowspan='1' >QVGA 30 fps</th><th colspan='1' rowspan='1' >QVGA 15 fps</th><th colspan='1' rowspan='1' >QVGA 7.5 fps</th>
