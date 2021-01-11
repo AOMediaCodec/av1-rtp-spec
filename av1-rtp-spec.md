@@ -760,6 +760,9 @@ A Chain defines a sequence of frames essential to decode Decode targets protecte
 
 A sender MUST construct Chains such that a receiver having received all frames in the Chain, and having missed one or more frames not in the Chain, need not request additional information (e.g., NACK or FIR) from the sender in order to resume decoding at full fidelity of the Decode target protected by the Chain.
 
+**Note:** Not decoding a frame associated with a Decode target that is also not present in the Chain will result in a temporary reduction of fidelity. A frame that is not present in the Chain may be dropped even if the Decode Target Indication for that frame is not Discardable.
+{:.alert .alert-info }
+
 The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFM the ability to determine the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Chains protecting no active Decode targets MUST be ignored.
 
 **Note:** To increase the chance of using a predefined template, chains protecting no active Decode targets may refer to any frame, including an RTP frame that was never produced.
