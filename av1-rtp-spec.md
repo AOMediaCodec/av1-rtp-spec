@@ -805,7 +805,7 @@ The techniques also provide ways to describe changing (dynamic) prediction struc
 
 The syntax for the descriptor is described in pseudo-code form in this section. Parameters read directly from the bitstream appear in bold.
 
-**f(n)** - unsigned n-bit number appearing directly in the bitstream.
+**f(n)** - unsigned n-bit number appearing directly in the bitstream. The bits are read from high to low order.
 <pre><code>
 f(n) {
   x = 0
@@ -1138,7 +1138,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **active_decode_targets_present_flag**: indicates the presence of active_decode_targets_bitmask. When set to 1, active_decode_targets_bitmask MUST be present, otherwise, active_decode_targets_bitmask MUST NOT be present.
 
-* **active_decode_targets_bitmask**: contains a bitmask that indicates which decode targets are available for decoding. Bit i is equal to 1 if decode target i is available for decoding, 0 otherwise. i.e. <code>isDecodeTargetActive = (active_decode_targets_bitmask >> dtIdx) & 1</code>
+* **active_decode_targets_bitmask**: contains a bitmask that indicates which decode targets are available for decoding. Bit i is equal to 1 if decode target i is available for decoding, 0 otherwise. For example, <code>isDecodeTargetActive = (active_decode_targets_bitmask >> dtIdx) & 1</code>.
 
 * **custom_dtis_flag**: indicates the presence of frame_dtis. When set to 1, frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
 
