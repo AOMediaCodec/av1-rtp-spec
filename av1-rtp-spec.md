@@ -743,11 +743,14 @@ When an update to the set of active decode targets is received it is valid until
 
 The sender SHOULD signal updates in such a way that a receiver, even after packet loss, will immediately either know the new set of active Decode targets or if the set of active Decode targets is lost, ensure that at least one Chain will break.
 
-**Note:** The following example techniques may be used to signal a set of active Decode targets:
-* Send a new keyframe when the set of active Decode targets has been updated.
-* Send the active_decode_targets_bitmask in every packet.
-* Send the active_decode_targets_bitmask in every packet until one of those packets has been acknowledged by a receiver report.
-{:.alert .alert-info }
+<div class="alert alert-info">
+  <strong>Note:</strong> The following example techniques may be used to signal a set of active Decode targets:
+  <ul>
+    <li>Send a new keyframe when the set of active Decode targets has been updated.</li>
+    <li>Send the active_decode_targets_bitmask in every packet.</li>
+    <li>Send the active_decode_targets_bitmask in every packet until one of those packets has been acknowledged by a receiver report.</li>
+  </ul>
+</div>
 
 
 #### A.5 Chains
@@ -758,6 +761,9 @@ A Chain defines a sequence of frames essential to decode Decode targets protecte
 {:.alert .alert-info }
 
 A sender MUST construct Chains such that a receiver having received all frames in the Chain, and having missed one or more frames not in the Chain, need not request additional information (e.g., NACK or FIR) from the sender in order to resume decoding at full fidelity of the Decode target protected by the Chain.
+
+**Note:** Not decoding a frame associated with a Decode target that is also not present in the Chain will result in a temporary reduction of fidelity. A frame that is not present in the Chain may be dropped even if the Decode Target Indication for that frame is not Discardable.
+{:.alert .alert-info }
 
 The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFM the ability to determine the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Chains protecting no active Decode targets MUST be ignored.
 
@@ -771,6 +777,42 @@ Chains provide the IDD property. That is, the ability to decide immediately upon
 
 Due to the fact that Chain information is present in all packets, an SFM can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain or not.
 
+In the event of packet loss within the frame that is currently being received, it may be helpful to determine if that frame is part of the Chain by using the following example function.
+
+<pre><code>
+PartOfActiveChain(chainIdx) {
+  if (!ChainHasActiveDecodeTarget(chainIdx)) {
+    return false
+  }
+  for (i = 0; i < DtCnt; ++i) {
+    if (decode_target_protected_by[i] != chainIdx) {
+      continue
+    }
+    if (frame_dti[i] == 0 || frame_dti[i] == 1) {
+      return false
+    }
+  }
+  return true
+}
+</code></pre>
+
+<pre><code>
+ChainHasActiveDecodeTarget(chainIdx) {
+  for (i = 0; i < DtCnt; ++i) {
+    if (decode_target_protected_by[i] != chainIdx) {
+      continue
+    }
+    if (active_decode_targets_bitmask[i] == 1) {
+      return true
+    }
+  }
+  return false
+}
+
+</code></pre>
+
+**Note:** The variables <code>DtCnt</code>, <code>decode_target_protected_by</code>, <code>frame_dti</code> and <code>active_decode_targets_bitmask</code> used in the example above are read or derived from the dependency descriptor as described in Section A.8. 
+{:.alert .alert-info }
 
 #### A.7 Switching
 
