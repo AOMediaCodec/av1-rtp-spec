@@ -772,6 +772,42 @@ Chains provide the IDD property. That is, the ability to decide immediately upon
 
 Due to the fact that Chain information is present in all packets, an SFM can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain or not.
 
+In the event of packet loss within the frame that is currently being received, it may be helpful to determine if that frame is part of the Chain by using the following example function.
+
+<pre><code>
+PartOfActiveChain(chainIdx) {
+  if (!ChainHasActiveDecodeTarget(chainIdx)) {
+    return false
+  }
+  for (i = 0; i < DtCnt; ++i) {
+    if (decode_target_protected_by[i] != chainIdx) {
+      continue
+    }
+    if (frame_dti[i] == 0 || frame_dti[i] == 1) {
+      return false
+    }
+  }
+  return true
+}
+</code></pre>
+
+<pre><code>
+ChainHasActiveDecodeTarget(chainIdx) {
+  for (i = 0; i < DtCnt; ++i) {
+    if (decode_target_protected_by[i] != chainIdx) {
+      continue
+    }
+    if (active_decode_targets_bitmask[i] == 1) {
+      return true
+    }
+  }
+  return false
+}
+
+</code></pre>
+
+**Note:** The variables <code>DtCnt</code>, <code>decode_target_protected_by</code>, <code>frame_dti</code> and <code>active_decode_targets_bitmask</code> used in the example above are read or derived from the dependency descriptor as described in Section A.8. 
+{:.alert .alert-info }
 
 #### A.7 Switching
 
