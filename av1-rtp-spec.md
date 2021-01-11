@@ -802,7 +802,7 @@ ChainHasActiveDecodeTarget(chainIdx) {
     if (decode_target_protected_by[i] != chainIdx) {
       continue
     }
-    if ((active_decode_targets_bitmask >> i) & 1 == 1) {
+    if ((active_decode_targets_bitmask >> i) & 1) {
       return true
     }
   }
