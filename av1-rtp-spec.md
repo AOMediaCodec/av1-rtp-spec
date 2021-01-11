@@ -744,10 +744,12 @@ When an update to the set of active decode targets is received it is valid until
 The sender SHOULD signal updates in such a way that a receiver, even after packet loss, will immediately either know the new set of active Decode targets or if the set of active Decode targets is lost, ensure that at least one Chain will break.
 
 <div class="alert alert-info">
-**Note:** The following example techniques may be used to signal a set of active Decode targets:
-* Send a new keyframe when the set of active Decode targets has been updated.
-* Send the active_decode_targets_bitmask in every packet.
-* Send the active_decode_targets_bitmask in every packet until one of those packets has been acknowledged by a receiver report.
+  <strong>Note:</strong> The following example techniques may be used to signal a set of active Decode targets:
+  <ul>
+    <li>Send a new keyframe when the set of active Decode targets has been updated.</li>
+    <li>Send the active_decode_targets_bitmask in every packet.</li>
+    <li>Send the active_decode_targets_bitmask in every packet until one of those packets has been acknowledged by a receiver report.</li>
+  </ul>
 </div>
 
 
