@@ -1180,7 +1180,7 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 
 * **active_decode_targets_present_flag**: indicates the presence of active_decode_targets_bitmask. When set to 1, active_decode_targets_bitmask MUST be present, otherwise, active_decode_targets_bitmask MUST NOT be present.
 
-* **active_decode_targets_bitmask**: contains a bitmask that indicates which decode targets are available for decoding. Bit i is equal to 1 if decode target i is available for decoding, 0 otherwise. The least significant bit corresponds to Decode target 0.
+* **active_decode_targets_bitmask**: contains a bitmask that indicates which Decode targets are available for decoding. Bit i is equal to 1 if Decode target i is available for decoding, 0 otherwise. The least significant bit corresponds to Decode target 0.
 
 * **custom_dtis_flag**: indicates the presence of frame_dtis. When set to 1, frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
 
