@@ -332,9 +332,9 @@ This section specifies the parameters that MAY be used to select optional featur
 * Required parameters:
   * None.
 * Optional parameters:
-  * None.
+  * Optional parameters are profile, level-idx, and tier. See Section 7.2.1 of  https://aomediacodec.github.io/av1-rtp-spec/
 * Encoding considerations:
-  * This media type is framed in RTP and contains binary data; see Section 4.8 of [RFC6838].
+  * This media type contains binary data; see Section 4.8 of [RFC6838].
 * Security considerations:
   * See Section 10 of https://aomediacodec.github.io/av1-rtp-spec/.
 * Interoperability considerations:
@@ -353,7 +353,7 @@ This section specifies the parameters that MAY be used to select optional featur
 * Intended usage:
   * COMMON
 * Restrictions on usage:
-  * This media type depends on RTP framing, and hence is only defined for transfer via RTP [RFC3550].  Transfer within other framing protocols is not defined at this time.
+  * This media type is only defined for transfer via RTP [RFC3550]. Transfer within other framing protocols is not defined at this time.
 * Author:
   * RTC Subgroup of the AV1 Codec Working Group of the Alliance for Open Media (http://aomedia.org)
 * Change controller:
