@@ -325,7 +325,7 @@ This section specifies the parameters that MAY be used to select optional featur
 
 ### 7.1 Media Type Definition
 
-The AV1 media type is registered with IANA for the transfer of AV1 via RTP at https://www.iana.org/assignments/media-types/video/AV1.
+The AV1 media type is registered with IANA for signaling the transfer of AV1 via RTP at https://www.iana.org/assignments/media-types/video/AV1.
 
 ### 7.2 SDP Parameters
 The parameters for AV1 are **profile**, **level-idx**, and **tier**. These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier that the receiver supports. 
