@@ -325,40 +325,7 @@ This section specifies the parameters that MAY be used to select optional featur
 
 ### 7.1 Media Type Definition
 
-* Type name:
-  * **video**
-* Subtype name:
-  * **AV1**
-* Required parameters:
-  * None.
-* Optional parameters:
-  * Optional parameters are profile, level-idx, and tier. See Section 7.2.1 of  https://aomediacodec.github.io/av1-rtp-spec/
-* Encoding considerations:
-  * This media type contains binary data; see Section 4.8 of [RFC6838].
-* Security considerations:
-  * See Section 10 of https://aomediacodec.github.io/av1-rtp-spec/.
-* Interoperability considerations:
-  * None.
-* Published specification:
-  * https://aomediacodec.github.io/av1-rtp-spec/
-* Applications which use this media type:
-  * Video over IP, video conferencing, video streaming.
-* Fragment identifier considerations:
-  * N/A.
-* Additional information:
-  * None.
-* Person & email address to contact for further information:
-  * Name: Alliance for Open Media
-  * Email: registration@aomedia.org
-* Intended usage:
-  * COMMON
-* Restrictions on usage:
-  * This media type is only defined for transfer via RTP [RFC3550]. Transfer within other framing protocols is not defined at this time.
-* Author:
-  * RTC Subgroup of the AV1 Codec Working Group of the Alliance for Open Media (http://aomedia.org)
-* Change controller:
-  * AV1 Codec Working Group of the Alliance for Open Media (http://aomedia.org/)
-
+The AV1 media type is registered with IANA for the transfer of AV1 via RTP at https://www.iana.org/assignments/media-types/video/AV1.
 
 ### 7.2 SDP Parameters
 The parameters for AV1 are **profile**, **level-idx**, and **tier**. These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier that the receiver supports. 
