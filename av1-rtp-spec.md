@@ -743,9 +743,9 @@ The Frame dependency structure includes a mapping between Decode targets and Cha
 Chains provide the IDD property. That is, the ability to decide immediately whether a received or missed packet is needed to decode a received bitstream. This property allows an SFM to determine whether to forward a packet to one or more downstream endpoints or attempt to recover essential missed packets.
 
 The property is satisfied when the receiver is able to determine whether:
-* The packet belongs to a frame which is required for the endpoint's Decode target. This is provided by the Decode Target Indication (DTI) values.
-* All frames referenced by the current frame have been forwarded to the endpoint. This is provided by the frame difference values (see Section A.8.3).
-* Upon receiving the very first packet after an RTP sequence number gap, if any of the missed packets are required for the Decode target to remain decodable. This is provided by the chain information.
+* The packet belongs to a frame which is required for the endpoint's Decode target. This is determined from the Decode Target Indication (DTI) values.
+* All frames referenced by the current frame have been forwarded to the endpoint. This is determined from the frame difference values (see Section A.8.3).
+* Upon receiving the very first packet after an RTP sequence number gap, if any of the missed packets are required for the Decode target to remain decodable. This is determined from the chain information.
 
 Due to the fact that Chain information is present in all packets, an SFM can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain or not.
 
