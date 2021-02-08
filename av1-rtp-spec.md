@@ -744,7 +744,7 @@ Chains provide the IDD property. That is, the ability to decide immediately whet
 
 The property is satisfied when the receiver is able to determine whether:
 * The packet belongs to a frame which is required for the endpoint's Decode target. This is provided by the Decode Target Indication (DTI) values.
-* All frames referenced by the current frame have been forwarded to the endpoint. This is provided by the frame difference values (see Section A8.3).
+* All frames referenced by the current frame have been forwarded to the endpoint. This is provided by the frame difference values (see Section A.8.3).
 * Upon receiving the very first packet after an RTP sequence number gap, if any of the missed packets are required for the Decode target to remain decodable. This is provided by the chain information.
 
 Due to the fact that Chain information is present in all packets, an SFM can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain or not.
