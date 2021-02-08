@@ -740,7 +740,7 @@ The Frame dependency structure includes a mapping between Decode targets and Cha
 
 #### A.6 Instantaneous Decidability of Decodability (IDD)
 
-Chains provide the IDD property. That is, he ability to decide immediately whether a received or missed packet is needed to decode a received bitstream. This property allows an SFM to determine whether to forward a packet to one or more downstream endpoints or attempt to recover essential missed packets.
+Chains provide the IDD property. That is, the ability to decide immediately whether a received or missed packet is needed to decode a received bitstream. This property allows an SFM to determine whether to forward a packet to one or more downstream endpoints or attempt to recover essential missed packets.
 
 The property is satisfied when the receiver is able to determine whether:
 * The packet belongs to a frame which is required for the endpoint's Decode target. This is provided by the Decode Target Indication (DTI) values.
