@@ -306,7 +306,7 @@ The general function of a MANE or SFM is to selectively forward packets to recei
 
 The RTP payload defined in this specification supports two distinct modes for transport of simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated with each spatial layer. Both modes MUST be supported by implementations of this specification.
 
-When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs) for each encoding as described in [I-D.ietf-avtext-rid] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFMs, utilizes Session Description Protocol (SDP) signaling as described in [I-D.ietf-mmusic-sdp-simulcast] and [I-D.ietf-mmusic-rid].
+When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs) for each encoding as described in [I-D.ietf-avtext-rid] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFMs, utilizes Session Description Protocol (SDP) signaling as described in [RFC8851] and [RFC8853].
 
 When simulcast encodings are transported on a single RTP stream, RIDs are not used and the Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since AV1 enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFMs.
 
@@ -325,7 +325,7 @@ This section specifies the parameters that MAY be used to select optional featur
 
 ### 7.1 Media Type Definition
 
-The AV1 media type is registered with IANA for signaling the transfer of AV1 via RTP at https://www.iana.org/assignments/media-types/video/AV1.
+The AV1 media type used for signaling the transfer of AV1 via RTP is registered at https://www.iana.org/assignments/media-types/video/AV1.
 
 ### 7.2 SDP Parameters
 The parameters for AV1 are **profile**, **level-idx**, and **tier**. These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier that the receiver supports. 
@@ -347,7 +347,7 @@ The receiver MUST ignore any fmtp parameter not specified in this document.
 
 ### 7.2.2 RID Restrictions Mapping for AV1
 
-The RID specification declares the set of codec-agnostic restrictions for media streams. All the restrictions are optional and are subject to negotiation based on the SDP Offer/Answer rules described in Section 6 in [I-D.ietf-mmusic-rid]. When these restrictions are applied to the AV1 codec, they MUST have the following interpretation:
+The RID specification declares the set of codec-agnostic restrictions for media streams. All the restrictions are optional and are subject to negotiation based on the SDP Offer/Answer rules described in Section 6 in [RFC8851]. When these restrictions are applied to the AV1 codec, they MUST have the following interpretation:
 * **max-width**, maximum width of the frame in units of samples. The meaning of the restriction is the same as variable **MaxHSize** of the levels table from Section A.3 of [AV1].
 * **max-height**, maximum height of the frame in units of samples. The meaning of the restriction is the same as variable **MaxVSize** of the levels table from Section A.3 of [AV1].
 * **max-fps**, maximum number of temporal units per second.
@@ -575,7 +575,7 @@ Identification of a layer refresh frame may be performed by examining the coding
 
 ## 9 IANA Considerations
 
-Upon publication, a new media type, as specified in Section 7.1 of this document, will be registered with IANA.
+The AV1 media type is registered with IANA for signaling the transfer of AV1 via RTP at https://www.iana.org/assignments/media-types/video/AV1.
 
 
 ## 10 Security Considerations
@@ -603,19 +603,19 @@ End-to-end security services such as authentication, integrity, or confidentiali
 
 * [RFC6904] **Encryption of Header Extensions in the Secure Real-time Transport Protocol (SRTP)**, J. Lennox, April 2013.
 
+* [RFC7667] **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+
 * [RFC8285] **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
 
-* [RFC7667] **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+* [RFC8851] **RTP Payload Format Restrictions**, A. Roach, January 2021.
+
+* [RFC8852] **RTP Stream Identifier Source Description (SDES)**, A. Roach, S. Nandakumar and P. Thatcher, January 2021.
+
+* [RFC8853] **Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar and M. Zanaty, January 2021.
 
 * [I-D.ietf-avtext-lrr] **The Layer Refresh Request (LRR) RTCP Feedback Message**, J. Lennox, D. Hong, J. Uberti, S. Holmer, and M. Flodman, June 29, 2017.
 
-* [I-D.ietf-avtext-rid] **RTP Stream Identifier Source Description (SDES)**, A. Roach, S. Nandakumar and P. Thatcher, October 06, 2016.
-
-* [I-D.ietf-mmusic-rid] **RTP Payload Format Restrictions**, A. Roach, May 15, 2018.
-
-* [I-D.ietf-mmusic-sdp-simulcast] **Using Simulcast in SDP and RTP Sessions**, B. Burman, M. Westerlund, S. Nandakumar and M. Zanaty, March 5, 2019.
-
-* [I-D.ietf-payload-vp9] **RTP Payload Format for VP9 Video**, J. Uberti, S. Holmer, M. Flodman, D. Hong, and J. Lennox, January 2020.
+* [I-D.ietf-payload-vp9] **RTP Payload Format for VP9 Video**, J. Uberti, S. Holmer, M. Flodman, D. Hong, and J. Lennox, February 2021.
 
 
 ### 11.2 Informative References
@@ -1625,9 +1625,6 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 
 [AV1]: https://aomediacodec.github.io/av1-spec/av1-spec.pdf
 [I-D.ietf-avtext-lrr]: https://tools.ietf.org/html/draft-ietf-avtext-lrr-07
-[I-D.ietf-avtext-rid]: https://tools.ietf.org/html/draft-ietf-avtext-rid
-[I-D.ietf-mmusic-rid]: https://tools.ietf.org/html/draft-ietf-mmusic-rid
-[I-D.ietf-mmusic-sdp-simulcast]: https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast
 [I-D.ietf-payload-vp9]: https://tools.ietf.org/html/draft-ietf-payload-vp9
 [RFC2119]: https://tools.ietf.org/html/rfc2119
 [RFC2326]: https://tools.ietf.org/html/rfc2326
@@ -1640,9 +1637,13 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 [RFC5104]: https://tools.ietf.org/html/rfc5104
 [RFC6184]: https://tools.ietf.org/html/rfc6184
 [RFC6838]: https://tools.ietf.org/html/rfc6838
+[RFC6904]: https://tools.ietf.org/html/rfc6904
 [RFC7202]: https://tools.ietf.org/html/rfc7202
 [RFC7667]: https://tools.ietf.org/html/rfc7667
 [RFC8082]: https://tools.ietf.org/html/rfc8082
 [RFC8285]: https://tools.ietf.org/html/rfc8285
+[RFC8851]: https://tools.ietf.org/html/rfc8851
+[RFC8852]: https://tools.ietf.org/html/rfc8852
+[RFC8853]: https://tools.ietf.org/html/rfc8853
 
 
