@@ -1637,6 +1637,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 [RFC5104]: https://tools.ietf.org/html/rfc5104
 [RFC6184]: https://tools.ietf.org/html/rfc6184
 [RFC6838]: https://tools.ietf.org/html/rfc6838
+[RFC6904]: https://tools.ietf.org/html/rfc6904
 [RFC7202]: https://tools.ietf.org/html/rfc7202
 [RFC7667]: https://tools.ietf.org/html/rfc7667
 [RFC8082]: https://tools.ietf.org/html/rfc8082
