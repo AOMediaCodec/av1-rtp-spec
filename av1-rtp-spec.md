@@ -603,9 +603,9 @@ End-to-end security services such as authentication, integrity, or confidentiali
 
 * [RFC6904] **Encryption of Header Extensions in the Secure Real-time Transport Protocol (SRTP)**, J. Lennox, April 2013.
 
-* [RFC8285] **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
-
 * [RFC7667] **RTP Topologies**, M. Westerlund and S. Wenger, November 2015.
+
+* [RFC8285] **A General Mechanism for RTP Header Extensions for generic RTP header extensions**, D. Singer, H. Desineni, and R. Even, October 2017.
 
 * [RFC8851] **RTP Payload Format Restrictions**, A. Roach, January 2021.
 
