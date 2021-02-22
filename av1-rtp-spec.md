@@ -641,10 +641,12 @@ In the DD, the smallest unit for which dependencies are described is an RTP fram
 
 The DD uses the concept of Decode targets, each of which represents a subset of a scalable video stream necessary to decode the stream at a certain temporal and spatial fidelity. A frame may be associated with several Decode targets. This concept is used to facilitate selective forwarding, as is done by a Selective Forwarding Middlebox (SFM). Typically an SFM would select one Decode target for each endpoint, and forward all frames associated with that target.
 
-The DD describes the decodability of the current frame and provides information about whether current and past frames are required for decoding future frames associated with the Decode target. Specifically, the DD contains
-* a list of Referred frames that can be used to deduce the decodability of the current frame,
-* Decode Target Indications that communicate how current and past frames are required for decoding future frames associated with the Decode target (e.g., Discardable, Switch), and
-* Chains to communicate whether or not missed frames are required for decoding future frames associated with the Decode target.
+The DD also uses the concept of Instantaneous Decidability or Decodability (IDD).  The IDD property is the ability to decide immediately whether a received or missed packet is needed to decode a received bitstream. This property allows an SFM to determine whether it has to forward a packet to one or more downstream endpoints or attempt to recover essential missed packets.
+
+The property is satisfied when the receiver is able to determine whether:
+* The packet belongs to a frame which is required for the endpoint's Decode target. This is determined from the Decode Target Indication (DTI) values (see Section A.4).
+* All frames referenced by the current frame have been forwarded to the endpoint. This is determined from the frame difference values (see Section A.8.3).
+* Upon receiving the very first packet after an RTP sequence number gap, if any of the missed packets are required for the Decode target to remain decodable. This is determined from the Chain information (see Section A.6).
 
 To reduce overhead, the DD uses templates to avoid sending repetitive information. Subsequent packets refer to a template containing predefined information, which may be overridden with custom dependencies. In this way, the typical DD payload requires three bytes. Dynamic structures whose information is not known in advance can be described using additional bytes.
 
@@ -738,11 +740,11 @@ The Frame dependency structure includes a mapping between Decode targets and Cha
 {:.alert .alert-info }
 
 
-#### A.6 Instantaneous Decidability of Decodability (IDD)
+#### A.6 Usage of Chains After Packet Loss
 
-Chains provide the IDD property. That is, the ability to decide immediately upon receiving the very first packet after packet loss, if any of the lost packets are required for the Decode target to remain decodable.
+Chains provide the ability to decide immediately upon receiving the very first packet after packet loss, if any of the lost packets are required for the Decode target to remain decodable.
 
-Due to the fact that Chain information is present in all packets, an SFM can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain or not.
+Due to the fact that the Chain information is present in all packets, an SFM can detect a broken Chain regardless of whether the first packet received after a loss is part of that Chain or not.
 
 In the event of packet loss within the frame that is currently being received, it may be helpful to determine if that frame is part of the Chain by using the following example function.
 
