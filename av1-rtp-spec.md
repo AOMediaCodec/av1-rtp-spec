@@ -171,7 +171,7 @@ N: MUST be set to 1 if the packet is the first packet of a coded video sequence,
 
 ### 4.5 Payload Structure
 
-The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream structures are packetized in OBUs. Each OBU has a header, which provides identifying information for the contained data (payload).
+The bitstream format is the low overhead format defined in the AV1 specificaton (AV1, Secton 5.2). The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream structures are packetized in OBUs. Each OBU has a header, which provides identifying information for the contained data (payload).
 
 The payload contains a series of one or more OBU elements. The design allows for a combination of aggregation and fragmentation of OBUs, i.e., a set of OBU elements in which the first and/or last element is a fragment of an OBU.
 
@@ -270,7 +270,7 @@ The following are example packetizations of OBU sequences. A two-letter notation
 
 The following is an example coded video sequence:
 <pre><code>
-    TD SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG(0,1)
+    TD SH MD MD(0,0) FH(0,0) TG(0,0) MD(0,1) FH(0,1) TG(0,1) ...
 </code></pre>
 
 This sequence could be packetized as follows. First, the TD OBU is dropped. Then, the following packetization grouping (indicated using square brackets) may be used:
