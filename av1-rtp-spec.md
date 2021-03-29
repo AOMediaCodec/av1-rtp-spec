@@ -171,7 +171,7 @@ N: MUST be set to 1 if the packet is the first packet of a coded video sequence,
 
 ### 4.5 Payload Structure
 
-The bitstream format is the low overhead format defined in the AV1 specificaton (AV1, Secton 5.2). The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream structures are packetized in OBUs. Each OBU has a header, which provides identifying information for the contained data (payload).
+The bitstream format is the low overhead format defined in the AV1 specificaton (AV1, Section 5.2). The smallest high-level syntax unit in AV1 is the OBU. All AV1 bitstream structures are packetized in OBUs. Each OBU has a header, which provides identifying information for the contained data (payload).
 
 The payload contains a series of one or more OBU elements. The design allows for a combination of aggregation and fragmentation of OBUs, i.e., a set of OBU elements in which the first and/or last element is a fragment of an OBU.
 
