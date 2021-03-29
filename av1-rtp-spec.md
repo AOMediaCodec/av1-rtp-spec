@@ -270,7 +270,7 @@ The following are example packetizations of OBU sequences. A two-letter notation
 
 The following is an example coded video sequence:
 <pre><code>
-    TD SH MD MD(0,0) FH(0,0) TG0(0,0) MD(0,1) FH(0,1) TG(0,1)
+    TD SH MD MD(0,0) FH(0,0) TG(0,0) MD(0,1) FH(0,1) TG(0,1) ...
 </code></pre>
 
 This sequence could be packetized as follows. First, the TD OBU is dropped. Then, the following packetization grouping (indicated using square brackets) may be used:
