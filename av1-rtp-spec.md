@@ -873,7 +873,7 @@ write_ns(n,v) {
   }
   m = (1 << w) - n
   if (v < m)
-    write_f(w - 1, val);
+    write_f(w - 1, val)
   else
     write_f(w, v + m) 
 }
