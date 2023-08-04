@@ -860,7 +860,7 @@ ns(n) {
 }
 </code></pre>
 
-The serialization proccess for this descriptor is specified as:
+The serialization process for this descriptor is specified as:
 
 <pre><code>
 write_ns(n,v) {
@@ -873,7 +873,7 @@ write_ns(n,v) {
   }
   m = (1 << w) - n
   if (v < m)
-    write_f(w - 1, val)
+    write_f(w - 1, v)
   else
     write_f(w, v + m) 
 }
