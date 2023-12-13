@@ -5,7 +5,7 @@ RTP Payload Format For AV1 (v1.0)
 
 **Authors:** The Alliance for Open Media AV1 Real-Time Communications Subgroup
 
-**Status:** This document is a draft of a proposed specification.
+**Status:** This document represents a final deliverable.
 
 ## Abstract
 {:.no_toc }
