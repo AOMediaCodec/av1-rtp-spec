@@ -298,7 +298,7 @@ The general function of a MANE or SFM is to selectively forward packets to recei
 
 ### 6.1 Simulcast
 
-The RTP payload defined in this specification supports two distinct modes for transport of simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated with each spatial layer. Both modes MUST be supported by implementations of this specification.
+The RTP payload defined in this specification supports two distinct modes for transport of simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated with each spatial layer. Both modes MUST be supported by transmitting clients.
 
 When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs) for each encoding as described in [RFC8852] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFMs, utilizes Session Description Protocol (SDP) signaling as described in [RFC8851] and [RFC8853].
 
