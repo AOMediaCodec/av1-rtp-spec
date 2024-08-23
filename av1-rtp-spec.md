@@ -312,6 +312,21 @@ In this example, it is desired to send three simulcast encodings, each containin
 When sending each simulcast encoding on a distinct SSRC, the scalability mode 'L1T3' would be indicated within the scalability metadata OBU of each bitstream, and the Dependency Descriptor in each stream describes only the dependency structure for that individual encoding. A distinct spatial_id (e.g. 0, 1, 2) could be used for each stream (if a single AV1 encoder is used to produce the three simulcast encodings), but if distinct AV1 encoders are used, the spatial_id values may not be distinct.
 
 
+### 6.2 Constraints For Scalable Video Bitstreams
+
+The following AV1 bitstream constraints need to be applied when sending scalable video bitstreams, in order to ensure correct packet forwarding behavior by a MANE.
+
+1. The  obu_extension_flag MUST be equal to 0 in any sequence header OBU. This ensures that sequence headers will be forwarded to all receivers.
+
+**Note:** this constraint is required despite the ambiguity of the text that defines operating_point_idc[i] in Section 6.4.1 of [AV1].
+
+2. The obu_extension_flag MUST be equal to 1 in all frame, frame header, redundant frame header, and tile group OBUs. This enables the MANE to only forward these OBUs to receivers using operating points that require them.
+
+3. The obu_extension_flag MUST be equal to 0 in a scalability metadata OBU. This ensures that the scalability metadata will be forwarded to all receivers.
+
+4. The obu_extension_flag MAY be equal to 1 in a padding OBU.
+
+
 ## 7 Payload Format Parameters
 
 This section specifies the parameters that MAY be used to select optional features of the payload format and certain features of the bitstream.
