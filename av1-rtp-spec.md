@@ -314,7 +314,7 @@ When sending each simulcast encoding on a distinct SSRC, the scalability mode 'L
 
 ### 6.2 Constraints For Scalable Video Bitstreams
 
-The following AV1 bitstream constraints need to be applied when sending scalable video bitstreams, in order to ensure correct packet forwarding behavior by a MANE.
+The following AV1 bitstream constraints need to be applied when transmitting scalable video bitstreams, in order to ensure correct packet forwarding behavior by a MANE.
 
 The  obu_extension_flag MUST be equal to 0 in any sequence header OBU. This ensures that sequence headers will be forwarded to all receivers.
 
