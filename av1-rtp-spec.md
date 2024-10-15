@@ -5,7 +5,7 @@ RTP Payload Format For AV1 (v1.0)
 
 **Authors:** The Alliance for Open Media AV1 Real-Time Communications Subgroup
 
-**Status:** This document is a draft of a proposed specification.
+**Status:** This document represents a final deliverable.
 
 ## Abstract
 {:.no_toc }
@@ -54,7 +54,7 @@ Open Bitstream Unit (OBU)
 : The smallest bitstream data framing unit in AV1. All AV1 bitstream structures are packetized in OBUs.
 
 "S" Mode
-: A scalability mode in which multiple encodings are sent on the same SSRC. This includes the S2T1, S2T1h, S2T2, S2T2h, S2T3, S2T3h, S3T1, S3T1h, S3T2, S3T2h, S3T3 and S3T3h scalability modes defined in Section 6.7.5 of [AV1]. 
+: A scalability mode in which multiple independent encodings are sent on the same SSRC. This includes the S2T1, S2T1h, S2T2, S2T2h, S2T3, S2T3h, S3T1, S3T1h, S3T2, S3T2h, S3T3 and S3T3h scalability modes defined in Section 6.7.5 of [AV1]. 
 
 Selective Forwarding Middlebox (SFM)
 : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without accessing the media ([RFC7667]).
@@ -261,7 +261,7 @@ If more than one OBU contained in an RTP packet has an OBU extension header, the
 
 If a sequence header OBU is present in an RTP packet, then it	SHOULD be the first OBU in the packet. OBUs that are not associated with a particular layer (and thus do not have an OBU extension header) SHOULD be in the beginning of a packet, following the sequence header OBU if present.
 
-A sequence header OBU SHOULD be included in the base layer when scalable encoding is used. When simulcast encodings are transported on the same SSRC (an "S" mode), a sequence header OBU SHOULD be aggregated with each spatial layer. This ensures that if an intermediary removes simulcast encodings from the bitstream before forwarding, the modified bitstream will still be decodable.
+A sequence header OBU SHOULD be aggregated with the base layer when scalable encoding is used. When simulcast encodings are transported on the same SSRC (an "S" mode), a sequence header OBU SHOULD be aggregated with each spatial layer. This ensures that if an intermediary removes simulcast encodings from the bitstream before forwarding, the modified bitstream will still be decodable.
 
 
 ### 5.1 Examples
@@ -298,11 +298,11 @@ The general function of a MANE or SFM is to selectively forward packets to recei
 
 ### 6.1 Simulcast
 
-The RTP payload defined in this specification supports two distinct modes for transport of simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated with each spatial layer. Both modes MUST be supported by implementations of this specification.
+The RTP payload defined in this specification supports two distinct modes for transport of simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated with each spatial layer.
 
-When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs) for each encoding as described in [RFC8852] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFMs, utilizes Session Description Protocol (SDP) signaling as described in [RFC8851] and [RFC8853].
+When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs) for each encoding as described in [RFC8852] and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport utilizes Session Description Protocol (SDP) signaling as described in [RFC8851] and [RFC8853].
 
-When simulcast encodings are transported on a single RTP stream, RIDs are not used and the Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since AV1 enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFMs.
+When simulcast encodings are transported on a single RTP stream, RIDs are not used and the Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since AV1 enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used.
 
 
 ### 6.1.1 Example
@@ -310,6 +310,21 @@ When simulcast encodings are transported on a single RTP stream, RIDs are not us
 In this example, it is desired to send three simulcast encodings, each containing three temporal layers. When sending all encodings on a single SSRC, scalability mode 'S3T3' would be indicated within the scalability metadata OBU, and the Dependency Descriptor describes the dependency structure of all encodings.
 
 When sending each simulcast encoding on a distinct SSRC, the scalability mode 'L1T3' would be indicated within the scalability metadata OBU of each bitstream, and the Dependency Descriptor in each stream describes only the dependency structure for that individual encoding. A distinct spatial_id (e.g. 0, 1, 2) could be used for each stream (if a single AV1 encoder is used to produce the three simulcast encodings), but if distinct AV1 encoders are used, the spatial_id values may not be distinct.
+
+
+### 6.2 Constraints For Scalable Video Bitstreams
+
+The following AV1 bitstream constraints need to be applied when transmitting scalable video bitstreams, in order to ensure correct packet forwarding behavior by a MANE.
+
+The  obu_extension_flag MUST be equal to 0 in any sequence header OBU. This ensures that sequence headers will be forwarded to all receivers.
+
+**Note:** this constraint is required despite the ambiguity of the text that defines operating_point_idc[i] in Section 6.4.1 of [AV1].
+
+The obu_extension_flag MUST be equal to 1 in all frame, frame header, redundant frame header, and tile group OBUs. This enables the MANE to only forward these OBUs to receivers using operating points that require them.
+
+The obu_extension_flag MUST be equal to 0 in a scalability metadata OBU. This ensures that the scalability metadata will be forwarded to all receivers.
+
+The obu_extension_flag MAY be equal to 1 in a padding OBU.
 
 
 ## 7 Payload Format Parameters
@@ -328,7 +343,7 @@ The **profile** parameter is an integer indicating the highest AV1 profile that 
 
 The **level-idx** parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_level_idx** syntax element specified in [AV1]. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
 
-The **tier** parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_tier** syntax element specified in [AV1]. If the parameter is not present, the tier MUST be inferred to be 0.
+The **tier** parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_tier** syntax element specified in [AV1]. If the parameter is not present, it MUST be inferred to be 0.
 
 #### 7.2.1 Mapping of Media Subtype Parameters to SDP
 The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) per [RFC4566] as follows:
