@@ -319,6 +319,7 @@ The following AV1 bitstream constraints need to be applied when transmitting sca
 The  obu_extension_flag MUST be equal to 0 in any sequence header OBU. This ensures that sequence headers will be forwarded to all receivers.
 
 **Note:** this constraint is required despite the ambiguity of the text that defines operating_point_idc[i] in Section 6.4.1 of [AV1].
+{:.alert .alert-info }
 
 The obu_extension_flag MUST be equal to 1 in all frame, frame header, redundant frame header, and tile group OBUs. This enables the MANE to only forward these OBUs to receivers using operating points that require them.
 
