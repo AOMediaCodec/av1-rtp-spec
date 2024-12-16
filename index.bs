@@ -1259,13 +1259,42 @@ A Decode target (DT) is a subset of a scalable video stream necessary to decode 
 
 A Decode Target Indication describes the relationship of a frame to a Decode target. For F5, the Decode Target Indication is different for each of the decode targets as shown in the table below.
 
-|     |  Indication |   Description    |  SFM behavior |
-|-----|-------------|------------------|---------------|
-| DT0 | Not present | F5 is not associated with DT0. | Do not forward F5 to a DT0 client. |
-| DT1 | Discardable | No frame in DT1 will reference F5. | Should forward F5 to a DT1 client, but may discard it, e.g., when bandwidth is low. |
-| DT2 | Switch      | If it is possible to decode F5, then all future frames in DT2 are also decodable. | Forward F5 to the DT2 client. In addition, the SFM can rely on the fact that if the F5 frame is decodable for a particular client then that client may be switched to DT2. |
-| DT3 | Required    | Future frames in DT3 reference F5. | Forward F5 to a DT3 client. No additional decisions can be made. |
-{:.table .table-sm .table-bordered }
+<table class="table table-sm table-bordered">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Indication</th>
+      <th>Description</th>
+      <th>SFM behavior</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DT0</td>
+      <td>Not present</td>
+      <td>F5 is not associated with DT0.</td>
+      <td>Do not forward F5 to a DT0 client.</td>
+    </tr>
+    <tr>
+      <td>DT1</td>
+      <td>Discardable</td>
+      <td>No frame in DT1 will reference F5.</td>
+      <td>Should forward F5 to a DT1 client, but may discard it, e.g., when bandwidth is low.</td>
+    </tr>
+    <tr>
+      <td>DT2</td>
+      <td>Switch</td>
+      <td>If it is possible to decode F5, then all future frames in DT2 are also decodable.</td>
+      <td>Forward F5 to the DT2 client. In addition, the SFM can rely on the fact that if the F5 frame is decodable for a particular client then that client may be switched to DT2.</td>
+    </tr>
+    <tr>
+      <td>DT3</td>
+      <td>Required</td>
+      <td>Future frames in DT3 reference F5.</td>
+      <td>Forward F5 to a DT3 client. No additional decisions can be made.</td>
+    </tr>
+  </tbody>
+</table>
 
 A Chain is a sequence of frames for which it can be determined instantly if a frame from that sequence has been lost. In this example, two are used as shown in the diagrams below.
 
@@ -1313,16 +1342,61 @@ To notify the receiver that an upswitch is possible (i.e., no previous frames fr
 
 One way to notify the receiver is to set a Switch indication in F105 and reset Chain1 at F105 as shown in the table and figure below.
 
-| frame_number |  Layer | Indication for DT1 |  Previous Frame in Chain1 | Frame dependencies |
-|--------------|:------:|--------------------|---------------------------|--------------------|
-|103|S0|Required|102|101|
-|104|S1|Required|103|103, 102|
-|105|S0|**Switch**|**105**|103|
-|106|S1|Required|105|**105**|
-|107|S0|Required|106|105|
-|108|S1|Required|107|107, 106|
-{:.table .table-sm .table-bordered }
-
+<table class="table table-sm table-bordered">
+  <thead>
+    <tr>
+      <th>frame_number</th>
+      <th style="text-align: center">Layer</th>
+      <th>Indication for DT1</th>
+      <th>Previous Frame in Chain1</th>
+      <th>Frame dependencies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>103</td>
+      <td style="text-align: center">S0</td>
+      <td>Required</td>
+      <td>102</td>
+      <td>101</td>
+    </tr>
+    <tr>
+      <td>104</td>
+      <td style="text-align: center">S1</td>
+      <td>Required</td>
+      <td>103</td>
+      <td>103, 102</td>
+    </tr>
+    <tr>
+      <td>105</td>
+      <td style="text-align: center">S0</td>
+      <td><strong>Switch</strong></td>
+      <td><strong>105</strong></td>
+      <td>103</td>
+    </tr>
+    <tr>
+      <td>106</td>
+      <td style="text-align: center">S1</td>
+      <td>Required</td>
+      <td>105</td>
+      <td><strong>105</strong></td>
+    </tr>
+    <tr>
+      <td>107</td>
+      <td style="text-align: center">S0</td>
+      <td>Required</td>
+      <td>106</td>
+      <td>105</td>
+    </tr>
+    <tr>
+      <td>108</td>
+      <td style="text-align: center">S1</td>
+      <td>Required</td>
+      <td>107</td>
+      <td>107, 106</td>
+    </tr>
+  </tbody>
+</table>
 <figure style="display: block;" align="center">
   <img src="assets/images/L2T1_C105.svg" width="55%" >
   <figcaption>Chain1 reset at F105</figcaption>
@@ -1330,15 +1404,61 @@ One way to notify the receiver is to set a Switch indication in F105 and reset C
 
 Another way to notify the receiver is to set a Switch indication in F106 and reset Chain1 at F106 as shown in the table and figure below.
 
-| frame_number |  Layer | Indication for DT1 |  Previous Frame in Chain1 | Frame dependencies |
-|--------------|:------:|--------------------|---------------------------|--------------------|
-|103|S0|Required|102|101|
-|104|S1|Required|103|103, 102|
-|105|S0|Required|104|103|
-|106|S1|**Switch**|**106**|**105**|
-|107|S0|Required|106|105|
-|108|S1|Required|107|107, 106|
-{:.table .table-sm .table-bordered }
+<table class="table table-sm table-bordered">
+  <thead>
+    <tr>
+      <th>frame_number</th>
+      <th style="text-align: center">Layer</th>
+      <th>Indication for DT1</th>
+      <th>Previous Frame in Chain1</th>
+      <th>Frame dependencies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>103</td>
+      <td style="text-align: center">S0</td>
+      <td>Required</td>
+      <td>102</td>
+      <td>101</td>
+    </tr>
+    <tr>
+      <td>104</td>
+      <td style="text-align: center">S1</td>
+      <td>Required</td>
+      <td>103</td>
+      <td>103, 102</td>
+    </tr>
+    <tr>
+      <td>105</td>
+      <td style="text-align: center">S0</td>
+      <td>Required</td>
+      <td>104</td>
+      <td>103</td>
+    </tr>
+    <tr>
+      <td>106</td>
+      <td style="text-align: center">S1</td>
+      <td><strong>Switch</strong></td>
+      <td><strong>106</strong></td>
+      <td><strong>105</strong></td>
+    </tr>
+    <tr>
+      <td>107</td>
+      <td style="text-align: center">S0</td>
+      <td>Required</td>
+      <td>106</td>
+      <td>105</td>
+    </tr>
+    <tr>
+      <td>108</td>
+      <td style="text-align: center">S1</td>
+      <td>Required</td>
+      <td>107</td>
+      <td>107, 106</td>
+    </tr>
+  </tbody>
+</table>
 
 <figure style="display: block;" align="center">
   <img src="assets/images/L2T1_C106.svg" width="55%" >
@@ -1363,52 +1483,250 @@ The sender has a bit rate constraint for DT0. When the encoder overshoots that c
   <img src="assets/images/Q2T1_SKIP_FRAMES.svg" width="80%" >
 </figure>
 
-|frame_number | Layer | Previous Frame in Chain0 | Frame Dependencies|
-|-------------|-------|--------------------------|-------------------|
-|103          |S0     |101                       |101                |
-|104          |S1     |103                       |103, 102           |
-|105          |S1     |**103**                   |**104**             |
-|106          |S1     |**103**                   |**105**             |
-|107          |S1     |**103**                   |**106**             |
-|108          |S0     |**103**                   |**103**             |
-|109          |S1     |108                       |108, 107           |
-{:.table .table-sm .table-bordered }
+<table class="table table-sm table-bordered">
+  <thead>
+    <tr>
+      <th>frame_number</th>
+      <th>Layer</th>
+      <th>Previous Frame in Chain0</th>
+      <th>Frame Dependencies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>103</td>
+      <td>S0</td>
+      <td>101</td>
+      <td>101</td>
+    </tr>
+    <tr>
+      <td>104</td>
+      <td>S1</td>
+      <td>103</td>
+      <td>103, 102</td>
+    </tr>
+    <tr>
+      <td>105</td>
+      <td>S1</td>
+      <td><strong>103</strong></td>
+      <td><strong>104</strong></td>
+    </tr>
+    <tr>
+      <td>106</td>
+      <td>S1</td>
+      <td><strong>103</strong></td>
+      <td><strong>105</strong></td>
+    </tr>
+    <tr>
+      <td>107</td>
+      <td>S1</td>
+      <td><strong>103</strong></td>
+      <td><strong>106</strong></td>
+    </tr>
+    <tr>
+      <td>108</td>
+      <td>S0</td>
+      <td><strong>103</strong></td>
+      <td><strong>103</strong></td>
+    </tr>
+    <tr>
+      <td>109</td>
+      <td>S1</td>
+      <td>108</td>
+      <td>108, 107</td>
+    </tr>
+  </tbody>
+</table>
 
 One way to signal this dynamic prediction structure would be to define a basic set of templates as shown in the table below and override chain diffs and/or frame diffs directly in the DD when necessary.
 
-|Template id | Layer | Chain0 diff | Frame diff | Referenced by frame_number | Note          |
-|------------|-------|-------------|------------|----------------------------|---------------|
-|0           |S0     |0            |-           |1                           |Key frame      |
-|1           |S0     |2            |2           |101, 103, **108**, 110      |S0 steady state|
-|2           |S1     |1            |1           |2, **105, 106, 107**        |S1 first frame |
-|3           |S1     |1            |1, 2        |102, 104, 109, 111          |S1 steady state|
-{:.table .table-sm .table-bordered }
+<table class="table table-sm table-bordered">
+  <thead>
+    <tr>
+      <th>Template id</th>
+      <th>Layer</th>
+      <th>Chain0 diff</th>
+      <th>Frame diff</th>
+      <th>Referenced by frame_number</th>
+      <th>Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>S0</td>
+      <td>0</td>
+      <td>-</td>
+      <td>1</td>
+      <td>Key frame</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>S0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>101, 103, <strong>108</strong>, 110</td>
+      <td>S0 steady state</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>S1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2, <strong>105, 106, 107</strong></td>
+      <td>S1 first frame</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>S1</td>
+      <td>1</td>
+      <td>1, 2</td>
+      <td>102, 104, 109, 111</td>
+      <td>S1 steady state</td>
+    </tr>
+  </tbody>
+</table>
 
 Custom frame diffs and chain diffs can be set as shown in the table below.
 
-|frame_number | custom_fdiffs_flag | FrameFdiff[] | custom_chains_flag | frame_chain_fdiff[0]|
-|-------------|--------------------|--------------|--------------------|---------------------|
-|105          |false               |-             |true                |2                    |
-|106          |false               |-             |true                |3                    |
-|107          |false               |-             |true                |4                    |
-|108          |true                |5             |true                |5                    |
-{:.table .table-sm .table-bordered }
+<table class="table table-sm table-bordered">
+  <thead>
+    <tr>
+      <th>frame_number</th>
+      <th>custom_fdiffs_flag</th>
+      <th>FrameFdiff[]</th>
+      <th>custom_chains_flag</th>
+      <th>frame_chain_fdiff[0]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>105</td>
+      <td>false</td>
+      <td>-</td>
+      <td>true</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>106</td>
+      <td>false</td>
+      <td>-</td>
+      <td>true</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>107</td>
+      <td>false</td>
+      <td>-</td>
+      <td>true</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>108</td>
+      <td>true</td>
+      <td>5</td>
+      <td>true</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
 
 Another way to signal this dynamic prediction structure would be to define a larger set of templates as shown in the table below. This way up to three frames can be skipped in DT0 without the sender having to override frame diffs and/or chain diffs.
 
-|Template index | Layer | Chain0 diff | Frame diff | Referenced by frame_number | Note              |
-|---------------|-------|-------------|------------|----------------------------|-------------------|
-|0              |S0     |0            |-           |1                           |Key frame          |
-|1              |S0     |2            |2           |101, 103, 110               |S0 steady state    |
-|2              |S0     |3            |3           |-                           |One frame skipped  |
-|3              |S0     |4            |4           |-                           |Two frame skipped  |
-|4              |S0     |5            |5           |**108**                     |Three frame skipped|
-|5              |S1     |1            |1           |2                           |S1 first frame     |
-|6              |S1     |1            |1, 2        |102, 104, 109, 111          |S1 steady state    |
-|7              |S1     |2            |1           |**105**                     |One frame skipped  |
-|8              |S1     |3            |1           |**106**                     |Two frame skipped  |
-|9              |S1     |4            |1           |**107**                     |Three frame skipped|
-{:.table .table-sm .table-bordered }
+<table class="table table-sm table-bordered">
+  <thead>
+    <tr>
+      <th>Template index</th>
+      <th>Layer</th>
+      <th>Chain0 diff</th>
+      <th>Frame diff</th>
+      <th>Referenced by frame_number</th>
+      <th>Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>S0</td>
+      <td>0</td>
+      <td>-</td>
+      <td>1</td>
+      <td>Key frame</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>S0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>101, 103, 110</td>
+      <td>S0 steady state</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>S0</td>
+      <td>3</td>
+      <td>3</td>
+      <td>-</td>
+      <td>One frame skipped</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>S0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>-</td>
+      <td>Two frame skipped</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>S0</td>
+      <td>5</td>
+      <td>5</td>
+      <td><strong>108</strong></td>
+      <td>Three frame skipped</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>S1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>S1 first frame</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>S1</td>
+      <td>1</td>
+      <td>1, 2</td>
+      <td>102, 104, 109, 111</td>
+      <td>S1 steady state</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>S1</td>
+      <td>2</td>
+      <td>1</td>
+      <td><strong>105</strong></td>
+      <td>One frame skipped</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>S1</td>
+      <td>3</td>
+      <td>1</td>
+      <td><strong>106</strong></td>
+      <td>Two frame skipped</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>S1</td>
+      <td>4</td>
+      <td>1</td>
+      <td><strong>107</strong></td>
+      <td>Three frame skipped</td>
+    </tr>
+  </tbody>
+</table>
 
 The first way uses fewer templates and therefore requires fewer bits in the first packet of the key frame, while the second way uses more templates but requires fewer bits in all packets of F105 to F108.
 
