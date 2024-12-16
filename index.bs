@@ -1269,13 +1269,15 @@ A Decode Target Indication describes the relationship of a frame to a Decode tar
 
 A Chain is a sequence of frames for which it can be determined instantly if a frame from that sequence has been lost. In this example, two are used as shown in the diagrams below.
 
-![ChainS0](assets/images/L2T3_C0.svg)
-Chain0
-{: .caption }
+<figure>
+<img alt="ChainS0" src="assets/images/L2T3_C0.svg">
+<figcaption>Chain0</figcaption>
+</figure>
 
-![ChainS1](assets/images/L2T3_C1.svg)
-Chain1
-{: .caption }
+<figure>
+<img alt="ChainS1" src="assets/images/L2T3_C1.svg">
+<figcaption>Chain1</figcaption>
+</figure>
 
 Note that the yellow arrows in the Chain diagrams do not show frame dependencies, rather they indicate the order of frames in the Chain. For example, F9 doesn’t depend on F2, but F9 immediately follows F2 in Chain1. 
 
