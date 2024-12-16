@@ -14,7 +14,7 @@ Markup Shorthands: css no
 
 # Introduction
 
-This document describes an RTP payload specification applicable to the transmission of video streams encoded using the [[!AV1] video codec. In AV1, the smallest individual video encoder entity presented for transport is the Open Bitstream Unit (OBU). This specification allows both for fragmentation and aggregation of OBUs in the same RTP packet, but explicitly disallows doing so across frame boundaries.
+This document describes an RTP payload specification applicable to the transmission of video streams encoded using the [[!AV1]] video codec. In AV1, the smallest individual video encoder entity presented for transport is the Open Bitstream Unit (OBU). This specification allows both for fragmentation and aggregation of OBUs in the same RTP packet, but explicitly disallows doing so across frame boundaries.
 
 Appendix A of this document describes the Dependency Descriptor (DD) RTP Header extension, which conveys information about individual video frames and the dependencies between them. This allows forwarding of video frames in situations where an intermediary does not wish to examine the RTP payload or does not have access to it, such as when the RTP payload is encrypted end-to-end. While the DD RTP Header extension was designed for use with AV1, it may prove useful for other codecs as well.
 
