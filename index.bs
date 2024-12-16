@@ -1244,7 +1244,7 @@ The DT3 client would track Chain1. From the DD received with F5, the client woul
 In the following example, spatial upswitch is discussed in the context of the L2T1 scalability structure.
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/L2T1.svg" width="40%" />
+  <img src="assets/images/L2T1.svg" width="40%" >
   <figcaption>L2T1</figcaption>
 </figure>
 
@@ -1253,7 +1253,7 @@ For the L2T1 scalability structure, it is natural to define two Decode targets, 
 In this example, the sender receives a Layer Refresh Request (LRR) for S1 after frame_number=104 (F104) was produced and sent. To fulfil the LRR, the sender should produce F106 such that it does not depend on any previous frame in S1.
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/L2T1_FDIFFS.svg" width="55%" />
+  <img src="assets/images/L2T1_FDIFFS.svg" width="55%" >
   <figcaption>Frame dependencies</figcaption>
 </figure>
 
@@ -1272,7 +1272,7 @@ One way to notify the receiver is to set a Switch indication in F105 and reset C
 {:.table .table-sm .table-bordered }
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/L2T1_C105.svg" width="55%" />
+  <img src="assets/images/L2T1_C105.svg" width="55%" >
   <figcaption>Chain1 reset at F105</figcaption>
 </figure>
 
@@ -1289,7 +1289,7 @@ Another way to notify the receiver is to set a Switch indication in F106 and res
 {:.table .table-sm .table-bordered }
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/L2T1_C106.svg" width="55%" />
+  <img src="assets/images/L2T1_C106.svg" width="55%" >
   <figcaption>Chain1 reset at F106</figcaption>
 </figure>
 
@@ -1300,7 +1300,7 @@ The two ways of notifying the receiver as shown above demonstrate that Decode Ta
 In the following example, the sender encodes two quality layers, S0 and S1 (i.e., layers with the same resolution but different qualities).
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/Q2T1.svg" width="40%" />
+  <img src="assets/images/Q2T1.svg" width="40%" >
 </figure>
 
 In this example, there are two Decode targets, DT0 and DT1. DT0 includes all frames in S0. DT1 includes all frames in S0 and S1. DT0 is protected by Chain0, which contains all frames in DT0. DT1 is protected by Chain1, which contains all frames in DT1. 
@@ -1308,7 +1308,7 @@ In this example, there are two Decode targets, DT0 and DT1. DT0 includes all fra
 The sender has a bit rate constraint for DT0. When the encoder overshoots that constraint, the sender can skip encoding a few frames. The figure and table below show an example in which three frames are skipped.
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/Q2T1_SKIP_FRAMES.svg" width="80%" />
+  <img src="assets/images/Q2T1_SKIP_FRAMES.svg" width="80%" >
 </figure>
 
 |frame_number | Layer | Previous Frame in Chain0 | Frame Dependencies|
@@ -1377,7 +1377,10 @@ Each example in this section contains a prediction structure figure and a table 
 
 This example uses one Chain, which includes frames with temporal ID equal to 0.
 
-![L1T3](assets/images/L1T3.svg)
+<figure>
+<img alt="L1T3" src="assets/images/L1T3.svg">
+<figcaption>L1T3</figcaption>
+</figure>
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
@@ -1411,7 +1414,10 @@ This example uses one Chain, which includes frames with temporal ID equal to 0.
 
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all frames with temporal ID equal to 0.
 
-![L3T3](assets/images/L3T3.svg)
+<figure>
+<img alt="L3T3" src="assets/images/L3T3.svg">
+<figcaption>L3T3</figcaption>
+</figure>
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
 <tbody><tr>
