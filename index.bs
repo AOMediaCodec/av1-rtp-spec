@@ -1,23 +1,14 @@
-﻿
-RTP Payload Format For AV1 (v1.0)
-===================================
-{:.no_toc }
-
-**Authors:** The Alliance for Open Media AV1 Real-Time Communications Subgroup
-
-**Status:** This document is a draft of a proposed specification.
-
-## Abstract
-{:.no_toc }
-
-This document describes an RTP payload format for the [AV1 video codec][AV1]. The payload format has wide applicability, from low bit-rate peer-to-peer usage, to high bit-rate multi-party video conferences. It includes provisions for temporal and spatial scalability.
-
-## Contents
-{:.no_toc }
-
-* TOC
-{:toc}
-
+﻿<pre class='metadata'>
+Title: RTP Payload Format For AV1
+Status: FD
+Text Macro: SPECVERSION v1.0.0
+URL: https://aomediacodec.github.io/av1-rtp-spec/v1.0.0.html
+Shortname: av1-isobmff
+Abstract: This document describes an RTP payload format for the [[!AV1]] video codec]. The payload format has wide applicability, from low bit-rate peer-to-peer usage, to high bit-rate multi-party video conferences. It includes provisions for temporal and spatial scalability.
+Date: 2024-12-15
+Repository: AOMediaCodec/av1-rtp-spec
+Group: AOM
+</pre>
 
 ## 1 Introduction
 
