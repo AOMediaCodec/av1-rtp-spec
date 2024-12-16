@@ -808,14 +808,42 @@ read_bit() {
 
 This descriptor is similar to ceiling of the base 2 logarithm of the input n, but reduces wastage incurred when encoding non-power of two value ranges by encoding one fewer bits for the lower part of the value range. For example, when n is equal to five, the encodings are as follows (full binary encodings are also presented for comparison):
 
-| Value | Full binary encoding | ns(n) encoding |
-| ----- | -------------------- | -------------- |
-| 0     | 000                  | 00             |
-| 1     | 001                  | 01             |
-| 2     | 010                  | 10             |
-| 3     | 011                  | 110            |
-| 4     | 100                  | 111            |
-{:.table .table-sm .table-bordered }
+<table class="table table-sm table-bordered">
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Full binary encoding</th>
+      <th>ns(n) encoding</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>000</td>
+      <td>00</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>001</td>
+      <td>01</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>010</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>011</td>
+      <td>110</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>100</td>
+      <td>111</td>
+    </tr>
+  </tbody>
+</table>
 
 The parsing process for this descriptor is specified as:
 
