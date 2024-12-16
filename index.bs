@@ -1180,27 +1180,32 @@ For example:
 ##### A.10.1.1 Decode targets, Decode Target Indications, and Chains
 In the following example, the concepts of Decode targets, Chains, and DTI are discussed in the context of the L2T3 scalability structure from the perspective of frame_number=5 (F5).
 
-![L2T3](assets/images/L2T3.svg)
-L2T3
-{: .caption }
+<figure>
+<img alt="L2T3" src="assets/images/L2T3.svg">
+<figcaption>L2T3</figcaption>
+</figure>
 
 A Decode target (DT) is a subset of a scalable video stream necessary to decode the stream at a certain temporal and spatial fidelity. For the L2T3 scalability structure, it is natural to define six Decode targets: VGA @ 15, 30 and 60 FPS, and HD @ 15, 30 and 60 FPS. It is however not necessary to define these six Decode targets, in this example four are used as shown in the diagrams below.
 
-![HD15fps](assets/images/L2T3_DT0.svg)
-DT0: HD @ 15fps
-{: .caption }
+<figure>
+<img alt="HD15fps" src="assets/images/L2T3_DT0.svg">
+<figcaption>DT0: HD @ 15fps</figcaption>
+</figure>
 
-![VGA30fps](assets/images/L2T3_DT1.svg)
-DT1: VGA @ 30fps
-{: .caption }
+<figure>
+<img alt="VGA30fps" src="assets/images/L2T3_DT1.svg">
+<figcaption>DT1: VGA @ 30fps</figcaption>
+</figure>
 
-![VGA60fps](assets/images/L2T3_DT2.svg)
-DT2: VGA @ 60fps
-{: .caption }
+<figure>
+<img alt="VGA60fps" src="assets/images/L2T3_DT2.svg">
+<figcaption>DT2: VGA @ 60fps</figcaption>
+</figure>
 
-![HD60fps](assets/images/L2T3_DT3.svg)
-DT3: HD @ 60fps
-{: .caption }
+<figure>
+<img alt="HD60fps" src="assets/images/L2T3_DT3.svg">
+<figcaption>DT3: HD @ 60fps</figcaption>
+</figure>
 
 A Decode Target Indication describes the relationship of a frame to a Decode target. For F5, the Decode Target Indication is different for each of the decode targets as shown in the table below.
 
