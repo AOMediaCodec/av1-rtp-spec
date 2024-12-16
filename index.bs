@@ -338,33 +338,33 @@ This section specifies the parameters that MAY be used to select optional featur
 The AV1 media type used for signaling the transfer of AV1 via RTP is registered at https://www.iana.org/assignments/media-types/video/AV1.
 
 ## SDP Parameters
-The parameters for AV1 are **profile**, **level-idx**, and **tier**. These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier that the receiver supports. 
+The parameters for AV1 are <b>profile</b>, <b>level-idx</b>, and <b>tier</b> These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier that the receiver supports. 
 
-The **profile** parameter is an integer indicating the highest AV1 profile that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_profile** syntax element specified in [[!AV1]]. If the parameter is not present, it MUST be inferred to be 0 (“Main” profile).
+The <b>profile</b> parameter is an integer indicating the highest AV1 profile that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the <b>seq_profile</b> syntax element specified in [[!AV1]]. If the parameter is not present, it MUST be inferred to be 0 (“Main” profile).
 
-The **level-idx** parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_level_idx** syntax element specified in [[!AV1]]. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
+The <b>level-idx</b> parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the <b>seq_level_idx</b> syntax element specified in [[!AV1]]. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).
 
-The **tier** parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the **seq_tier** syntax element specified in [[!AV1]]. If the parameter is not present, the tier MUST be inferred to be 0.
+The <b>tier</b> parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the <b>seq_tier</b> syntax element specified in [[!AV1]]. If the parameter is not present, the tier MUST be inferred to be 0.
 
 ### Mapping of Media Subtype Parameters to SDP
 The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) per [[RFC4566]] as follows:
 * The media name in the "m=" line of SDP MUST be video.
 * The encoding name in the "a=rtpmap" line of SDP MUST be AV1 (the media subtype).
 * The clock rate in the "a=rtpmap" line MUST be 90000.
-* The parameters "**profile**", "**level-idx**", and "**tier**" MAY be included in the "a=fmtp" line of SDP. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
+* The parameters "<b>profile</b>", "<b>level-idx</b>", and "<b>tier</b>" MAY be included in the "a=fmtp" line of SDP. These parameters are expressed as a media subtype string, in the form of a semicolon separated list of parameter=value pairs.
 
 The receiver MUST ignore any fmtp parameter not specified in this document.
 
 ### RID Restrictions Mapping for AV1
 
 The RID specification declares the set of codec-agnostic restrictions for media streams. All the restrictions are optional and are subject to negotiation based on the SDP Offer/Answer rules described in Section 6 in [[!RFC8851]]. When these restrictions are applied to the AV1 codec, they MUST have the following interpretation:
-* **max-width**, maximum width of the frame in units of samples. The meaning of the restriction is the same as variable **MaxHSize** of the levels table from Section A.3 of [[!AV1]].
-* **max-height**, maximum height of the frame in units of samples. The meaning of the restriction is the same as variable **MaxVSize** of the levels table from Section A.3 of [[!AV1]].
-* **max-fps**, maximum number of temporal units per second.
-* **max-fs**, maximum size of the frame in units of samples. The meaning of the restriction is the same as variable **MaxPicSize** of the levels table from Section A.3 of [[!AV1]].
-* **max-br**, maximum bit rate in units bits per second. The meaning of the restriction is the same as variable **MaxBitrate** defined in Section A.3 of [[!AV1]]. 
-* **max-pps**, maximum decode rate in units of samples per second. The meaning of the restriction is the same as variable **MaxDecodeRate** of the levels table from Section A.3 of [[!AV1]].
-* **max-bpp**, maximum number of bits per pixel of any given coded frame, calculated as a ratio between **CompressedSize** variable defined Section A.3 of [[!AV1]] and expressed in bits, and number of samples in frame.
+* <b>max-width</b>, maximum width of the frame in units of samples. The meaning of the restriction is the same as variable <b>MaxHSize</b> of the levels table from Section A.3 of [[!AV1]].
+* <b>max-height</b>, maximum height of the frame in units of samples. The meaning of the restriction is the same as variable <b>MaxVSize</b> of the levels table from Section A.3 of [[!AV1]].
+* <b>max-fps</b>, maximum number of temporal units per second.
+* <b>max-fs</b>, maximum size of the frame in units of samples. The meaning of the restriction is the same as variable <b>MaxPicSize</b> of the levels table from Section A.3 of [[!AV1]].
+* <b>max-br</b>, maximum bit rate in units bits per second. The meaning of the restriction is the same as variable <b>MaxBitrate</b> defined in Section A.3 of [[!AV1]]. 
+* <b>max-pps</b>, maximum decode rate in units of samples per second. The meaning of the restriction is the same as variable <b>MaxDecodeRate</b> of the levels table from Section A.3 of [[!AV1]].
+* <b>max-bpp</b>, maximum number of bits per pixel of any given coded frame, calculated as a ratio between <b>CompressedSize</b> variable defined Section A.3 of [[!AV1]] and expressed in bits, and number of samples in frame.
   
 If during the SDP negotiation process both parties acknowledge restrictions, then the transported media stream MUST have at least one operating point with the negotiated restrictions.
 
@@ -372,14 +372,14 @@ If during the SDP negotiation process both parties acknowledge restrictions, the
 ### Usage with the SDP Offer/Answer Model
 
 When AV1 is offered over RTP using SDP in an Offer/Answer model as described in [[RFC3264]] for negotiation for unicast usage, the following limitations and rules apply:
-* The media format configuration is identified by **level-idx**, **profile** and **tier**. These media configuration parameters are asymmetrical and the answerer MAY declare its own media configuration if the answerer receiving capabilities are different from the offerer.
-* The AV1 stream sent by either the offerer or the answerer MUST be encoded with a profile, level and tier, lesser or equal to the values of the **level-idx**, **profile** and **tier** declared in the SDP by the receiving agent.
+* The media format configuration is identified by <b>level-idx</b>, <b>profile</b> and <b>tier</b>. These media configuration parameters are asymmetrical and the answerer MAY declare its own media configuration if the answerer receiving capabilities are different from the offerer.
+* The AV1 stream sent by either the offerer or the answerer MUST be encoded with a profile, level and tier, lesser or equal to the values of the <b>level-idx</b>, <b>profile</b> and <b>tier</b> declared in the SDP by the receiving agent.
 
 
 ### Usage in Declarative Session Descriptions
 
 When AV1 over RTP is offered with SDP in a declarative style, as in Real Time Streaming Protocol (RTSP) [[RFC2326]] or Session Announcement Protocol (SAP) [[RFC2974]], the following considerations apply.
-* All parameters capable of indicating both stream properties and receiver capabilities are used to indicate only stream properties. In this case, the parameters **profile**, **level-idx** and **tier** declare only the values used by the stream, not the capabilities for receiving streams.
+* All parameters capable of indicating both stream properties and receiver capabilities are used to indicate only stream properties. In this case, the parameters <b>profile</b>, <b>level-idx</b> and <b>tier</b> declare only the values used by the stream, not the capabilities for receiving streams.
 * A receiver of the SDP is required to support all parameters and values of the parameters provided; otherwise, the receiver MUST reject (RTSP) or not participate in (SAP) the session. It falls on the creator of the session to use values that are expected to be supported by the receiving application.
 
 
@@ -682,7 +682,7 @@ When an update to the set of active decode targets is received it is valid until
 
 The sender SHOULD signal updates in such a way that a receiver, even after packet loss, will immediately either know the new set of active Decode targets or if the set of active Decode targets is lost, ensure that at least one Chain will break.
 
-<div class="alert alert-info">
+<div class="note">
   <strong>Note:</strong> The following example techniques may be used to signal a set of active Decode targets:
   <ul>
     <li>Send a new keyframe when the set of active Decode targets has been updated.</li>
@@ -786,7 +786,7 @@ The techniques also provide ways to describe changing (dynamic) prediction struc
 
 The syntax for the descriptor is described in pseudo-code form in this section. Parameters read directly from the bitstream appear in bold.
 
-**f(n)** - unsigned n-bit number appearing directly in the bitstream. The bits are read from high to low order.
+<b>f(n)</b> - unsigned n-bit number appearing directly in the bitstream. The bits are read from high to low order.
 <pre><code>
 f(n) {
   x = 0
@@ -804,7 +804,7 @@ read_bit() {
 }
 </code></pre>
 
-**ns(n)** - non-symmetric unsigned encoded integer with maximum number of values n (i.e., output in range 0..n-1).
+<b>ns(n)</b> - non-symmetric unsigned encoded integer with maximum number of values n (i.e., output in range 0..n-1).
 
 This descriptor is similar to ceiling of the base 2 logarithm of the input n, but reduces wastage incurred when encoding non-power of two value ranges by encoding one fewer bits for the lower part of the value range. For example, when n is equal to five, the encodings are as follows (full binary encodings are also presented for comparison):
 
@@ -856,10 +856,10 @@ ns(n) {
     w++
   }
   m = (1 << w) - n
-  <b>v</b> = f(w - 1)
+   <b>v</b> = f(w - 1)
   if (v < m)
     return v
-  <b>extra_bit</b> = f(1)
+   <b>extra_bit</b> = f(1)
   return (v << 1) - m + extra_bit
 }
 </code></pre>
@@ -895,26 +895,26 @@ dependency_descriptor( sz ) {
     no_extended_descriptor_fields()
   }
   frame_dependency_definition()
-  <b>zero_padding</b> = f(sz * 8 - TotalConsumedBits)
+   <b>zero_padding</b> = f(sz * 8 - TotalConsumedBits)
 }
 </code></pre>
 
 <pre><code>
 mandatory_descriptor_fields() {
-  <b>start_of_frame</b> = f(1)
-  <b>end_of_frame</b> = f(1)
-  <b>frame_dependency_template_id</b> = f(6)
-  <b>frame_number</b> = f(16)
+   <b>start_of_frame</b> = f(1)
+   <b>end_of_frame</b> = f(1)
+   <b>frame_dependency_template_id</b> = f(6)
+   <b>frame_number</b> = f(16)
 }
 </code></pre>
 
 <pre><code>
 extended_descriptor_fields() {
-  <b>template_dependency_structure_present_flag</b> = f(1)
-  <b>active_decode_targets_present_flag</b> = f(1)
-  <b>custom_dtis_flag</b> = f(1)
-  <b>custom_fdiffs_flag</b> = f(1)
-  <b>custom_chains_flag</b> = f(1)
+   <b>template_dependency_structure_present_flag</b> = f(1)
+   <b>active_decode_targets_present_flag</b> = f(1)
+   <b>custom_dtis_flag</b> = f(1)
+   <b>custom_fdiffs_flag</b> = f(1)
+   <b>custom_chains_flag</b> = f(1)
 
   if (template_dependency_structure_present_flag) {
     template_dependency_structure()
@@ -922,7 +922,7 @@ extended_descriptor_fields() {
   }
 
   if (active_decode_targets_present_flag) {
-    <b>active_decode_targets_bitmask</b> = f(DtCnt)
+     <b>active_decode_targets_bitmask</b> = f(DtCnt)
   }
 }
 </code></pre>
@@ -937,15 +937,15 @@ no_extended_descriptor_fields() {
 
 <pre><code>
 template_dependency_structure() {
-  <b>template_id_offset</b> = f(6)
-  <b>dt_cnt_minus_one</b> = f(5)
+   <b>template_id_offset</b> = f(6)
+   <b>dt_cnt_minus_one</b> = f(5)
   DtCnt = dt_cnt_minus_one + 1
   template_layers()
   template_dtis()
   template_fdiffs()
   template_chains()
   decode_target_layers()
-  <b>resolutions_present_flag</b> = f(1)
+   <b>resolutions_present_flag</b> = f(1)
   if (resolutions_present_flag) {
     render_resolutions()
   }
@@ -997,7 +997,7 @@ template_layers() {
     TemplateSpatialId[TemplateCnt] = spatialId
     TemplateTemporalId[TemplateCnt] = temporalId
     TemplateCnt++
-    <b>next_layer_idc</b> = f(2)
+     <b>next_layer_idc</b> = f(2)
     // next_layer_idc == 0 - same sid and tid
     if (next_layer_idc == 1) {
       temporalId++
@@ -1016,8 +1016,8 @@ template_layers() {
 <pre><code>
 render_resolutions() {
   for (spatial_id = 0; spatial_id <= MaxSpatialId; spatial_id++) {
-    <b>max_render_width_minus_1[spatial_id]</b> = f(16)
-    <b>max_render_height_minus_1[spatial_id]</b> = f(16)
+     <b>max_render_width_minus_1[spatial_id]</b> = f(16)
+     <b>max_render_height_minus_1[spatial_id]</b> = f(16)
   }
 }
 </code></pre>
@@ -1027,7 +1027,7 @@ template_dtis() {
   for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
     for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
       // See table A.1 below for meaning of DTI values.
-      <b>template_dti[templateIndex][dtIndex]</b> = f(2)
+       <b>template_dti[templateIndex][dtIndex]</b> = f(2)
     }
   }
 }
@@ -1037,7 +1037,7 @@ template_dtis() {
 frame_dtis() {
   for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
     // See table A.1 below for meaning of DTI values.
-    <b>frame_dti[dtIndex]</b> = f(2)
+     <b>frame_dti[dtIndex]</b> = f(2)
   }
 }
 </code></pre>
@@ -1046,12 +1046,12 @@ frame_dtis() {
 template_fdiffs() {
   for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
     fdiffCnt = 0
-    <b>fdiff_follows_flag</b> = f(1)
+     <b>fdiff_follows_flag</b> = f(1)
     while (fdiff_follows_flag) {
-      <b>fdiff_minus_one</b> = f(4)
+       <b>fdiff_minus_one</b> = f(4)
       TemplateFdiff[templateIndex][fdiffCnt] = fdiff_minus_one + 1
       fdiffCnt++
-      <b>fdiff_follows_flag</b> = f(1)
+       <b>fdiff_follows_flag</b> = f(1)
     }
     TemplateFdiffCnt[templateIndex] = fdiffCnt
   }
@@ -1061,28 +1061,28 @@ template_fdiffs() {
 <pre><code>
 frame_fdiffs() {
   FrameFdiffCnt = 0
-  <b>next_fdiff_size</b> = f(2)
+   <b>next_fdiff_size</b> = f(2)
   while (next_fdiff_size) {
-    <b>fdiff_minus_one</b> = f(4 * next_fdiff_size)
+     <b>fdiff_minus_one</b> = f(4 * next_fdiff_size)
     FrameFdiff[FrameFdiffCnt] = fdiff_minus_one + 1
     FrameFdiffCnt++
-    <b>next_fdiff_size</b> = f(2)
+     <b>next_fdiff_size</b> = f(2)
   }
 }
 </code></pre>
 
 <pre><code>
 template_chains() {
-  <b>chain_cnt</b> = ns(DtCnt + 1)
+   <b>chain_cnt</b> = ns(DtCnt + 1)
   if (chain_cnt == 0) {
     return
   }
   for (dtIndex = 0; dtIndex < DtCnt; dtIndex++) {
-    <b>decode_target_protected_by[dtIndex]</b> = ns(chain_cnt)
+     <b>decode_target_protected_by[dtIndex]</b> = ns(chain_cnt)
   }
   for (templateIndex = 0; templateIndex < TemplateCnt; templateIndex++) {
     for (chainIndex = 0; chainIndex < chain_cnt; chainIndex++) {
-      <b>template_chain_fdiff[templateIndex][chainIndex]</b> = f(4)
+       <b>template_chain_fdiff[templateIndex][chainIndex]</b> = f(4)
     }
   }
 }
@@ -1091,7 +1091,7 @@ template_chains() {
 <pre><code>
 frame_chains() {
   for (chainIndex = 0; chainIndex < chain_cnt; chainIndex++) {
-    <b>frame_chain_fdiff[chainIndex]</b> = f(8)
+     <b>frame_chain_fdiff[chainIndex]</b> = f(8)
   }
 }
 </code></pre>
@@ -1123,63 +1123,63 @@ decode_target_layers() {
 
 The semantics pertaining to the Dependency Descriptor syntax section above is described in this section.
 
-**Mandatory Descriptor Fields**
+<b>Mandatory Descriptor Fields</b>
 
-* **start_of_frame**: MUST be set to 1 if the first payload byte of the RTP packet is the beginning of a new frame, and MUST be set to 0 otherwise. Note that this frame might not be the first frame of a temporal unit.
+* <b>start_of_frame</b> MUST be set to 1 if the first payload byte of the RTP packet is the beginning of a new frame, and MUST be set to 0 otherwise. Note that this frame might not be the first frame of a temporal unit.
 
-* **end_of_frame**: MUST be set to 1 for the final RTP packet of a frame, and MUST be set to 0 otherwise. Note that, if spatial scalability is in use, more frames from the same temporal unit may follow.
+* <b>end_of_frame</b> MUST be set to 1 for the final RTP packet of a frame, and MUST be set to 0 otherwise. Note that, if spatial scalability is in use, more frames from the same temporal unit may follow.
 
-* **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same frame MUST have the same frame_number value.
+* <b>frame_number</b> is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same frame MUST have the same frame_number value.
 
 Note: frame_number is not the same as Frame ID in [[!AV1] specification].
 
 
-* **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplateCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same frame.
+* <b>frame_dependency_template_id</b> ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplateCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same frame.
 
 Note: values outside of the valid range may be caused by a change of the template dependency structure, that is a packet with the new template dependency structure was lost or delayed.
 
 
-* **zero_padding**: MUST be set to 0 and be ignored by receivers.
+* <b>zero_padding</b> MUST be set to 0 and be ignored by receivers.
 
-**Extended Descriptor Fields**
+<b>Extended Descriptor Fields</b>
 
-* **template_dependency_structure_present_flag**: indicates the presence the template_dependency_structure. When the template_dependency_structure_present_flag is set to 1, template_dependency_structure MUST be present; otherwise template_dependency_structure MUST NOT be present. template_dependency_structure_present_flag MUST be set to 1 for the first packet of a coded video sequence, and MUST be set to 0 otherwise.
+* <b>template_dependency_structure_present_flag</b> indicates the presence the template_dependency_structure. When the template_dependency_structure_present_flag is set to 1, template_dependency_structure MUST be present; otherwise template_dependency_structure MUST NOT be present. template_dependency_structure_present_flag MUST be set to 1 for the first packet of a coded video sequence, and MUST be set to 0 otherwise.
 
-* **active_decode_targets_present_flag**: indicates the presence of active_decode_targets_bitmask. When set to 1, active_decode_targets_bitmask MUST be present, otherwise, active_decode_targets_bitmask MUST NOT be present.
+* <b>active_decode_targets_present_flag</b> indicates the presence of active_decode_targets_bitmask. When set to 1, active_decode_targets_bitmask MUST be present, otherwise, active_decode_targets_bitmask MUST NOT be present.
 
-* **active_decode_targets_bitmask**: contains a bitmask that indicates which Decode targets are available for decoding. Bit i is equal to 1 if Decode target i is available for decoding, 0 otherwise. The least significant bit corresponds to Decode target 0.
+* <b>active_decode_targets_bitmask</b> contains a bitmask that indicates which Decode targets are available for decoding. Bit i is equal to 1 if Decode target i is available for decoding, 0 otherwise. The least significant bit corresponds to Decode target 0.
 
-* **custom_dtis_flag**: indicates the presence of frame_dtis. When set to 1, frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
+* <b>custom_dtis_flag</b> indicates the presence of frame_dtis. When set to 1, frame_dtis MUST be present. Otherwise, frame_dtis MUST NOT be present.
 
-* **custom_fdiffs_flag**: indicates the presence of frame_fdiffs. When set to 1, frame_fdiffs MUST be present. Otherwise, frame_fdiffs MUST NOT be present.
+* <b>custom_fdiffs_flag</b> indicates the presence of frame_fdiffs. When set to 1, frame_fdiffs MUST be present. Otherwise, frame_fdiffs MUST NOT be present.
 
-* **custom_chains_flag**: indicates the presence of frame_chain_fdiff. When set to 1, frame_chain_fdiff MUST be present. Otherwise, frame_chain_fdiff MUST NOT be present.
+* <b>custom_chains_flag</b> indicates the presence of frame_chain_fdiff. When set to 1, frame_chain_fdiff MUST be present. Otherwise, frame_chain_fdiff MUST NOT be present.
 
-**Template dependency structure**
+<b>Template dependency structure</b>
 
-* **template_id_offset**: indicates the value of the frame_dependency_template_id having templateIndex=0. The value of template_id_offset SHOULD be chosen so that the valid frame_dependency_template_id range, template_id_offset to template_id_offset + TemplateCnt - 1, inclusive, of a new template_dependency_structure, does not overlap the valid frame_dependency_template_id range for the existing template_dependency_structure. When template_id_offset of a new template_dependency_structure is the same as in the existing template_dependency_structure, all fields in both template_dependency_structures MUST have identical values.
+* <b>template_id_offset</b> indicates the value of the frame_dependency_template_id having templateIndex=0. The value of template_id_offset SHOULD be chosen so that the valid frame_dependency_template_id range, template_id_offset to template_id_offset + TemplateCnt - 1, inclusive, of a new template_dependency_structure, does not overlap the valid frame_dependency_template_id range for the existing template_dependency_structure. When template_id_offset of a new template_dependency_structure is the same as in the existing template_dependency_structure, all fields in both template_dependency_structures MUST have identical values.
 
-* **dt_cnt_minus_one**: dt_cnt_minus_one + 1 indicates the number of Decode targets present in the coded video sequence.
+* <b>dt_cnt_minus_one</b> dt_cnt_minus_one + 1 indicates the number of Decode targets present in the coded video sequence.
 
-* **resolutions_present_flag**: indicates the presence of render_resolutions. When the resolutions_present_flag is set to 1, render_resolutions MUST be present; otherwise render_resolutions MUST NOT be present.
+* <b>resolutions_present_flag</b> indicates the presence of render_resolutions. When the resolutions_present_flag is set to 1, render_resolutions MUST be present; otherwise render_resolutions MUST NOT be present.
 
-* **next_layer_idc**: used to determine spatial ID and temporal ID for the next Frame dependency template. Table A.2 describes how the spatial ID and temporal ID values are determined. A next_layer_idc equal to 3 indicates that no more Frame dependency templates are present in the Frame dependency structure.
+* <b>next_layer_idc</b> used to determine spatial ID and temporal ID for the next Frame dependency template. Table A.2 describes how the spatial ID and temporal ID values are determined. A next_layer_idc equal to 3 indicates that no more Frame dependency templates are present in the Frame dependency structure.
 
-* **max_render_width_minus_1[spatial_id]**: indicates the maximum render width minus 1 for frames with spatial ID equal to spatial_id.
+* <b>max_render_width_minus_1[spatial_id]</b> indicates the maximum render width minus 1 for frames with spatial ID equal to spatial_id.
 
-* **max_render_height_minus_1[spatial_id]**: indicates the maximum render height minus 1 for frames with spatial ID equal to spatial_id.
+* <b>max_render_height_minus_1[spatial_id]</b> indicates the maximum render height minus 1 for frames with spatial ID equal to spatial_id.
 
-* **chain_cnt**: indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
+* <b>chain_cnt</b> indicates the number of Chains. When set to zero, the Frame dependency structure does not utilize protection with Chains.
 
-* **decode_target_protected_by[dtIndex]**: the index of the Chain that protects Decode target with index equal to dtIndex. When chain_cnt > 0, each Decode target MUST be protected by exactly one Chain.
+* <b>decode_target_protected_by[dtIndex]</b> the index of the Chain that protects Decode target with index equal to dtIndex. When chain_cnt > 0, each Decode target MUST be protected by exactly one Chain.
 
-* **template_dti[templateIndex][]**: an array of size dt_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.1 contains a description of the Decode Target Indication values.
+* <b>template_dti[templateIndex][]</b> an array of size dt_cnt_minus_one + 1 containing Decode Target Indications for the Frame dependency template having index value equal to templateIndex. Table A.1 contains a description of the Decode Target Indication values.
 
-* **template_chain_fdiff[templateIndex][]**: an array of size chain_cnt containing frame_chain_fdiff values for the Frame dependency template having index value equal to templateIndex. In a template, the values of frame_chain_fdiff can be in the range 0 to 15, inclusive.
+* <b>template_chain_fdiff[templateIndex][]</b> an array of size chain_cnt containing frame_chain_fdiff values for the Frame dependency template having index value equal to templateIndex. In a template, the values of frame_chain_fdiff can be in the range 0 to 15, inclusive.
 
-* **fdiff_follows_flag**: indicates the presence of a frame difference value. When the fdiff_follows_flag is set to 1, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present for the current Frame dependency template.
+* <b>fdiff_follows_flag</b> indicates the presence of a frame difference value. When the fdiff_follows_flag is set to 1, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present for the current Frame dependency template.
 
-* **fdiff_minus_one**: the difference between frame_number and the frame_number of the Referred frame minus one. The calculation is done modulo the size of the frame_number field.
+* <b>fdiff_minus_one</b> the difference between frame_number and the frame_number of the Referred frame minus one. The calculation is done modulo the size of the frame_number field.
 
 | DTI                    | Value | Symbol |                                                        |
 | ---------------------- | ----- | ------ | ------------------------------------------------------ |
@@ -1192,13 +1192,13 @@ Note: values outside of the valid range may be caused by a change of the templat
 Table A.1. Decode Target Indication (DTI) values.
 {: .caption }
 
-**Frame dependency defintion**
+<b>Frame dependency defintion</b>
 
-* **next_fdiff_size**: indicates the size of following fdiff_minus_one syntax elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present.
+* <b>next_fdiff_size</b> indicates the size of following fdiff_minus_one syntax elements in 4-bit units. When set to a non-zero value, fdiff_minus_one MUST immediately follow; otherwise a value of 0 indicates no more frame difference values are present.
 
-* **frame_dti[dtIndex]**: Decode Target Indication describing the relationship between the current frame and the Decode target having index equal to dtIndex. Table A.2 contains a description of the Decode Target Indication values.
+* <b>frame_dti[dtIndex]</b> Decode Target Indication describing the relationship between the current frame and the Decode target having index equal to dtIndex. Table A.2 contains a description of the Decode Target Indication values.
 
-* **frame_chain_fdiff[chainIdx]**: indicates the difference between the frame_number and the frame_number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and frame_number=112 the previous frame in the Chain with index equal to chainIdx has frame_number=109. The calculation is done modulo the size of the frame_number field.
+* <b>frame_chain_fdiff[chainIdx]</b> indicates the difference between the frame_number and the frame_number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and frame_number=112 the previous frame in the Chain with index equal to chainIdx has frame_number=109. The calculation is done modulo the size of the frame_number field.
 
 | next_layer_idc | Next Spatial ID And Temporal ID Values                   |
 | -------------- | -------------------------------------------------------- |
@@ -1419,8 +1419,8 @@ Each example in this section contains a prediction structure figure and a table 
   * S - spatial ID
   * T - temporal ID
   * Fdiffs - comma delimited list of TemplateFdiff[Idx] values
-  * Chain(s) - **template_chain_fdiff[Idx]** values for each Chain
-  * DTI - **template_dti[Idx]**
+  * Chain(s) - <b>template_chain_fdiff[Idx]</b> values for each Chain
+  * DTI - <b>template_dti[Idx]</b>
 
 
 #### A.10.2.1 L1T3 Single Spatial Layer with 3 Temporal Layers
@@ -1455,7 +1455,7 @@ This example uses one Chain, which includes frames with temporal ID equal to 0.
 <td colspan='1' rowspan='1' >5</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >3</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td>
 </tr>
 <tr>
-<td colspan='5' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td>
+<td colspan='5' rowspan='1' > <b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td>
 </tr>
 </tbody></table>
 
@@ -1522,7 +1522,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 <td colspan='1' rowspan='1' >15</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >3,1</td><td colspan='1' rowspan='1' >11</td><td colspan='1' rowspan='1' >10</td><td colspan='1' rowspan='1' >9</td><td colspan='1' rowspan='1' >D</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td><td colspan='1' rowspan='1' >-</td>
 </tr>
 <tr>
-<td colspan='7' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td>
+<td colspan='7' rowspan='1' > <b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td>
 </tr>
 </tbody></table>
 
@@ -1607,6 +1607,6 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 <td colspan='7' rowspan='1' ></td><td colspan='1' rowspan='1' >HD 30 fps</td><td colspan='1' rowspan='1' >HD 15 fps</td><td colspan='1' rowspan='1' >HD 7.5 fps</td><td colspan='1' rowspan='1' >VGA 30 fps</td><td colspan='1' rowspan='1' >VGA 15 fps</td><td colspan='1' rowspan='1' >VGA 7.5 fps</td><td colspan='1' rowspan='1' >QVGA 30 fps</td><td colspan='1' rowspan='1' >QVGA 15 fps</td><td colspan='1' rowspan='1' >QVGA 7.5 fps</td>
 </tr>
 <tr>
-<td colspan='7' rowspan='1' ><b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td>
+<td colspan='7' rowspan='1' > <b><tt>decode_target_protected_by</tt></b></td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >2</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >1</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td><td colspan='1' rowspan='1' >0</td>
 </tr>
 </tbody></table>
