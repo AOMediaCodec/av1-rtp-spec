@@ -12,6 +12,29 @@ Group: AOM
 Markup Shorthands: css no
 </pre>
 
+<pre class=biblio>
+{
+   "AV1": {
+      "href": "https://aomediacodec.github.io/av1-spec/av1-spec.pdf",
+      "title": "AV1 Bitstream & Decoding Process Specification",
+      "status": "Standard",
+      "publisher": "AOM"
+   },
+   "I-D.ietf-payload-vp9": {
+      "href": "https://tools.ietf.org/html/draft-ietf-payload-vp9",
+      "title": "RTP Payload Format for VP9 Video",
+      "publisher": "IETF",
+      "status": "Internet Draft (work in progress)"
+   },
+   "I-D.ietf-avtext-lrr": {
+      "href": "https://tools.ietf.org/html/draft-ietf-avtext-lrr-07",
+      "title": "The Layer Refresh Request (LRR) RTCP Feedback Message",
+      "publisher": "IETF",
+      "status": "Internet Draft (work in progress)"
+   }
+}
+</pre>
+
 # Introduction
 
 This document describes an RTP payload specification applicable to the transmission of video streams encoded using the [[!AV1]] video codec. In AV1, the smallest individual video encoder entity presented for transport is the Open Bitstream Unit (OBU). This specification allows both for fragmentation and aggregation of OBUs in the same RTP packet, but explicitly disallows doing so across frame boundaries.
@@ -545,7 +568,7 @@ new coded video sequences for other encodings from the same source(s).
 
 ## Layer Refresh Request (LRR)
 
-The Layer Refresh Request specified in [I-D.ietf-avtext-lrr] is designed to allow a receiver of a layered media stream to request that one or more of its substreams be refreshed, such that it can then be decoded by an endpoint which previously was not receiving those layers, without requiring that the entire stream be refreshed (as it would be if the receiver sent a Full Intra Request (FIR) per [[!RFC5104]]).
+The Layer Refresh Request specified in [[!I-D.ietf-avtext-lrr]] is designed to allow a receiver of a layered media stream to request that one or more of its substreams be refreshed, such that it can then be decoded by an endpoint which previously was not receiving those layers, without requiring that the entire stream be refreshed (as it would be if the receiver sent a Full Intra Request (FIR) per [[!RFC5104]]).
 
 <pre><code>
            +---------------+---------------+
@@ -556,7 +579,7 @@ The Layer Refresh Request specified in [I-D.ietf-avtext-lrr] is designed to allo
 </code></pre>
 
 
-AV1 streams MUST use the Layer Refresh Request format defined for VP9 in Section 5.3 of [I-D.ietf-payload-vp9], with the high order bit of its three-bit SID field set to 0. The figure above shows the format for AV1 streams. Notice that SID here is two bits. SID is associated with AV1's spatial_id and TID is associated with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream specification [[!AV1]] for details on the temporal_id and spatial_id fields.
+AV1 streams MUST use the Layer Refresh Request format defined for VP9 in Section 5.3 of [[!I-D.ietf-payload-vp9]], with the high order bit of its three-bit SID field set to 0. The figure above shows the format for AV1 streams. Notice that SID here is two bits. SID is associated with AV1's spatial_id and TID is associated with AV1's temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream specification [[!AV1]] for details on the temporal_id and spatial_id fields.
 
 Identification of a layer refresh frame may be performed by examining the coding dependency structure of the coded video sequence it belongs to. This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 of [[!AV1]]), either in the form of a pre-defined scalability mode or through a scalability structure (Sections 5.8.6 and 6.7.6 of [[!AV1]]). Alternatively, the Dependency Descriptor RTP header extension that is specified in Appendix A of this document may be used.
 
