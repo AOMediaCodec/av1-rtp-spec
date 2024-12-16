@@ -48,11 +48,9 @@ This specification also provides several mechanisms through which scalability st
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [[!RFC2119]].
 
-Coded frame
-: The representation of one frame before the decoding process.
+Coded frame : The representation of one frame before the decoding process.
 
-Frame
-: A frame in this document is synonymous to a Coded frame.
+Frame : A frame in this document is synonymous to a Coded frame.
 
 Note: In contrast, in AV1, Frame is defined as the representation of video signals in the spatial domain.
 
@@ -60,23 +58,17 @@ Note: In contrast, in AV1, Frame is defined as the representation of video signa
 Note: Multiple frames may be present at the same instant in time.
 
 
-Media-Aware Network Element (MANE)
-: A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets and which may have access to the media ([[RFC6184]]).
+Media-Aware Network Element (MANE) : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets and which may have access to the media ([[RFC6184]]).
 
-OBU element
-: An OBU, or a fragment of an OBU, contained in an RTP packet.
+OBU element : An OBU, or a fragment of an OBU, contained in an RTP packet.
 
-Open Bitstream Unit (OBU)
-: The smallest bitstream data framing unit in AV1. All AV1 bitstream structures are packetized in OBUs.
+Open Bitstream Unit (OBU) : The smallest bitstream data framing unit in AV1. All AV1 bitstream structures are packetized in OBUs.
 
-"S" Mode
-: A scalability mode in which multiple encodings are sent on the same SSRC. This includes the S2T1, S2T1h, S2T2, S2T2h, S2T3, S2T3h, S3T1, S3T1h, S3T2, S3T2h, S3T3 and S3T3h scalability modes defined in Section 6.7.5 of [[!AV1]].
+"S" Mode : A scalability mode in which multiple encodings are sent on the same SSRC. This includes the S2T1, S2T1h, S2T2, S2T2h, S2T3, S2T3h, S3T1, S3T1h, S3T2, S3T2h, S3T3 and S3T3h scalability modes defined in Section 6.7.5 of [[!AV1]].
 
-Selective Forwarding Middlebox (SFM)
-: A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without accessing the media ([[!RFC7667]]).
+Selective Forwarding Middlebox (SFM) : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without accessing the media ([[!RFC7667]]).
 
-Temporal unit
-: Defined by the AV1 specification: A temporal unit consists of all the OBUs that are associated with a specific, distinct time instant.
+Temporal unit : Defined by the AV1 specification: A temporal unit consists of all the OBUs that are associated with a specific, distinct time instant.
 
 
 # Media Format Description
@@ -205,22 +197,13 @@ The following figure shows an example payload where the length field is shown as
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |Z|Y|0 0|N|-|-|-|  OBU element 1 size (leb128)  |               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
-:                                                               :
-:                      OBU element 1 data                       :
-:                                                               :
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               | :                                                               : :                      OBU element 1 data                       : :                                                               :
 |                                                               |
 |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                               |  OBU element 2 size (leb128)  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-:                                                               :
-:                       OBU element 2 data                      :
-:                                                               :
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ :                                                               : :                       OBU element 2 data                      : :                                                               :
 |                                                               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-:                                                               :
-:                              ...                              :
-:                                                               :
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ :                                                               : :                              ...                              : :                                                               :
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |OBU e... N size|                                               |
 +-+-+-+-+-+-+-+-+       OBU element N data      +-+-+-+-+-+-+-+-+
@@ -243,18 +226,12 @@ OBU element 2 data        = 303 - 1 - (2 + 200) = 100 bytes
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |Z|Y|1 0|N|-|-|-|  OBU element 1 size (leb128)  |               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
-|                                                               |
-:                                                               :
-:                      OBU element 1 data                       :
-:                                                               :
+|                                                               | :                                                               : :                      OBU element 1 data                       : :                                                               :
 |                                                               |
 |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                               |                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
-|                                                               |
-:                                                               :
-:                      OBU element 2 data                       :
-:                                                               :
+|                                                               | :                                                               : :                      OBU element 2 data                       : :                                                               :
 |                                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </code></pre>
@@ -625,41 +602,31 @@ To reduce overhead, the DD uses templates to avoid sending repetitive informatio
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [[RFC2119]].
 
-Chain
-: A sequence of frames for which it can be determined instantly if a frame from that sequence has been lost.
+Chain : A sequence of frames for which it can be determined instantly if a frame from that sequence has been lost.
 
-Decode target
-: The set of frames needed to decode a coded video sequence at a given spatial and temporal fidelity.
+Decode target : The set of frames needed to decode a coded video sequence at a given spatial and temporal fidelity.
 
-Decode Target Indication (DTI)
-: Describes the relationship of a frame to a Decode target. The DTI indicates four distinct relationships: 'not present', 'discardable', 'switch', and 'required'.
+Decode Target Indication (DTI) : Describes the relationship of a frame to a Decode target. The DTI indicates four distinct relationships: 'not present', 'discardable', 'switch', and 'required'.
 
-Discardable indication
-: An indication for a frame, associated with a given Decode target, that it will not be a Referred frame for any frame belonging to that Decode target.
+Discardable indication : An indication for a frame, associated with a given Decode target, that it will not be a Referred frame for any frame belonging to that Decode target.
 
 Note: A frame belonging to more than one Decode target may be discardable for one Decode target and not for another.
 
 
-Frame dependency structure
-: Describes frame dependency information for the coded video sequence. The structure includes the number of DTIs, an ordered list of Frame dependency templates, and a mapping between Chains and Decode targets.
+Frame dependency structure : Describes frame dependency information for the coded video sequence. The structure includes the number of DTIs, an ordered list of Frame dependency templates, and a mapping between Chains and Decode targets.
 
-Frame dependency template
-: Contains frame description information that many frames have in common. Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and Chain information.
+Frame dependency template : Contains frame description information that many frames have in common. Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and Chain information.
 
-Not present indication
-: An indication for a frame, that it is not associated with a given Decode target.
+Not present indication : An indication for a frame, that it is not associated with a given Decode target.
 
-Referred frame
-: A frame on which the current frame depends.
+Referred frame : A frame on which the current frame depends.
 
-Required indication
-: An indication for a frame, associated with a given Decode target, that it belongs to the Decode target and has neither a Discardable indication nor a Switch indication.
+Required indication : An indication for a frame, associated with a given Decode target, that it belongs to the Decode target and has neither a Discardable indication nor a Switch indication.
 
 Note: A frame belonging to more than one Decode target may be required for one Decode target and not required (either discardable or switch) for another.
 
 
-Switch indication
-: An indication associated with a specific Decode target that all subsequent frames for that Decode target will be decodable if the frame containing the indication is decodable.
+Switch indication : An indication associated with a specific Decode target that all subsequent frames for that Decode target will be decodable if the frame containing the indication is decodable.
 
 
 ## A.3 Media Stream Requirements
