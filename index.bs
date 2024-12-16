@@ -32,10 +32,10 @@ Frame
 : A frame in this document is synonymous to a Coded frame.
 
 Note: In contrast, in AV1, Frame is defined as the representation of video signals in the spatial domain.
-{:.alert .alert-info }
+
 
 Note: Multiple frames may be present at the same instant in time.
-{:.alert .alert-info }
+
 
 Media-Aware Network Element (MANE)
 : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets and which may have access to the media ([[RFC6184]]).
@@ -67,7 +67,7 @@ This payload format specification provides for specific mechanisms through which
 Temporal and spatial scalability layers are associated with non-negative integer IDs. The lowest layer of either type has an ID equal to 0.
 
 Note: Layer dependencies are constrained by the AV1 specification such that a temporal layer with temporal_id T and spatial layer with spatial_id S are only allowed to reference previously coded video data having temporal_id T' and spatial_id S', where T' <= T and S' <= S. 
-{:.alert .alert-info }
+
 
 
 # Payload Format
@@ -115,14 +115,14 @@ The Dependency Descriptor and AV1 aggregation header are described in this docum
 </code></pre>
 
 Note: The ID used to identify the Dependency Descriptor is signaled as defined in Section A.7 of this specification. Some examples are provided in Sections 7.2 and 7.3.
-{:.alert .alert-info }
+
 
 ## RTP Header Marker Bit (M)
 
 The RTP header Marker bit MUST be set equal to 0 if the packet is not the last packet of the temporal unit, it SHOULD be set equal to 1 otherwise.
 
 Note: It is possible for a receiver to receive the last packet of a temporal unit without the marker bit being set equal to 1, and a receiver should be able to handle this case. The last packet of a temporal unit is also indicated by the next packet, in RTP sequence number order, having an incremented timestamp.
-{:.alert .alert-info }
+
 
 
 ## Dependency Descriptor RTP Header Extension
@@ -159,7 +159,7 @@ Length of the last OBU element =
 N: MUST be set to 1 if the packet is the first packet of a coded video sequence, and MUST be set to 0 otherwise.
 
 Note: if N equals 1 then Z must equal 0.
-{:.alert .alert-info }
+
 
 
 ## Payload Structure
@@ -248,7 +248,7 @@ If a sequence header OBU is present in an RTP packet and operating_points_cnt_mi
 A sender MAY produce a sequence header with operating_points_cnt_minus_1 = 0 and operating_point_idc[0] = 0xFFF and seq_level_idx[0] = 0. In such case, seq_level_idx[0] does not reflect the level of the operating point.
 
 Note: The intent is to disable OBU dropping in the AV1 decoder. To ensure a decoder’s capabilities are not exceeded, OBU filtering should instead be implemented at the system level (e.g., in a MANE).
-{:.alert .alert-info }
+
 
 If more than one OBU contained in an RTP packet has an OBU extension header, then the values of the temporal_id and spatial_id MUST be the same in all such OBUs in the RTP packet.
 
@@ -614,7 +614,7 @@ Discardable indication
 : An indication for a frame, associated with a given Decode target, that it will not be a Referred frame for any frame belonging to that Decode target.
 
 Note: A frame belonging to more than one Decode target may be discardable for one Decode target and not for another.
-{:.alert .alert-info }
+
 
 Frame dependency structure
 : Describes frame dependency information for the coded video sequence. The structure includes the number of DTIs, an ordered list of Frame dependency templates, and a mapping between Chains and Decode targets.
@@ -632,7 +632,7 @@ Required indication
 : An indication for a frame, associated with a given Decode target, that it belongs to the Decode target and has neither a Discardable indication nor a Switch indication.
 
 Note: A frame belonging to more than one Decode target may be required for one Decode target and not required (either discardable or switch) for another.
-{:.alert .alert-info }
+
 
 Switch indication
 : An indication associated with a specific Decode target that all subsequent frames for that Decode target will be decodable if the frame containing the indication is decodable.
@@ -645,7 +645,7 @@ A bitstream conformant to this extension must adhere to the following statement(
 A frame for which all Referred frames are decodable MUST itself be decodable.
 
 Note: dependencies are not limited to motion compensated prediction, other relevant information such as entropy decoder state also constitute dependencies.
-{:.alert .alert-info }
+
 
 
 ## A.4 Active Decode Targets
@@ -673,17 +673,17 @@ The sender SHOULD signal updates in such a way that a receiver, even after packe
 A Chain defines a sequence of frames essential to decode Decode targets protected by that Chain. Every packet includes, for every Chain, the frame_number of the previous frame in that Chain. The Chain is intact as long as every frame in the Chain is received, otherwise it is broken. A decodable frame with frame_chain_fdiff equal to 0 indicates that the Chain is intact.
 
 Note: The concept of Chains is a generalization of the TL0PICIDX field used in the RTP payload formats for scalable codecs such as VP8 and VP9.
-{:.alert .alert-info }
+
 
 A sender MUST construct Chains such that a receiver having received all frames in the Chain, and having missed one or more frames not in the Chain, need not request additional information (e.g., NACK or FIR) from the sender in order to resume decoding at full fidelity of the Decode target protected by the Chain.
 
 Note: Not decoding a frame associated with a Decode target that is also not present in the Chain will result in a temporary reduction of fidelity. A frame that is not present in the Chain may be dropped even if the Decode Target Indication for that frame is not Discardable.
-{:.alert .alert-info }
+
 
 The Frame dependency structure includes a mapping between Decode targets and Chains. The mapping gives an SFM the ability to determine the set of Chains it needs to track in order to ensure that the corresponding Decode targets remain decodable. Chains protecting no active Decode targets MUST be ignored.
 
 Note: To increase the chance of using a predefined template, chains protecting no active Decode targets may refer to any frame, including an RTP frame that was never produced.
-{:.alert .alert-info }
+
 
 
 ## A.6 Usage of Chains After Packet Loss
@@ -727,7 +727,7 @@ ChainHasActiveDecodeTarget(chainIdx) {
 </code></pre>
 
 Note: The variables <code>DtCnt</code>, <code>decode_target_protected_by</code>, <code>frame_dti</code> and <code>active_decode_targets_bitmask</code> used in the example above are read or derived from the dependency descriptor as described in Section A.8. 
-{:.alert .alert-info }
+
 
 ## A.7 Switching
 
@@ -736,7 +736,7 @@ An SFM MAY begin forwarding packets belonging to a new Decode target beginning w
 When Chains are used, an SFM MAY switch to a Decode target at any point if the Chain tracking that Decode target is intact.
 
 Note: Every Decode target is associated with a spatial and temporal layer, which the SFM may use to select which Decode target to forward.
-{:.alert .alert-info }
+
 
 
 ## A.8 Dependency Descriptor Format
@@ -1080,12 +1080,12 @@ The semantics pertaining to the Dependency Descriptor syntax section above is de
 * **frame_number**: is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same frame MUST have the same frame_number value.
 
 Note: frame_number is not the same as Frame ID in [[!AV1] specification].
-{:.alert .alert-info }
+
 
 * **frame_dependency_template_id**: ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplateCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same frame.
 
 Note: values outside of the valid range may be caused by a change of the template dependency structure, that is a packet with the new template dependency structure was lost or delayed.
-{:.alert .alert-info }
+
 
 * **zero_padding**: MUST be set to 0 and be ignored by receivers.
 
