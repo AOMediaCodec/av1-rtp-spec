@@ -1488,8 +1488,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version ac5ea272d, updated Fri Dec 6 15:45:15 2024 -0800" name="generator">
+  <meta content="Bikeshed version 97a1608be, updated Mon Feb 3 16:09:34 2025 -0800" name="generator">
   <link href="https://aomediacodec.github.io/av1-rtp-spec/v1.0.0.html" rel="canonical">
+  <meta content="4155701a251329db2d371e938e0a5351d4199e10" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -1913,7 +1914,7 @@ dfn > a.self-link::before      { content: "#"; }
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>This document describes an RTP payload format for the <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a> video codec]. The payload format has wide applicability, from low bit-rate peer-to-peer usage, to high bit-rate multi-party video conferences. It includes provisions for temporal and spatial scalability.</p>
+   <p>This document describes an RTP payload format for the <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a> video codec. The payload format has wide applicability, from low bit-rate peer-to-peer usage, to high bit-rate multi-party video conferences. It includes provisions for temporal and spatial scalability.</p>
   </div>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
@@ -1943,6 +1944,7 @@ dfn > a.self-link::before      { content: "#"; }
        <ol class="toc">
         <li><a href="#example"><span class="secno">6.1.1</span> <span class="content">Example</span></a>
        </ol>
+      <li><a href="#constraints-for-scalable-video-bitstreams"><span class="secno">6.2</span> <span class="content">Constraints For Scalable Video Bitstreams</span></a>
      </ol>
     <li>
      <a href="#payload-format-parameters"><span class="secno">7</span> <span class="content">Payload Format Parameters</span></a>
@@ -2031,11 +2033,11 @@ dfn > a.self-link::before      { content: "#"; }
    <p>Frame : A frame in this document is synonymous to a Coded frame.</p>
    <p class="note" role="note"><span class="marker">Note:</span> In contrast, in AV1, Frame is defined as the representation of video signals in the spatial domain.</p>
    <p class="note" role="note"><span class="marker">Note:</span> Multiple frames may be present at the same instant in time.</p>
-   <p>Media-Aware Network Element (MANE) : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets and which may have access to the media (<a data-link-type="biblio" href="#biblio-rfc6184" title="RTP Payload Format for H.264 Video">[RFC6184]</a>).</p>
+   <p>Media-Aware Network Element (MANE) : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets and which may have access to the media <a data-link-type="biblio" href="#biblio-rfc6184" title="RTP Payload Format for H.264 Video">[RFC6184]</a>.</p>
    <p>OBU element : An OBU, or a fragment of an OBU, contained in an RTP packet.</p>
    <p>Open Bitstream Unit (OBU) : The smallest bitstream data framing unit in AV1. All AV1 bitstream structures are packetized in OBUs.</p>
-   <p>"S" Mode : A scalability mode in which multiple encodings are sent on the same SSRC. This includes the S2T1, S2T1h, S2T2, S2T2h, S2T3, S2T3h, S3T1, S3T1h, S3T2, S3T2h, S3T3 and S3T3h scalability modes defined in Section 6.7.5 of <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>.</p>
-   <p>Selective Forwarding Middlebox (SFM) : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without accessing the media (<a data-link-type="biblio" href="#biblio-rfc7667" title="RTP Topologies">[RFC7667]</a>).</p>
+   <p>"S" Mode : A scalability mode in which multiple independent encodings are sent on the same SSRC. This includes the S2T1, S2T1h, S2T2, S2T2h, S2T3, S2T3h, S3T1, S3T1h, S3T2, S3T2h, S3T3 and S3T3h scalability modes defined in Section 6.7.5 of <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>.</p>
+   <p>Selective Forwarding Middlebox (SFM) : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without accessing the media <a data-link-type="biblio" href="#biblio-rfc7667" title="RTP Topologies">[RFC7667]</a>.</p>
    <p>Temporal unit : Defined by the AV1 specification: A temporal unit consists of all the OBUs that are associated with a specific, distinct time instant.</p>
    <h2 class="heading settled" data-level="3" id="media-format-description"><span class="secno">3. </span><span class="content">Media Format Description</span><a class="self-link" href="#media-format-description"></a></h2>
    <p>The AV1 codec can maintain up to eight reference frames, of which up to seven can be referenced by any new frame. AV1 also allows a frame to use another frame of a different spatial resolution as a reference frame. This allows internal resolution changes without requiring the use of key frames. These features together enable an AV1 encoder to implement various forms of coarse-grained scalability, including temporal, spatial, and quality scalability modes, as well as combinations of these, without the need for explicit scalable coding tools.</p>
@@ -2157,7 +2159,7 @@ OBU element 2 data        = 303 - 1 - (2 + 200) = 100 bytes
    <p class="note" role="note"><span class="marker">Note:</span> The intent is to disable OBU dropping in the AV1 decoder. To ensure a decoder’s capabilities are not exceeded, OBU filtering should instead be implemented at the system level (e.g., in a MANE).</p>
    <p>If more than one OBU contained in an RTP packet has an OBU extension header, then the values of the temporal_id and spatial_id MUST be the same in all such OBUs in the RTP packet.</p>
    <p>If a sequence header OBU is present in an RTP packet, then it	SHOULD be the first OBU in the packet. OBUs that are not associated with a particular layer (and thus do not have an OBU extension header) SHOULD be in the beginning of a packet, following the sequence header OBU if present.</p>
-   <p>A sequence header OBU SHOULD be included in the base layer when scalable encoding is used. When simulcast encodings are transported on the same SSRC (an "S" mode), a sequence header OBU SHOULD be aggregated with each spatial layer. This ensures that if an intermediary removes simulcast encodings from the bitstream before forwarding, the modified bitstream will still be decodable.</p>
+   <p>A sequence header OBU SHOULD be aggregated with the base layer when scalable encoding is used. When simulcast encodings are transported on the same SSRC (an "S" mode), a sequence header OBU SHOULD be aggregated with each spatial layer. This ensures that if an intermediary removes simulcast encodings from the bitstream before forwarding, the modified bitstream will still be decodable.</p>
    <h3 class="heading settled" data-level="5.1" id="examples"><span class="secno">5.1. </span><span class="content">Examples</span><a class="self-link" href="#examples"></a></h3>
    <p>The following are example packetizations of OBU sequences. A two-letter notation is used to identify the OBU type: FH - frame header, TG - tile group, FR - frame, SH - sequence header, TD - temporal delimitered, MD - metadata. Parentheses after the type indicate the temporal_id and spatial_id combination. For example "TG(0,1)" indicates a tile group OBU with temporal_id equal to 0 and spatial_id equal to 1.</p>
    <p>The following is an example coded video sequence:</p>
@@ -2176,21 +2178,28 @@ OBU element 2 data        = 303 - 1 - (2 + 200) = 100 bytes
    <p>If a packet contains an OBU with an OBU extension header then the entire packet is considered associated with the layer identified by the temporal_id and spatial_id combination that are indicated in the extension header. If a packet does not contain any OBU with an OBU extension header, then it is considered to be associated with all operating points.</p>
    <p>The general function of a MANE or SFM is to selectively forward packets to receivers. To make forwarding decisions a MANE may inspect the media payload, so that it may need to be able to parse the AV1 bitstream and if so, cannot function when end-to-end encryption is enabled. An SFM does not parse the AV1 bitstream and therefore needs to obtain the information relevant to selective forwarding by other means, such as the Dependency Descriptor described in Appendix A. In addition to enabling bitstream-independent forwarding and support for end-to-end encryption, the Dependency Descriptor also enables forwarding where the metadata OBU provided in the AV1 bitstream is not sufficient to express the structure of the stream.</p>
    <h3 class="heading settled" data-level="6.1" id="simulcast"><span class="secno">6.1. </span><span class="content">Simulcast</span><a class="self-link" href="#simulcast"></a></h3>
-   <p>The RTP payload defined in this specification supports two distinct modes for transport of simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated with each spatial layer. Both modes MUST be supported by implementations of this specification.</p>
-   <p>When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs) for each encoding as described in <a data-link-type="biblio" href="#biblio-rfc8852" title="RTP Stream Identifier Source Description (SDES)">[RFC8852]</a> and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport, which MUST be supported by SFMs, utilizes Session Description Protocol (SDP) signaling as described in <a data-link-type="biblio" href="#biblio-rfc8851" title="RTP Payload Format Restrictions">[RFC8851]</a> and <a data-link-type="biblio" href="#biblio-rfc8853" title="Using Simulcast in Session Description Protocol (SDP) and RTP Sessions">[RFC8853]</a>.</p>
+   <p>The RTP payload defined in this specification supports two distinct modes for transport of simulcast encodings. In either mode, simulcast transport MUST only be used to convey multiple encodings from the same source. Also, in either mode, a sequence header OBU SHOULD be aggregated with each spatial layer.</p>
+   <p>When simulcast encodings are transported each on a separate RTP stream, each simulcast encoding utilizes a distinct bitstream containing its own distinct Sequence Header and Scalability Metadata OBUs. This mode utilizes distinct SSRCs and Restriction Identifiers (RIDs) for each encoding as described in <a data-link-type="biblio" href="#biblio-rfc8852" title="RTP Stream Identifier Source Description (SDES)">[RFC8852]</a> and, as a result, RTCP feedback can be provided for each simulcast encoding. This mode of simulcast transport utilizes Session Description Protocol (SDP) signaling as described in <a data-link-type="biblio" href="#biblio-rfc8851" title="RTP Payload Format Restrictions">[RFC8851]</a> and <a data-link-type="biblio" href="#biblio-rfc8853" title="Using Simulcast in Session Description Protocol (SDP) and RTP Sessions">[RFC8853]</a>.</p>
    <p>When simulcast encodings are transported on a single RTP stream, RIDs are not used and the Sequence Header and Scalability Metadata OBUs (utilizing an 'S' mode) convey information relating to all encodings. This simulcast transport mode is possible since AV1 enables multiple simulcast encodings to be provided within a single bitstream. However, in this mode, RTCP feedback cannot be provided for each simulcast encoding, but only for the aggregate, since only a single SSRC is used. This mode of simulcast transport MAY be supported by SFMs.</p>
    <h4 class="heading settled" data-level="6.1.1" id="example"><span class="secno">6.1.1. </span><span class="content">Example</span><a class="self-link" href="#example"></a></h4>
    <p>In this example, it is desired to send three simulcast encodings, each containing three temporal layers. When sending all encodings on a single SSRC, scalability mode 'S3T3' would be indicated within the scalability metadata OBU, and the Dependency Descriptor describes the dependency structure of all encodings.</p>
    <p>When sending each simulcast encoding on a distinct SSRC, the scalability mode 'L1T3' would be indicated within the scalability metadata OBU of each bitstream, and the Dependency Descriptor in each stream describes only the dependency structure for that individual encoding. A distinct spatial_id (e.g. 0, 1, 2) could be used for each stream (if a single AV1 encoder is used to produce the three simulcast encodings), but if distinct AV1 encoders are used, the spatial_id values may not be distinct.</p>
+   <h3 class="heading settled" data-level="6.2" id="constraints-for-scalable-video-bitstreams"><span class="secno">6.2. </span><span class="content">Constraints For Scalable Video Bitstreams</span><a class="self-link" href="#constraints-for-scalable-video-bitstreams"></a></h3>
+   <p>The following AV1 bitstream constraints need to be applied when transmitting scalable video bitstreams, in order to ensure correct packet forwarding behavior by a MANE.</p>
+   <p>The obu_extension_flag MUST be equal to 0 in any sequence header OBU. This ensures that sequence headers will be forwarded to all receivers.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> this constraint is required despite the ambiguity of the text that defines operating_point_idc[i] in Section 6.4.1 of <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>.</p>
+   <p>The obu_extension_flag MUST be equal to 1 in all frame, frame header, redundant frame header, and tile group OBUs. This enables the MANE to only forward these OBUs to receivers using operating points that require them.</p>
+   <p>The obu_extension_flag MUST be equal to 0 in a scalability metadata OBU. This ensures that the scalability metadata will be forwarded to all receivers.</p>
+   <p>The obu_extension_flag MAY be equal to 1 in a padding OBU.</p>
    <h2 class="heading settled" data-level="7" id="payload-format-parameters"><span class="secno">7. </span><span class="content">Payload Format Parameters</span><a class="self-link" href="#payload-format-parameters"></a></h2>
    <p>This section specifies the parameters that MAY be used to select optional features of the payload format and certain features of the bitstream.</p>
    <h3 class="heading settled" data-level="7.1" id="media-type-definition"><span class="secno">7.1. </span><span class="content">Media Type Definition</span><a class="self-link" href="#media-type-definition"></a></h3>
-   <p>The AV1 media type used for signaling the transfer of AV1 via RTP is registered at https://www.iana.org/assignments/media-types/video/AV1.</p>
+   <p>The AV1 media type used for signaling the transfer of AV1 via RTP is registered at <a href="https://www.iana.org/assignments/media-types/video/AV1">https://www.iana.org/assignments/media-types/video/AV1</a>.</p>
    <h3 class="heading settled" data-level="7.2" id="sdp-parameters"><span class="secno">7.2. </span><span class="content">SDP Parameters</span><a class="self-link" href="#sdp-parameters"></a></h3>
     The parameters for AV1 are <b>profile</b>, <b>level-idx</b>, and <b>tier</b> These parameters indicate the profile, level, and tier of the bitstream carried by the RTP stream, or a specific set of the profile, level, and tier that the receiver supports. 
    <p>The <b>profile</b> parameter is an integer indicating the highest AV1 profile that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the <b>seq_profile</b> syntax element specified in <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>. If the parameter is not present, it MUST be inferred to be 0 (“Main” profile).</p>
    <p>The <b>level-idx</b> parameter is an integer indicating the highest AV1 level that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the <b>seq_level_idx</b> syntax element specified in <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>. If the parameter is not present, it MUST be inferred to be 5 (level 3.1).</p>
-   <p>The <b>tier</b> parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the <b>seq_tier</b> syntax element specified in <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>. If the parameter is not present, the tier MUST be inferred to be 0.</p>
+   <p>The <b>tier</b> parameter is an integer indicating the highest tier that may have been used to generate the bitstream or that the receiver supports. The range of possible values is identical to the <b>seq_tier</b> syntax element specified in <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>. If the parameter is not present, it MUST be inferred to be 0.</p>
    <h4 class="heading settled" data-level="7.2.1" id="mapping-of-media-subtype-parameters-to-sdp"><span class="secno">7.2.1. </span><span class="content">Mapping of Media Subtype Parameters to SDP</span><a class="self-link" href="#mapping-of-media-subtype-parameters-to-sdp"></a></h4>
     The media type video/AV1 string is mapped to fields in the Session Description Protocol (SDP) per <a data-biblio-obsolete data-link-type="biblio" href="#biblio-rfc4566" title="SDP: Session Description Protocol">[RFC4566]</a> as follows: 
    <ul>
@@ -2958,7 +2967,7 @@ new coded video sequences for other encodings from the same source(s).</p>
     <li data-md>
      <p><b>frame_number</b> is represented using 16 bits and increases strictly monotonically in decode order. frame_number MAY start on a random number, and MUST wrap after reaching the maximum value. All packets of the same frame MUST have the same frame_number value.</p>
    </ul>
-   <p class="note" role="note"><span class="marker">Note:</span> frame_number is not the same as Frame ID in [[!AV1] specification].</p>
+   <p class="note" role="note"><span class="marker">Note:</span> frame_number is not the same as Frame ID in <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a> specification.</p>
    <ul>
     <li data-md>
      <p><b>frame_dependency_template_id</b> ID of the Frame dependency template to use. MUST be in the range of template_id_offset to (template_id_offset + TemplateCnt - 1), inclusive. frame_dependency_template_id MUST be the same for all packets of the same frame.</p>
@@ -3010,15 +3019,36 @@ new coded video sequences for other encodings from the same source(s).</p>
     <li data-md>
      <p><b>fdiff_minus_one</b> the difference between frame_number and the frame_number of the Referred frame minus one. The calculation is done modulo the size of the frame_number field.</p>
    </ul>
-   <p>| DTI                    | Value | Symbol |                                                        |
-| ---------------------- | ----- | ------ | ------------------------------------------------------ |
-| Not present indication | 0     | -      | No payload for this Decode target is present.
-| Discardable indication | 1     | D      | Payload for this Decode target is present and discardable.
-| Switch indication      | 2     | S      | Payload for this Decode target is present and switch is possible (Switch indication).
-| Required indication    | 3     | R      | Payload for this Decode target is present but it is neither discardable nor is it a Switch indication.
-{:.table .table-sm .table-bordered }</p>
-   <p>Table A.1. Decode Target Indication (DTI) values.
-{: .caption }</p>
+   <table class="table table-sm table-bordered">
+    <thead>
+     <tr>
+      <th>DTI
+      <th>Value
+      <th>Symbol
+      <th>
+    <tbody>
+     <tr>
+      <td>Not present indication
+      <td>0
+      <td>-
+      <td>No payload for this Decode target is present.
+     <tr>
+      <td>Discardable indication
+      <td>1
+      <td>D
+      <td>Payload for this Decode target is present and discardable.
+     <tr>
+      <td>Switch indication
+      <td>2
+      <td>S
+      <td>Payload for this Decode target is present and switch is possible (Switch indication).
+     <tr>
+      <td>Required indication
+      <td>3
+      <td>R
+      <td>Payload for this Decode target is present but it is neither discardable nor is it a Switch indication.
+   </table>
+   <p class="caption">Table A.1. Decode Target Indication (DTI) values.</p>
    <p><b>Frame dependency defintion</b></p>
    <ul>
     <li data-md>
@@ -3028,21 +3058,32 @@ new coded video sequences for other encodings from the same source(s).</p>
     <li data-md>
      <p><b>frame_chain_fdiff[chainIdx]</b> indicates the difference between the frame_number and the frame_number of the previous frame in the Chain having index equal to chainIdx. A value of 0 indicates no previous frames are needed for the Chain. For example, when a packet containing frame_chain_fdiff[chainIdx]=3 and frame_number=112 the previous frame in the Chain with index equal to chainIdx has frame_number=109. The calculation is done modulo the size of the frame_number field.</p>
    </ul>
-   <p>| next_layer_idc | Next Spatial ID And Temporal ID Values                   |
-| -------------- | -------------------------------------------------------- |
-| 0              | The next Frame dependency template has the same spatial ID and temporal ID as the current template
-| 1              | The next Frame dependency template has the same spatial ID and temporal ID plus 1 compared with the current Frame dependency template.
-| 2              | The next Frame dependency template has temporal ID equal to 0 and spatial ID plus 1 compared with the current Frame dependency template.
-| 3              | No more Frame dependency templates are present in the Frame dependency structure.
-{:.table .table-sm .table-bordered }</p>
-   <p>Table A.2. Derivation Of Next Spatial ID And Temporal ID Values.
-{: .caption }</p>
+   <table class="table table-sm table-bordered">
+    <thead>
+     <tr>
+      <th>next_layer_idc
+      <th>Next Spatial ID And Temporal ID Values
+    <tbody>
+     <tr>
+      <td>0
+      <td>The next Frame dependency template has the same spatial ID and temporal ID as the current template
+     <tr>
+      <td>1
+      <td>The next Frame dependency template has the same spatial ID and temporal ID plus 1 compared with the current Frame dependency template.
+     <tr>
+      <td>2
+      <td>The next Frame dependency template has temporal ID equal to 0 and spatial ID plus 1 compared with the current Frame dependency template.
+     <tr>
+      <td>3
+      <td>No more Frame dependency templates are present in the Frame dependency structure.
+   </table>
+   <p class="caption">Table A.2. Derivation Of Next Spatial ID And Temporal ID Values.</p>
    <h3 class="heading settled" id="a9-signaling-sdp-information"><span class="content">A.9 Signaling (SDP) Information</span><a class="self-link" href="#a9-signaling-sdp-information"></a></h3>
-   <p>When the use of this header extension is signaled in SDP using an extmap attribute, the URI MUST be "https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension".</p>
+   <p>When the use of this header extension is signaled in SDP using an extmap attribute, the URI MUST be "<a href="https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension">"https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension"</a>.</p>
    <p>For example:</p>
    <ul>
     <li data-md>
-     <p>a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension</p>
+     <p>a=extmap:4 <a href="https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension">https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension</a></p>
    </ul>
    <h3 class="heading settled" id="a10-examples"><span class="content">A.10 Examples</span><a class="self-link" href="#a10-examples"></a></h3>
    <h4 class="heading settled" id="a101-scenarios"><span class="content">A.10.1 Scenarios</span><a class="self-link" href="#a101-scenarios"></a></h4>
@@ -3113,7 +3154,7 @@ new coded video sequences for other encodings from the same source(s).</p>
    <p>Decode targets are protected by Chains. In this example, DT1 and DT2 (i.e., Decode targets with VGA spatial fidelity) are protected by Chain0, and DT0 and DT3 (i.e., Decode targets with HD spatial fidelity) are protected by Chain1.</p>
    <p>To better understand how Chains are used, consider two receiving clients. One client expects DT2, while the other expects DT3. These two clients would track different chains. In this example, each client has received and decoded F1 and then receives F5. F5 depends only on F1, thus F5 is decodable.</p>
    <p>The DT2 client would track Chain0. From the DD received with F5, the client would detect that the last essential frame is F1. Consequently, it is safe to start decoding F5. Even if the DT2 client does not receive F3, frames following F5 are decodable due to the fact that F3 is Discardable for DT2.</p>
-   <p>The DT3 client would track Chain1. From the DD received with F5, the client would detect that the last essential frame is F2. Thus it is not safe to start decoding F5. Due to the fact that frames must be decoded in decode order and F2 is essential for all HD frames, decoding F5 before F2 would prevent the decoding of F2 and all subsequent HD frames. The client therefore should wait for F2. The client may send a Generic NACK per <a data-link-type="biblio" href="#biblio-rfc4585" title="Extended RTP Profile for Real-time Transport Control Protocol (RTCP)-Based Feedback (RTP/AVPF)">[RFC4585]</a> in order to notify the sender that packets have been missed since the receipt of F1, or may send a Layer Refresh Request (LRR) per [I-D.ietf-avtext-lrr] in order to refresh the media substream.</p>
+   <p>The DT3 client would track Chain1. From the DD received with F5, the client would detect that the last essential frame is F2. Thus it is not safe to start decoding F5. Due to the fact that frames must be decoded in decode order and F2 is essential for all HD frames, decoding F5 before F2 would prevent the decoding of F2 and all subsequent HD frames. The client therefore should wait for F2. The client may send a Generic NACK per <a data-link-type="biblio" href="#biblio-rfc4585" title="Extended RTP Profile for Real-time Transport Control Protocol (RTCP)-Based Feedback (RTP/AVPF)">[RFC4585]</a> in order to notify the sender that packets have been missed since the receipt of F1, or may send a Layer Refresh Request (LRR) per <a data-link-type="biblio" href="#biblio-i-dietf-avtext-lrr" title="The Layer Refresh Request (LRR) RTCP Feedback Message">[I-D.ietf-avtext-lrr]</a> in order to refresh the media substream.</p>
    <h5 class="heading settled" id="a1012-spatial-upswitch"><span class="content">A.10.1.2 Spatial Upswitch</span><a class="self-link" href="#a1012-spatial-upswitch"></a></h5>
     In the following example, spatial upswitch is discussed in the context of the L2T1 scalability structure. 
    <figure align="center" style="display: block;">
