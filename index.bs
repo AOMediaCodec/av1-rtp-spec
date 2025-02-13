@@ -10,6 +10,7 @@ Date: 2024-12-15
 Repository: AOMediaCodec/av1-rtp-spec
 Group: AOM
 Markup Shorthands: css no
+Boilerplate: omit conformance
 </pre>
 
 <pre class=biblio>
