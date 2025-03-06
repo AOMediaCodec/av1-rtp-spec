@@ -1488,9 +1488,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 97a1608be, updated Mon Feb 3 16:09:34 2025 -0800" name="generator">
+  <meta content="Bikeshed version 4b8aed3f7, updated Thu Mar 6 12:35:01 2025 -0800" name="generator">
   <link href="https://aomediacodec.github.io/av1-rtp-spec/v1.0.0.html" rel="canonical">
-  <meta content="834e7a3b185b8b15fa460bfbea02ae31e0987520" name="revision">
+  <meta content="54c9aca5c5ec70d10344a10136732a5bf2a9e2d7" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -1975,6 +1975,7 @@ dfn > a.self-link::before      { content: "#"; }
      </ol>
     <li><a href="#iana-considerations"><span class="secno">9</span> <span class="content">IANA Considerations</span></a>
     <li><a href="#security-considerations"><span class="secno">10</span> <span class="content">Security Considerations</span></a>
+    <li><a href="#acknowledgements"><span class="secno">11</span> <span class="content">Acknowledgements</span></a>
     <li>
      <a href="#appendix-a---dependency-descriptor-rtp-header-extension"><span class="secno"></span> <span class="content">Appendix A - Dependency Descriptor RTP Header Extension</span></a>
      <ol class="toc">
@@ -2564,6 +2565,8 @@ new coded video sequences for other encodings from the same source(s).</p>
    <p>Note that the appropriate mechanism to ensure confidentiality and integrity of RTP packets and their payloads is very dependent on the application and on the transport and signaling protocols employed. Thus, although SRTP is given as an example above, other possible choices exist. See <a data-link-type="biblio" href="#biblio-rfc7202" title="Securing the RTP Framework: Why RTP Does Not Mandate a Single Media Security Solution">[RFC7202]</a>.</p>
    <p>Decoders MUST discard reserved OBU types and reserved metadata OBU types, and SHOULD filter out temporal delimiter and tile list OBUs carried within the RTP payload. Middle boxes SHOULD NOT parse OBUs they do not support.</p>
    <p>End-to-end security services such as authentication, integrity, or confidentiality protection could prevent an SFM or MANE from performing media-aware operations other than discarding complete packets. For example, repacketization requires that the MANE have access to the cleartext media payload. The Dependency Descriptor RTP extension described in Appendix A allows discarding of packets in a media-aware way even when confidentiality protection is used.</p>
+   <h2 class="heading settled" data-level="11" id="acknowledgements"><span class="secno">11. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledgements"></a></h2>
+   <p>Bernard Aboba made valuable contributions to this document, and to the AV1 Specification. Bernard passed away in February 2025. This document is dedicated to his memory, as a small token of appreciation of his many contributions.</p>
    <h2 class="heading settled" id="appendix-a---dependency-descriptor-rtp-header-extension"><span class="content">Appendix A - Dependency Descriptor RTP Header Extension</span><a class="self-link" href="#appendix-a---dependency-descriptor-rtp-header-extension"></a></h2>
    <h3 class="heading settled" id="a1-introduction"><span class="content">A.1 Introduction</span><a class="self-link" href="#a1-introduction"></a></h3>
    <p>This appendix describes the Dependency Descriptor (DD) RTP Header extension. The DD is used for conveying dependency information about individual video frames in a scalable video stream. The DD includes provisions for both temporal and spatial scalability.</p>
