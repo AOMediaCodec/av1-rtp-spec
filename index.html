@@ -1490,7 +1490,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 4b8aed3f7, updated Thu Mar 6 12:35:01 2025 -0800" name="generator">
   <link href="https://aomediacodec.github.io/av1-rtp-spec/v1.0.0.html" rel="canonical">
-  <meta content="54c9aca5c5ec70d10344a10136732a5bf2a9e2d7" name="revision">
+  <meta content="cfa22aafc41ac3d425bec854b260f30bef962dbe" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -2029,16 +2029,36 @@ dfn > a.self-link::before      { content: "#"; }
    <p>This specification also provides several mechanisms through which scalability structures are described. AV1 uses the concept of predefined scalability structures. These are a set of commonly used picture prediction structures that can be referenced simply via an indicator value (scalability_mode_idc, residing in the sequence header). For cases that do not fall in any of the predefined cases, there is a mechanism for describing the scalability structure. These bitstream parameters greatly simplify the organization of the corresponding data at the RTP payload format level.</p>
    <h2 class="heading settled" data-level="2" id="conventions-definitions-and-acronyms"><span class="secno">2. </span><span class="content">Conventions, Definitions and Acronyms</span><a class="self-link" href="#conventions-definitions-and-acronyms"></a></h2>
    <p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a>.</p>
-   <p>Coded frame : The representation of one frame before the decoding process.</p>
-   <p>Frame : A frame in this document is synonymous to a Coded frame.</p>
+   <dl>
+    <dt data-md>Coded frame
+    <dd data-md>
+     <p>The representation of one frame before the decoding process.</p>
+    <dt data-md>Frame
+    <dd data-md>
+     <p>A frame in this document is synonymous to a Coded frame.</p>
+   </dl>
    <p class="note" role="note"><span class="marker">Note:</span> In contrast, in AV1, Frame is defined as the representation of video signals in the spatial domain.</p>
    <p class="note" role="note"><span class="marker">Note:</span> Multiple frames may be present at the same instant in time.</p>
-   <p>Media-Aware Network Element (MANE) : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets and which may have access to the media <a data-link-type="biblio" href="#biblio-rfc6184" title="RTP Payload Format for H.264 Video">[RFC6184]</a>.</p>
-   <p>OBU element : An OBU, or a fragment of an OBU, contained in an RTP packet.</p>
-   <p>Open Bitstream Unit (OBU) : The smallest bitstream data framing unit in AV1. All AV1 bitstream structures are packetized in OBUs.</p>
-   <p>"S" Mode : A scalability mode in which multiple independent encodings are sent on the same SSRC. This includes the S2T1, S2T1h, S2T2, S2T2h, S2T3, S2T3h, S3T1, S3T1h, S3T2, S3T2h, S3T3 and S3T3h scalability modes defined in Section 6.7.5 of <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>.</p>
-   <p>Selective Forwarding Middlebox (SFM) : A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without accessing the media <a data-link-type="biblio" href="#biblio-rfc7667" title="RTP Topologies">[RFC7667]</a>.</p>
-   <p>Temporal unit : Defined by the AV1 specification: A temporal unit consists of all the OBUs that are associated with a specific, distinct time instant.</p>
+   <dl>
+    <dt data-md>Media-Aware Network Element (MANE)
+    <dd data-md>
+     <p>A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets and which may have access to the media <a data-link-type="biblio" href="#biblio-rfc6184" title="RTP Payload Format for H.264 Video">[RFC6184]</a>.</p>
+    <dt data-md>OBU element
+    <dd data-md>
+     <p>An OBU, or a fragment of an OBU, contained in an RTP packet.</p>
+    <dt data-md>Open Bitstream Unit (OBU)
+    <dd data-md>
+     <p>The smallest bitstream data framing unit in AV1. All AV1 bitstream structures are packetized in OBUs.</p>
+    <dt data-md>"S" Mode
+    <dd data-md>
+     <p>A scalability mode in which multiple independent encodings are sent on the same SSRC. This includes the S2T1, S2T1h, S2T2, S2T2h, S2T3, S2T3h, S3T1, S3T1h, S3T2, S3T2h, S3T3 and S3T3h scalability modes defined in Section 6.7.5 of <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>.</p>
+    <dt data-md>Selective Forwarding Middlebox (SFM)
+    <dd data-md>
+     <p>A middlebox that relays streams among transmitting and receiving clients by selectively forwarding packets without accessing the media <a data-link-type="biblio" href="#biblio-rfc7667" title="RTP Topologies">[RFC7667]</a>.</p>
+    <dt data-md>Temporal unit
+    <dd data-md>
+     <p>Defined by the AV1 specification: A temporal unit consists of all the OBUs that are associated with a specific, distinct time instant.</p>
+   </dl>
    <h2 class="heading settled" data-level="3" id="media-format-description"><span class="secno">3. </span><span class="content">Media Format Description</span><a class="self-link" href="#media-format-description"></a></h2>
    <p>The AV1 codec can maintain up to eight reference frames, of which up to seven can be referenced by any new frame. AV1 also allows a frame to use another frame of a different spatial resolution as a reference frame. This allows internal resolution changes without requiring the use of key frames. These features together enable an AV1 encoder to implement various forms of coarse-grained scalability, including temporal, spatial, and quality scalability modes, as well as combinations of these, without the need for explicit scalable coding tools.</p>
    <p>Spatial and quality layers define different and possibly dependent representations of a single input frame. For a given spatial layer, temporal layers define different frame rates of video. Spatial layers allow a frame to be encoded at different spatial resolutions, whereas quality layers allow a frame to be encoded at the same spatial resolution but at different qualities (and thus with different amounts of coding error). AV1 supports quality layers as spatial layers without any resolution changes; hereinafter, the term "spatial layer" is used to represent both spatial and quality layers.</p>
