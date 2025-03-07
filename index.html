@@ -1490,7 +1490,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 4b8aed3f7, updated Thu Mar 6 12:35:01 2025 -0800" name="generator">
   <link href="https://aomediacodec.github.io/av1-rtp-spec/v1.0.0.html" rel="canonical">
-  <meta content="cfa22aafc41ac3d425bec854b260f30bef962dbe" name="revision">
+  <meta content="54c9aca5c5ec70d10344a10136732a5bf2a9e2d7" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -2605,18 +2605,44 @@ new coded video sequences for other encodings from the same source(s).</p>
    <p>To reduce overhead, the DD uses templates to avoid sending repetitive information. Subsequent packets refer to a template containing predefined information, which may be overridden with custom dependencies. In this way, the typical DD payload requires three bytes. Dynamic structures whose information is not known in advance can be described using additional bytes.</p>
    <h3 class="heading settled" id="a2-conventions-definitions-and-acronyms"><span class="content">A.2 Conventions, Definitions and Acronyms</span><a class="self-link" href="#a2-conventions-definitions-and-acronyms"></a></h3>
    <p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a>.</p>
-   <p>Chain : A sequence of frames for which it can be determined instantly if a frame from that sequence has been lost.</p>
-   <p>Decode target : The set of frames needed to decode a coded video sequence at a given spatial and temporal fidelity.</p>
-   <p>Decode Target Indication (DTI) : Describes the relationship of a frame to a Decode target. The DTI indicates four distinct relationships: 'not present', 'discardable', 'switch', and 'required'.</p>
-   <p>Discardable indication : An indication for a frame, associated with a given Decode target, that it will not be a Referred frame for any frame belonging to that Decode target.</p>
+   <dl>
+    <dt data-md>Chain
+    <dd data-md>
+     <p>A sequence of frames for which it can be determined instantly if a frame from that sequence has been lost.</p>
+    <dt data-md>Decode target
+    <dd data-md>
+     <p>The set of frames needed to decode a coded video sequence at a given spatial and temporal fidelity.</p>
+    <dt data-md>Decode Target Indication (DTI)
+    <dd data-md>
+     <p>Describes the relationship of a frame to a Decode target. The DTI indicates four distinct relationships: 'not present', 'discardable', 'switch', and 'required'.</p>
+    <dt data-md>Discardable indication
+    <dd data-md>
+     <p>An indication for a frame, associated with a given Decode target, that it will not be a Referred frame for any frame belonging to that Decode target.</p>
+   </dl>
    <p class="note" role="note"><span class="marker">Note:</span> A frame belonging to more than one Decode target may be discardable for one Decode target and not for another.</p>
-   <p>Frame dependency structure : Describes frame dependency information for the coded video sequence. The structure includes the number of DTIs, an ordered list of Frame dependency templates, and a mapping between Chains and Decode targets.</p>
-   <p>Frame dependency template : Contains frame description information that many frames have in common. Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and Chain information.</p>
-   <p>Not present indication : An indication for a frame, that it is not associated with a given Decode target.</p>
-   <p>Referred frame : A frame on which the current frame depends.</p>
-   <p>Required indication : An indication for a frame, associated with a given Decode target, that it belongs to the Decode target and has neither a Discardable indication nor a Switch indication.</p>
+   <dl>
+    <dt data-md>Frame dependency structure
+    <dd data-md>
+     <p>Describes frame dependency information for the coded video sequence. The structure includes the number of DTIs, an ordered list of Frame dependency templates, and a mapping between Chains and Decode targets.</p>
+    <dt data-md>Frame dependency template
+    <dd data-md>
+     <p>Contains frame description information that many frames have in common. Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and Chain information.</p>
+    <dt data-md>Not present indication
+    <dd data-md>
+     <p>An indication for a frame, that it is not associated with a given Decode target.</p>
+    <dt data-md>Referred frame
+    <dd data-md>
+     <p>A frame on which the current frame depends.</p>
+    <dt data-md>Required indication
+    <dd data-md>
+     <p>An indication for a frame, associated with a given Decode target, that it belongs to the Decode target and has neither a Discardable indication nor a Switch indication.</p>
+   </dl>
    <p class="note" role="note"><span class="marker">Note:</span> A frame belonging to more than one Decode target may be required for one Decode target and not required (either discardable or switch) for another.</p>
-   <p>Switch indication : An indication associated with a specific Decode target that all subsequent frames for that Decode target will be decodable if the frame containing the indication is decodable.</p>
+   <dl>
+    <dt data-md>Switch indication
+    <dd data-md>
+     <p>An indication associated with a specific Decode target that all subsequent frames for that Decode target will be decodable if the frame containing the indication is decodable.</p>
+   </dl>
    <h3 class="heading settled" id="a3-media-stream-requirements"><span class="content">A.3 Media Stream Requirements</span><a class="self-link" href="#a3-media-stream-requirements"></a></h3>
    <p>A bitstream conformant to this extension must adhere to the following statement(s).</p>
    <p>A frame for which all Referred frames are decodable MUST itself be decodable.</p>

@@ -627,31 +627,41 @@ To reduce overhead, the DD uses templates to avoid sending repetitive informatio
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [[RFC2119]].
 
-Chain : A sequence of frames for which it can be determined instantly if a frame from that sequence has been lost.
+: Chain
+:: A sequence of frames for which it can be determined instantly if a frame from that sequence has been lost.
 
-Decode target : The set of frames needed to decode a coded video sequence at a given spatial and temporal fidelity.
+: Decode target
+:: The set of frames needed to decode a coded video sequence at a given spatial and temporal fidelity.
 
-Decode Target Indication (DTI) : Describes the relationship of a frame to a Decode target. The DTI indicates four distinct relationships: 'not present', 'discardable', 'switch', and 'required'.
+: Decode Target Indication (DTI)
+:: Describes the relationship of a frame to a Decode target. The DTI indicates four distinct relationships: 'not present', 'discardable', 'switch', and 'required'.
 
-Discardable indication : An indication for a frame, associated with a given Decode target, that it will not be a Referred frame for any frame belonging to that Decode target.
+: Discardable indication
+:: An indication for a frame, associated with a given Decode target, that it will not be a Referred frame for any frame belonging to that Decode target.
 
 Note: A frame belonging to more than one Decode target may be discardable for one Decode target and not for another.
 
 
-Frame dependency structure : Describes frame dependency information for the coded video sequence. The structure includes the number of DTIs, an ordered list of Frame dependency templates, and a mapping between Chains and Decode targets.
+: Frame dependency structure
+:: Describes frame dependency information for the coded video sequence. The structure includes the number of DTIs, an ordered list of Frame dependency templates, and a mapping between Chains and Decode targets.
 
-Frame dependency template : Contains frame description information that many frames have in common. Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and Chain information.
+: Frame dependency template
+:: Contains frame description information that many frames have in common. Includes values for spatial ID, temporal ID, DTIs, frame dependencies, and Chain information.
 
-Not present indication : An indication for a frame, that it is not associated with a given Decode target.
+: Not present indication
+:: An indication for a frame, that it is not associated with a given Decode target.
 
-Referred frame : A frame on which the current frame depends.
+: Referred frame
+:: A frame on which the current frame depends.
 
-Required indication : An indication for a frame, associated with a given Decode target, that it belongs to the Decode target and has neither a Discardable indication nor a Switch indication.
+: Required indication
+:: An indication for a frame, associated with a given Decode target, that it belongs to the Decode target and has neither a Discardable indication nor a Switch indication.
 
 Note: A frame belonging to more than one Decode target may be required for one Decode target and not required (either discardable or switch) for another.
 
 
-Switch indication : An indication associated with a specific Decode target that all subsequent frames for that Decode target will be decodable if the frame containing the indication is decodable.
+: Switch indication
+:: An indication associated with a specific Decode target that all subsequent frames for that Decode target will be decodable if the frame containing the indication is decodable.
 
 
 ## A.3 Media Stream Requirements
