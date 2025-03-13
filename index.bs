@@ -600,7 +600,7 @@ Identification of a layer refresh frame may be performed by examining the coding
 
 # IANA Considerations
 
-The AV1 media type is registered with IANA for signaling the transfer of AV1 via RTP at https://www.iana.org/assignments/media-types/video/AV1.
+The AV1 media type is registered with IANA for signaling the transfer of AV1 via RTP at <a href="https://www.iana.org/assignments/media-types/video/AV1">https://www.iana.org/assignments/media-types/video/AV1</a>.
 
 
 # Security Considerations
@@ -1275,10 +1275,10 @@ Note: values outside of the valid range may be caused by a change of the templat
 
 ## A.9 Signaling (SDP) Information
 
-When the use of this header extension is signaled in SDP using an extmap attribute, the URI MUST be "<a href="https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension">"https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension"</a>.
+When the use of this header extension is signaled in SDP using an extmap attribute, the URI MUST be "<a href="https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension">https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension</a>".
 
 For example:
-* a=extmap:4 <a href="https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension">https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension</a>
+* a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension
 
 
 ## A.10 Examples
@@ -1292,29 +1292,29 @@ In the following example, the concepts of Decode targets, Chains, and DTI are di
 
 <figure>
 <img alt="L2T3" src="assets/images/L2T3.svg">
-<figcaption>L2T3</figcaption>
+<figcaption class="no-marker">L2T3</figcaption>
 </figure>
 
 A Decode target (DT) is a subset of a scalable video stream necessary to decode the stream at a certain temporal and spatial fidelity. For the L2T3 scalability structure, it is natural to define six Decode targets: VGA @ 15, 30 and 60 FPS, and HD @ 15, 30 and 60 FPS. It is however not necessary to define these six Decode targets, in this example four are used as shown in the diagrams below.
 
 <figure>
 <img alt="HD15fps" src="assets/images/L2T3_DT0.svg">
-<figcaption>DT0: HD @ 15fps</figcaption>
+<figcaption class="no-marker">DT0: HD @ 15fps</figcaption>
 </figure>
 
 <figure>
 <img alt="VGA30fps" src="assets/images/L2T3_DT1.svg">
-<figcaption>DT1: VGA @ 30fps</figcaption>
+<figcaption class="no-marker">DT1: VGA @ 30fps</figcaption>
 </figure>
 
 <figure>
 <img alt="VGA60fps" src="assets/images/L2T3_DT2.svg">
-<figcaption>DT2: VGA @ 60fps</figcaption>
+<figcaption class="no-marker">DT2: VGA @ 60fps</figcaption>
 </figure>
 
 <figure>
 <img alt="HD60fps" src="assets/images/L2T3_DT3.svg">
-<figcaption>DT3: HD @ 60fps</figcaption>
+<figcaption class="no-marker">DT3: HD @ 60fps</figcaption>
 </figure>
 
 A Decode Target Indication describes the relationship of a frame to a Decode target. For F5, the Decode Target Indication is different for each of the decode targets as shown in the table below.
@@ -1360,12 +1360,12 @@ A Chain is a sequence of frames for which it can be determined instantly if a fr
 
 <figure>
 <img alt="ChainS0" src="assets/images/L2T3_C0.svg">
-<figcaption>Chain0</figcaption>
+<figcaption class="no-marker">Chain0</figcaption>
 </figure>
 
 <figure>
 <img alt="ChainS1" src="assets/images/L2T3_C1.svg">
-<figcaption>Chain1</figcaption>
+<figcaption class="no-marker">Chain1</figcaption>
 </figure>
 
 Note that the yellow arrows in the Chain diagrams do not show frame dependencies, rather they indicate the order of frames in the Chain. For example, F9 doesn’t depend on F2, but F9 immediately follows F2 in Chain1. 
@@ -1386,7 +1386,7 @@ In the following example, spatial upswitch is discussed in the context of the L2
 
 <figure style="display: block;" align="center">
   <img src="assets/images/L2T1.svg" width="40%" >
-  <figcaption>L2T1</figcaption>
+  <figcaption class="no-marker">L2T1</figcaption>
 </figure>
 
 For the L2T1 scalability structure, it is natural to define two Decode targets, DT0 and DT1. DT0 includes all frames in spatial layer=0 (S0) and DT1 includes all frames in S0 and spatial layer=1 (S1). DT0 is protected by Chain0, which contains all frames in DT0. DT1 is protected by Chain1, which contains all frames in DT1.
@@ -1395,7 +1395,7 @@ In this example, the sender receives a Layer Refresh Request (LRR) for S1 after 
 
 <figure style="display: block;" align="center">
   <img src="assets/images/L2T1_FDIFFS.svg" width="55%" >
-  <figcaption>Frame dependencies</figcaption>
+  <figcaption class="no-marker">Frame dependencies</figcaption>
 </figure>
 
 To notify the receiver that an upswitch is possible (i.e., no previous frames from layer S1 are required to decode future S1 frames), the sender needs to send a frame with a Switch indication to DT1 and reset Chain1.
@@ -1459,7 +1459,7 @@ One way to notify the receiver is to set a Switch indication in F105 and reset C
 </table>
 <figure style="display: block;" align="center">
   <img src="assets/images/L2T1_C105.svg" width="55%" >
-  <figcaption>Chain1 reset at F105</figcaption>
+  <figcaption class="no-marker">Chain1 reset at F105</figcaption>
 </figure>
 
 Another way to notify the receiver is to set a Switch indication in F106 and reset Chain1 at F106 as shown in the table and figure below.
@@ -1522,7 +1522,7 @@ Another way to notify the receiver is to set a Switch indication in F106 and res
 
 <figure style="display: block;" align="center">
   <img src="assets/images/L2T1_C106.svg" width="55%" >
-  <figcaption>Chain1 reset at F106</figcaption>
+  <figcaption class="no-marker">Chain1 reset at F106</figcaption>
 </figure>
 
 The two ways of notifying the receiver as shown above demonstrate that Decode Target Indications and Chains can be set differently even though the stream structure and frame dependencies are the same.
@@ -1809,7 +1809,7 @@ This example uses one Chain, which includes frames with temporal ID equal to 0.
 
 <figure>
 <img alt="L1T3" src="assets/images/L1T3.svg">
-<figcaption>L1T3</figcaption>
+<figcaption class="no-marker">L1T3</figcaption>
 </figure>
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
@@ -1846,7 +1846,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 
 <figure>
 <img alt="L3T3" src="assets/images/L3T3.svg">
-<figcaption>L3T3</figcaption>
+<figcaption class="no-marker">L3T3</figcaption>
 </figure>
 
 <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">

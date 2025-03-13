@@ -1490,7 +1490,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 4b8aed3f7, updated Thu Mar 6 12:35:01 2025 -0800" name="generator">
   <link href="https://aomediacodec.github.io/av1-rtp-spec/v1.0.0.html" rel="canonical">
-  <meta content="54c9aca5c5ec70d10344a10136732a5bf2a9e2d7" name="revision">
+  <meta content="0f26ab701053c093bb56319944fe14e84306e1bd" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -2594,7 +2594,7 @@ new coded video sequences for other encodings from the same source(s).</p>
    <p>AV1 streams MUST use the Layer Refresh Request format defined for VP9 in Section 5.3 of <a data-link-type="biblio" href="#biblio-i-dietf-payload-vp9" title="RTP Payload Format for VP9 Video">[I-D.ietf-payload-vp9]</a>, with the high order bit of its three-bit SID field set to 0. The figure above shows the format for AV1 streams. Notice that SID here is two bits. SID is associated with AV1’s spatial_id and TID is associated with AV1’s temporal_id. See Sections 2, 5.3.3, and 6.2.3 of the AV1 bitstream specification <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a> for details on the temporal_id and spatial_id fields.</p>
    <p>Identification of a layer refresh frame may be performed by examining the coding dependency structure of the coded video sequence it belongs to. This may be provided by the scalability metadata (Sections 5.8.5 and 6.7.5 of <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>), either in the form of a pre-defined scalability mode or through a scalability structure (Sections 5.8.6 and 6.7.6 of <a data-link-type="biblio" href="#biblio-av1" title="AV1 Bitstream &amp; Decoding Process Specification">[AV1]</a>). Alternatively, the Dependency Descriptor RTP header extension that is specified in Appendix A of this document may be used.</p>
    <h2 class="heading settled" data-level="9" id="iana-considerations"><span class="secno">9. </span><span class="content">IANA Considerations</span><a class="self-link" href="#iana-considerations"></a></h2>
-   <p>The AV1 media type is registered with IANA for signaling the transfer of AV1 via RTP at https://www.iana.org/assignments/media-types/video/AV1.</p>
+   <p>The AV1 media type is registered with IANA for signaling the transfer of AV1 via RTP at <a href="https://www.iana.org/assignments/media-types/video/AV1">https://www.iana.org/assignments/media-types/video/AV1</a>.</p>
    <h2 class="heading settled" data-level="10" id="security-considerations"><span class="secno">10. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a></h2>
    <p>RTP packets using the payload format defined in this document are subject to the security considerations discussed in the RTP specification <a data-link-type="biblio" href="#biblio-rfc3550" title="RTP: A Transport Protocol for Real-Time Applications">[RFC3550]</a> and in any appropriate RTP profile. This implies that confidentiality of the media streams is achieved by encryption, for example, through the application of SRTP <a data-link-type="biblio" href="#biblio-rfc3711" title="The Secure Real-time Transport Protocol (SRTP)">[RFC3711]</a>. A potential denial-of-service threat exists for data encodings using compression techniques that have non-uniform receiver-end computational load. The attacker can inject pathological datagrams into the stream that are complex to decode and that cause the receiver to be overloaded. Therefore, the usage of data origin authentication and data integrity protection of at least the RTP packet is RECOMMENDED, for example, with SRTP <a data-link-type="biblio" href="#biblio-rfc3711" title="The Secure Real-time Transport Protocol (SRTP)">[RFC3711]</a>. Encryption of RTP Header Extensions such as the Dependency Descriptor is also RECOMMENDED, using techniques such as <a data-link-type="biblio" href="#biblio-rfc6904" title="Encryption of Header Extensions in the Secure Real-time Transport Protocol (SRTP)">[RFC6904]</a> or successor specifications.</p>
    <p>Note that the appropriate mechanism to ensure confidentiality and integrity of RTP packets and their payloads is very dependent on the application and on the transport and signaling protocols employed. Thus, although SRTP is given as an example above, other possible choices exist. See <a data-link-type="biblio" href="#biblio-rfc7202" title="Securing the RTP Framework: Why RTP Does Not Mandate a Single Media Security Solution">[RFC7202]</a>.</p>
@@ -3142,11 +3142,11 @@ new coded video sequences for other encodings from the same source(s).</p>
    </table>
    <p class="caption">Table A.2. Derivation Of Next Spatial ID And Temporal ID Values.</p>
    <h3 class="heading settled" id="a9-signaling-sdp-information"><span class="content">A.9 Signaling (SDP) Information</span><a class="self-link" href="#a9-signaling-sdp-information"></a></h3>
-   <p>When the use of this header extension is signaled in SDP using an extmap attribute, the URI MUST be "<a href="https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension">"https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension"</a>.</p>
+   <p>When the use of this header extension is signaled in SDP using an extmap attribute, the URI MUST be "<a href="https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension">https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension</a>".</p>
    <p>For example:</p>
    <ul>
     <li data-md>
-     <p>a=extmap:4 <a href="https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension">https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension</a></p>
+     <p>a=extmap:4 https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension</p>
    </ul>
    <h3 class="heading settled" id="a10-examples"><span class="content">A.10 Examples</span><a class="self-link" href="#a10-examples"></a></h3>
    <h4 class="heading settled" id="a101-scenarios"><span class="content">A.10.1 Scenarios</span><a class="self-link" href="#a101-scenarios"></a></h4>
@@ -3154,24 +3154,24 @@ new coded video sequences for other encodings from the same source(s).</p>
     In the following example, the concepts of Decode targets, Chains, and DTI are discussed in the context of the L2T3 scalability structure from the perspective of frame_number=5 (F5). 
    <figure>
      <img alt="L2T3" src="assets/images/L2T3.svg"> 
-    <figcaption>L2T3</figcaption>
+    <figcaption class="no-marker">L2T3</figcaption>
    </figure>
    <p>A Decode target (DT) is a subset of a scalable video stream necessary to decode the stream at a certain temporal and spatial fidelity. For the L2T3 scalability structure, it is natural to define six Decode targets: VGA @ 15, 30 and 60 FPS, and HD @ 15, 30 and 60 FPS. It is however not necessary to define these six Decode targets, in this example four are used as shown in the diagrams below.</p>
    <figure>
      <img alt="HD15fps" src="assets/images/L2T3_DT0.svg"> 
-    <figcaption>DT0: HD @ 15fps</figcaption>
+    <figcaption class="no-marker">DT0: HD @ 15fps</figcaption>
    </figure>
    <figure>
      <img alt="VGA30fps" src="assets/images/L2T3_DT1.svg"> 
-    <figcaption>DT1: VGA @ 30fps</figcaption>
+    <figcaption class="no-marker">DT1: VGA @ 30fps</figcaption>
    </figure>
    <figure>
      <img alt="VGA60fps" src="assets/images/L2T3_DT2.svg"> 
-    <figcaption>DT2: VGA @ 60fps</figcaption>
+    <figcaption class="no-marker">DT2: VGA @ 60fps</figcaption>
    </figure>
    <figure>
      <img alt="HD60fps" src="assets/images/L2T3_DT3.svg"> 
-    <figcaption>DT3: HD @ 60fps</figcaption>
+    <figcaption class="no-marker">DT3: HD @ 60fps</figcaption>
    </figure>
    <p>A Decode Target Indication describes the relationship of a frame to a Decode target. For F5, the Decode Target Indication is different for each of the decode targets as shown in the table below.</p>
    <table class="table table-sm table-bordered">
@@ -3206,11 +3206,11 @@ new coded video sequences for other encodings from the same source(s).</p>
    <p>A Chain is a sequence of frames for which it can be determined instantly if a frame from that sequence has been lost. In this example, two are used as shown in the diagrams below.</p>
    <figure>
      <img alt="ChainS0" src="assets/images/L2T3_C0.svg"> 
-    <figcaption>Chain0</figcaption>
+    <figcaption class="no-marker">Chain0</figcaption>
    </figure>
    <figure>
      <img alt="ChainS1" src="assets/images/L2T3_C1.svg"> 
-    <figcaption>Chain1</figcaption>
+    <figcaption class="no-marker">Chain1</figcaption>
    </figure>
    <p>Note that the yellow arrows in the Chain diagrams do not show frame dependencies, rather they indicate the order of frames in the Chain. For example, F9 doesn’t depend on F2, but F9 immediately follows F2 in Chain1.</p>
    <p>Purple arrows indicate the previous frame in the chain. F5 is not in any chain. For F5, the last frame in Chain0 is F1, and the last frame in Chain1 is F2.</p>
@@ -3222,13 +3222,13 @@ new coded video sequences for other encodings from the same source(s).</p>
     In the following example, spatial upswitch is discussed in the context of the L2T1 scalability structure. 
    <figure align="center" style="display: block;">
      <img src="assets/images/L2T1.svg" width="40%"> 
-    <figcaption>L2T1</figcaption>
+    <figcaption class="no-marker">L2T1</figcaption>
    </figure>
    <p>For the L2T1 scalability structure, it is natural to define two Decode targets, DT0 and DT1. DT0 includes all frames in spatial layer=0 (S0) and DT1 includes all frames in S0 and spatial layer=1 (S1). DT0 is protected by Chain0, which contains all frames in DT0. DT1 is protected by Chain1, which contains all frames in DT1.</p>
    <p>In this example, the sender receives a Layer Refresh Request (LRR) for S1 after frame_number=104 (F104) was produced and sent. To fulfil the LRR, the sender should produce F106 such that it does not depend on any previous frame in S1.</p>
    <figure align="center" style="display: block;">
      <img src="assets/images/L2T1_FDIFFS.svg" width="55%"> 
-    <figcaption>Frame dependencies</figcaption>
+    <figcaption class="no-marker">Frame dependencies</figcaption>
    </figure>
    <p>To notify the receiver that an upswitch is possible (i.e., no previous frames from layer S1 are required to decode future S1 frames), the sender needs to send a frame with a Switch indication to DT1 and reset Chain1.</p>
    <p>One way to notify the receiver is to set a Switch indication in F105 and reset Chain1 at F105 as shown in the table and figure below.</p>
@@ -3280,7 +3280,7 @@ new coded video sequences for other encodings from the same source(s).</p>
    </table>
    <figure align="center" style="display: block;">
      <img src="assets/images/L2T1_C105.svg" width="55%"> 
-    <figcaption>Chain1 reset at F105</figcaption>
+    <figcaption class="no-marker">Chain1 reset at F105</figcaption>
    </figure>
    <p>Another way to notify the receiver is to set a Switch indication in F106 and reset Chain1 at F106 as shown in the table and figure below.</p>
    <table class="table table-sm table-bordered">
@@ -3331,7 +3331,7 @@ new coded video sequences for other encodings from the same source(s).</p>
    </table>
    <figure align="center" style="display: block;">
      <img src="assets/images/L2T1_C106.svg" width="55%"> 
-    <figcaption>Chain1 reset at F106</figcaption>
+    <figcaption class="no-marker">Chain1 reset at F106</figcaption>
    </figure>
    <p>The two ways of notifying the receiver as shown above demonstrate that Decode Target Indications and Chains can be set differently even though the stream structure and frame dependencies are the same.</p>
    <h5 class="heading settled" id="a1013-dynamic-prediction-structure"><span class="content">A.10.1.3 Dynamic Prediction Structure</span><a class="self-link" href="#a1013-dynamic-prediction-structure"></a></h5>
@@ -3562,7 +3562,7 @@ new coded video sequences for other encodings from the same source(s).</p>
    <p>This example uses one Chain, which includes frames with temporal ID equal to 0.</p>
    <figure>
      <img alt="L1T3" src="assets/images/L1T3.svg"> 
-    <figcaption>L1T3</figcaption>
+    <figcaption class="no-marker">L1T3</figcaption>
    </figure>
    <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
     <tbody>
@@ -3632,7 +3632,7 @@ new coded video sequences for other encodings from the same source(s).</p>
    <p>This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all frames with temporal ID equal to 0.</p>
    <figure>
      <img alt="L3T3" src="assets/images/L3T3.svg"> 
-    <figcaption>L3T3</figcaption>
+    <figcaption class="no-marker">L3T3</figcaption>
    </figure>
    <table class="table-sm table-bordered" style="margin-bottom: 1.5em;">
     <tbody>
