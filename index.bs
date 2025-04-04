@@ -13,6 +13,55 @@ Markup Shorthands: css no
 Boilerplate: omit conformance
 </pre>
 
+<style>
+table {
+    border-collapse: collapse;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+.table-bordered {
+    border: 1px solid #e9ecef;
+}
+
+.table-bordered thead td, .table-bordered thead th {
+    border-bottom-width: 2px;
+}
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #e9ecef;
+}
+.table-bordered td, .table-bordered th {
+    border: 1px solid #e9ecef;
+}
+.table-sm td, .table-sm th {
+    padding: .3rem;
+}
+.table td, .table th {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #e9ecef;
+}
+
+table th {
+    background-color: #d6d8d9;
+    text-align: center;
+}
+
+.table-bordered td, .table-bordered th {
+    border: 1px solid #e9ecef;
+}
+
+.table-sm td, .table-sm th {
+    padding: .3rem;
+}
+</style>
+
 <pre class=biblio>
 {
    "AV1": {
