@@ -1,6 +1,6 @@
 <pre class='metadata'>
 Title: RTP Payload Format For AV1
-Status: FD
+Status: WGA
 Text Macro: SPECVERSION v1.0.0
 URL: https://aomediacodec.github.io/av1-rtp-spec/v1.0.0.html
 Shortname: av1-rtp
