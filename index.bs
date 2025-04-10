@@ -1341,29 +1341,29 @@ For example:
 In the following example, the concepts of Decode targets, Chains, and DTI are discussed in the context of the L2T3 scalability structure from the perspective of frame_number=5 (F5).
 
 <figure>
-<img alt="L2T3" src="assets/images/L2T3.svg">
+<img alt="L2T3" src="images/L2T3.svg">
 <figcaption class="no-marker">L2T3</figcaption>
 </figure>
 
 A Decode target (DT) is a subset of a scalable video stream necessary to decode the stream at a certain temporal and spatial fidelity. For the L2T3 scalability structure, it is natural to define six Decode targets: VGA @ 15, 30 and 60 FPS, and HD @ 15, 30 and 60 FPS. It is however not necessary to define these six Decode targets, in this example four are used as shown in the diagrams below.
 
 <figure>
-<img alt="HD15fps" src="assets/images/L2T3_DT0.svg">
+<img alt="HD15fps" src="images/L2T3_DT0.svg">
 <figcaption class="no-marker">DT0: HD @ 15fps</figcaption>
 </figure>
 
 <figure>
-<img alt="VGA30fps" src="assets/images/L2T3_DT1.svg">
+<img alt="VGA30fps" src="images/L2T3_DT1.svg">
 <figcaption class="no-marker">DT1: VGA @ 30fps</figcaption>
 </figure>
 
 <figure>
-<img alt="VGA60fps" src="assets/images/L2T3_DT2.svg">
+<img alt="VGA60fps" src="images/L2T3_DT2.svg">
 <figcaption class="no-marker">DT2: VGA @ 60fps</figcaption>
 </figure>
 
 <figure>
-<img alt="HD60fps" src="assets/images/L2T3_DT3.svg">
+<img alt="HD60fps" src="images/L2T3_DT3.svg">
 <figcaption class="no-marker">DT3: HD @ 60fps</figcaption>
 </figure>
 
@@ -1409,12 +1409,12 @@ A Decode Target Indication describes the relationship of a frame to a Decode tar
 A Chain is a sequence of frames for which it can be determined instantly if a frame from that sequence has been lost. In this example, two are used as shown in the diagrams below.
 
 <figure>
-<img alt="ChainS0" src="assets/images/L2T3_C0.svg">
+<img alt="ChainS0" src="images/L2T3_C0.svg">
 <figcaption class="no-marker">Chain0</figcaption>
 </figure>
 
 <figure>
-<img alt="ChainS1" src="assets/images/L2T3_C1.svg">
+<img alt="ChainS1" src="images/L2T3_C1.svg">
 <figcaption class="no-marker">Chain1</figcaption>
 </figure>
 
@@ -1436,7 +1436,7 @@ The DT3 client would track Chain1. From the DD received with F5, the client woul
 In the following example, spatial upswitch is discussed in the context of the L2T1 scalability structure.
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/L2T1.svg" width="40%" >
+  <img src="images/L2T1.svg" width="40%" >
   <figcaption class="no-marker">L2T1</figcaption>
 </figure>
 
@@ -1445,7 +1445,7 @@ For the L2T1 scalability structure, it is natural to define two Decode targets, 
 In this example, the sender receives a Layer Refresh Request (LRR) for S1 after frame_number=104 (F104) was produced and sent. To fulfil the LRR, the sender should produce F106 such that it does not depend on any previous frame in S1.
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/L2T1_FDIFFS.svg" width="55%" >
+  <img src="images/L2T1_FDIFFS.svg" width="55%" >
   <figcaption class="no-marker">Frame dependencies</figcaption>
 </figure>
 
@@ -1509,7 +1509,7 @@ One way to notify the receiver is to set a Switch indication in F105 and reset C
   </tbody>
 </table>
 <figure style="display: block;" align="center">
-  <img src="assets/images/L2T1_C105.svg" width="55%" >
+  <img src="images/L2T1_C105.svg" width="55%" >
   <figcaption class="no-marker">Chain1 reset at F105</figcaption>
 </figure>
 
@@ -1572,7 +1572,7 @@ Another way to notify the receiver is to set a Switch indication in F106 and res
 </table>
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/L2T1_C106.svg" width="55%" >
+  <img src="images/L2T1_C106.svg" width="55%" >
   <figcaption class="no-marker">Chain1 reset at F106</figcaption>
 </figure>
 
@@ -1584,7 +1584,7 @@ The two ways of notifying the receiver as shown above demonstrate that Decode Ta
 In the following example, the sender encodes two quality layers, S0 and S1 (i.e., layers with the same resolution but different qualities).
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/Q2T1.svg" width="40%" >
+  <img src="images/Q2T1.svg" width="40%" >
 </figure>
 
 In this example, there are two Decode targets, DT0 and DT1. DT0 includes all frames in S0. DT1 includes all frames in S0 and S1. DT0 is protected by Chain0, which contains all frames in DT0. DT1 is protected by Chain1, which contains all frames in DT1. 
@@ -1592,7 +1592,7 @@ In this example, there are two Decode targets, DT0 and DT1. DT0 includes all fra
 The sender has a bit rate constraint for DT0. When the encoder overshoots that constraint, the sender can skip encoding a few frames. The figure and table below show an example in which three frames are skipped.
 
 <figure style="display: block;" align="center">
-  <img src="assets/images/Q2T1_SKIP_FRAMES.svg" width="80%" >
+  <img src="images/Q2T1_SKIP_FRAMES.svg" width="80%" >
 </figure>
 
 <table class="table table-sm table-bordered">
@@ -1860,7 +1860,7 @@ Each example in this section contains a prediction structure figure and a table 
 This example uses one Chain, which includes frames with temporal ID equal to 0.
 
 <figure>
-<img alt="L1T3" src="assets/images/L1T3.svg">
+<img alt="L1T3" src="images/L1T3.svg">
 <figcaption class="no-marker">L1T3</figcaption>
 </figure>
 
@@ -1897,7 +1897,7 @@ This example uses one Chain, which includes frames with temporal ID equal to 0.
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frames with spatial ID equal to 0 or 1 and temporal ID equal to 0. Chain 2 includes all frames with temporal ID equal to 0.
 
 <figure>
-<img alt="L3T3" src="assets/images/L3T3.svg">
+<img alt="L3T3" src="images/L3T3.svg">
 <figcaption class="no-marker">L3T3</figcaption>
 </figure>
 
@@ -1964,7 +1964,7 @@ This example uses three Chains. Chain 0 includes frames with spatial ID equal to
 This example uses three Chains. Chain 0 includes frames with spatial ID equal to 0 and temporal ID equal to 0. Chain 1 includes frame 100 and frames with spatial ID equal to 1 and temporal ID equal to 0. Chain 2 includes frames 100, 101, and frames with spatial ID equal to 2 and temporal ID equal to 0.
 
 <figure>
-<img alt="L3T3_KEY_SHIFT" src="assets/images/L3T3_KEY_SHIFT.svg">
+<img alt="L3T3_KEY_SHIFT" src="images/L3T3_KEY_SHIFT.svg">
 <figcaption>L3T3_KEY_SHIFT</figcaption>
 </figure>
 
