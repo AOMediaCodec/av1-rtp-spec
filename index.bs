@@ -451,7 +451,7 @@ When AV1 over RTP is offered with SDP in a declarative style, as in Real Time St
 * A receiver of the SDP is required to support all parameters and values of the parameters provided; otherwise, the receiver MUST reject (RTSP) or not participate in (SAP) the session. It falls on the creator of the session to use values that are expected to be supported by the receiving application.
 
 
-### Examples ### {#sdp-media-example}
+## Examples ## {#parameter-examples}
 An example of media representation in SDP is as follows:
 
 * m=video 49170 RTP/AVPF 98
