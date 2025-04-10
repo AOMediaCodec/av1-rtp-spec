@@ -671,7 +671,7 @@ End-to-end security services such as authentication, integrity, or confidentiali
 
 Bernard Aboba made valuable contributions to this document, and to the AV1 Specification. Bernard passed away in February 2025. This document is dedicated to his memory, as a small token of appreciation of his many contributions.
 
-# Appendix A - Dependency Descriptor RTP Header Extension # {#annex-a}
+# Appendix A - Dependency Descriptor RTP Header Extension # {#dependency-descriptor-rtp-header-extension}
 
 
 ## A.1 Introduction ## {#a1-intro}
