@@ -6,9 +6,9 @@ URL: https://aomediacodec.github.io/av1-rtp-spec/v1.0.0.html
 Shortname: av1-rtp
 Editor: Michael Horowitz, Google
 Editor: Danil Chapovalov, Google
-Former Editor: Bernard Aboba, Microsoft
-Former Editor: Alex Eleftheriadis, Big Pi Ventures
-Former Editor: Stephen Botzko, Polycom
+Editor: Bernard Aboba, Microsoft
+Editor: Alex Eleftheriadis, Vidyo
+Editor: Stephen Botzko, Polycom
 Abstract: This document describes an RTP payload format for the [[!AV1]] video codec. The payload format has wide applicability, from low bit-rate peer-to-peer usage, to high bit-rate multi-party video conferences. It includes provisions for temporal and spatial scalability.
 Date: 2024-12-15
 Repository: AOMediaCodec/av1-rtp-spec
