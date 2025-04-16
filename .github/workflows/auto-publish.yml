@@ -28,6 +28,7 @@ jobs:
 
       - name: Run bikeshed
         run: |
+          bikeshed --version
           bikeshed spec
           mkdir dist
           cp *.html dist

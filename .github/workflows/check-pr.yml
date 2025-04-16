@@ -16,4 +16,6 @@ jobs:
       - run: pip install -r requirements.txt
 
       - name: Run bikeshed
-        run: bikeshed spec
+        run: |
+            bikeshed --version
+            bikeshed spec
