@@ -23,7 +23,7 @@ propcache==0.3.1
 Pygments==2.19.1
 requests==2.32.3
 result==0.17.0
-setuptools==75.8.0
+setuptools==78.1.1
 six==1.17.0
 tenacity==9.0.0
 typing_extensions==4.13.2
