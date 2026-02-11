@@ -18,7 +18,7 @@ isodate==0.7.2
 kdl-py==1.2.0
 lxml==5.3.0
 multidict==6.4.2
-pillow==11.1.0
+pillow==12.1.1
 propcache==0.3.1
 Pygments==2.19.1
 requests==2.32.3
